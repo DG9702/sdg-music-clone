@@ -1,0 +1,37 @@
+.main-layout {
+  background-color: var(--black);
+  height: 100vh;
+  width: max(100vw, 900px);
+  overflow: hidden;
+  display: flex;
+  gap: var(--panel-gap);
+  padding: 0.8rem;
+  max-width: 3000px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.main-layout-top {
+  height: calc(100vh - 96px);
+}
+.main-layout-bottom {
+  height: 72px;
+}
+
+.split {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.main-container {
+  flex: 1;
+  height: 100%;
+  background-color: var(--bg-primary);
+  border-radius: var(--panel-gap);
+  -webkit-border-radius: var(--panel-gap);
+  overflow: hidden;
+  overflow-y: auto;
+  position: relative;
+}

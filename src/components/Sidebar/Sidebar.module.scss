@@ -1,0 +1,25 @@
+.sidebar {
+  // width: max(20%, 280px);
+  // max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--panel-gap);
+  min-width: 280px;
+  max-width: 500px;
+}
+
+.navbar {
+  background-color: var(--bg-primary);
+  font-size: 1.6rem;
+  border-radius: 8px;
+  padding: 8px 22px;
+}
+
+.library {
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  height: 100%;
+  overflow: hidden;
+}

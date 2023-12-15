@@ -1,27 +1,102 @@
-html,
-body,
-#root,
-.app {
-  height: 100%;
-  width: 100%;
-  padding: 0;
+@import "normalize.css";
+
+:root {
+  --primary: #1ed760;
+  --secondary: #1db954;
+  --tertiary: #1dcf5d;
+  --black: #000;
+  --white: #fff;
+  --bg-primary: #121212;
+
+  --text-subdued: #a7a7a7;
+  --text-neutral: #b3b3b3;
+
+  --panel-gap: 8px;
+  --row-gap: 16px;
+  --col-gap: 24px;
+
+  --panel-border-radius: 8px;
+
+  --navbar-height: 64px;
+
+  --font-family: "ProximaNova", sans-serif;
+}
+
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
+body {
+  font-family: var(--font-family);
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizespeed;
+  color: var(--white);
+  overflow-y: overlay;
 }
 
-::-webkit-scrollbar-track {
-  background: #21295c;
+// Scrollbar CSS
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #7a7f9d;
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
-/* Handle on Hover */
-::-webkit-scrollbar-track:hover {
-  background: #7a7f9d;
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+button,
+input,
+[tabindex],
+textarea {
+  outline: none;
+  border: none;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+//Font embeded
+//ProximaNova
+@font-face {
+  font-family: ProximaNova;
+  src: url("/assets/fonts/Proxima-Nova-Regular.woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: ProximaNova;
+  src: url("/assets/fonts/ProximaNova-Semibold.woff2");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: ProximaNova;
+  src: url("/assets/fonts/Proxima-Nova-Bold.woff2");
+  font-weight: 700;
+}
+//sofiapro
+@font-face {
+  font-family: SofiaPro;
+  src: url("/assets/fonts/sofiapro-semibold.otf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: SofiaPro;
+  src: url("/assets/fonts/sofiapro-bold.woff2");
+  font-weight: 700;
 }
