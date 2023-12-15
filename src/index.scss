@@ -13,6 +13,7 @@
 
   --panel-gap: 8px;
   --row-gap: 16px;
+  --nav-gap: 20px;
   --col-gap: 24px;
 
   --panel-border-radius: 8px;
@@ -33,7 +34,6 @@ html {
 
 body {
   font-family: var(--font-family);
-  font-size: 1.6rem;
   line-height: 1.5;
   text-rendering: optimizespeed;
   color: var(--white);
@@ -64,9 +64,13 @@ textarea {
   border: none;
 }
 
-a {
-  color: var(--text-color);
+a, 
+ol, 
+ul, 
+li {
   text-decoration: none;
+  background-color: transparent;
+  list-style: none;
 }
 
 //Font embeded

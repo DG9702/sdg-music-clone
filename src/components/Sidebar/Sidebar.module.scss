@@ -8,11 +8,46 @@
   max-width: 500px;
 }
 
-.navbar {
+//Navbar top
+.navbar-container {
   background-color: var(--bg-primary);
   font-size: 1.6rem;
   border-radius: 8px;
-  padding: 8px 22px;
+
+  ul {
+    padding: 8px 12px;
+
+    .nav-item {
+      padding: 4px 12px;
+
+      
+      .active {
+        color: var(--white) !important;
+      }
+
+      .nav-item-body {
+        display: flex;
+        align-items: center;
+        gap: var(--nav-gap);
+        color: var(--text-neutral);
+        height: 40px;
+
+        &:hover {
+          color: var(--white);
+        }
+
+        .nav-icon {
+          font-size: 24px;
+        }
+
+        .nav-name {
+          font-size: 1.5rem;
+          font-weight: 700;
+          text-decoration: none;
+        }
+      }
+    }
+  }
 }
 
 .library {
