@@ -10,7 +10,7 @@
 
   --text-subdued: #a7a7a7;
   --text-neutral: #b3b3b3;
-
+  --top-bar-opacity: 0.0;
   --panel-gap: 8px;
   --row-gap: 16px;
   --nav-gap: 20px;
@@ -19,6 +19,10 @@
   --panel-border-radius: 8px;
 
   --navbar-height: 64px;
+  //--left-sidebar-width: 420px;
+
+  //--content-spacing: clamp(16px,16px + (100vw - var(--left-sidebar-width,0px) - var(--panel-width,0px) - 600px)/424*8,24px);
+
 
   --font-family: "ProximaNova", sans-serif;
 }

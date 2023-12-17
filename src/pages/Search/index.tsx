@@ -12,7 +12,7 @@ const Search = () => {
   return (
     <div className={cx("search")}>
       <Header />
-      <div>Home page</div>
+      <div>Search page</div>
       <Footer />
     </div>
   );
