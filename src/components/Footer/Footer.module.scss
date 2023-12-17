@@ -1,0 +1,104 @@
+.footer {
+  background-color: var(--bg-primary);
+  margin-top: 40px;
+
+  .footer-container {
+    padding: 8px 32px 40px;
+    width: 100%;
+
+    .footer__top {
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+
+      .footer__top-left {
+        margin-bottom: 32px;
+        display: flex;
+        flex: 1 1 50%;
+        gap: var(--col-gap);
+
+        .linkGroup {
+            display: flex;
+            flex-direction: column;
+
+            .linkGroup-title {
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: var(--white);
+
+                
+            }
+
+            .linkGroup-list {
+                display: flex;
+                flex-direction: column;
+                color: var(--text-subdued);
+
+                a {
+                    margin: 8px 0;
+                    color: inherit;
+                    width: fit-content;
+                    font-size: 1.4rem;
+                    font-weight: 600;
+
+                    &:hover {
+                      color: var(--white);
+                      cursor: pointer;
+                      text-decoration: underline;
+                    }
+                }
+            }
+        }
+      }
+
+      .footer__top-right {
+        display: flex;
+        gap: 16px;
+
+        a {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #292929;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            transition: all ease-in-out .2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:hover {
+                background-color: rgb(114, 114, 114);
+            }
+
+            svg {
+                fill: var(--white);
+            }
+        }
+      }
+    }
+
+    .horizontalRule {
+        box-sizing: border-box;
+        border: 0px;
+        border-block-start: 1px solid var(--decorative-subdued,#dedede);
+        margin-block-end: 24px;
+    }
+
+    .footer__bottom {
+        padding-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+
+        .footer__bottom-copyright {
+            padding-right: 16px;
+            color: var(--text-subdued);
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+    }
+  }
+}

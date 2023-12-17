@@ -11,7 +11,7 @@ import Header from "~/components/Header";
 const Search = () => {
   return (
     <div className={cx("search")}>
-      <Header />
+      <Header type="search" />
       <div>Search page</div>
       <Footer />
     </div>

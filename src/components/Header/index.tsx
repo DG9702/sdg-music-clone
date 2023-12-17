@@ -1,6 +1,7 @@
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
+  SearchIcon,
   UserImgDefault,
 } from "~/assets/icons";
 import classNames from "classnames/bind";
@@ -65,16 +66,41 @@ const Header: FC<HeaderProps> = (props) => {
           <ArrowForwardIcon />
         </button>
       </div>
+
+      <div className={cx("header-search")}>
+        {type === "search" && (
+          <div className={cx("header-search-control")}>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="text"
+                ref={queryRef}
+                placeholder="What do you want to listen to?"
+                spellCheck={false}
+              />
+            </form>
+
+            <div className={cx({ icon: true, "search-icon": true })}>
+              <SearchIcon />
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className={cx("header-right")}>
         <button className={cx("btn-title")}>Premium</button>
         <button className={cx("btn-title")}>Support</button>
         <button className={cx("btn-title")}>Download</button>
         <div className={cx("hr")}></div>
         <div>
-          <button className={cx("btn-title")} style={{
-            paddingInlineStart: "8px",
-            paddingInlineEnd: "32px"
-          }}>Sign up</button>
+          <button
+            className={cx("btn-title")}
+            style={{
+              paddingInlineStart: "8px",
+              paddingInlineEnd: "32px",
+            }}
+          >
+            Sign up
+          </button>
           <button className={cx("btn-login")}>
             <span>Log in</span>
           </button>

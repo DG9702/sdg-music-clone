@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <div className={cx("home")}>
       <Header />
-      <div>Home page</div>
+      <div className={cx("body")}>Home page</div>
       <Footer />
     </div>
   );
