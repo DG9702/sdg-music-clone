@@ -1,0 +1,31 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: brighten-up 0.2s;
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.25;
+}
+
+@keyframes brighten-up {
+  0% {
+    filter: brightness(0.3);
+  }
+
+  100% {
+    filter: brightness(1);
+  }
+}

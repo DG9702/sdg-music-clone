@@ -8,6 +8,10 @@ import classNames from "classnames/bind";
 import React, { FC, useContext, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
+import { AuthContext } from "../../context/AuthContext";
+import UserDropdown from "../UserDropdown";
+import ImageLazy from "../Image";
+import Button from "../Button";
 
 const cx = classNames.bind(styles);
 
@@ -25,7 +29,20 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = (props) => {
-  const { bgColor, navOpacity = 1, type = "default", title = "" } = props;
+  const {
+    bgColor,
+    navOpacity = 1,
+    query,
+    setQuery,
+    type = "default",
+    title = "",
+    playBtnVisible = false,
+    inclPlayBtn = false,
+    handleClickPlayBtn,
+    showTitle = false,
+  } = props;
+
+  const { isLogged, userData, handleLogin } = useContext(AuthContext);
 
   const { key } = useLocation();
   const navigate = useNavigate();
@@ -37,10 +54,14 @@ const Header: FC<HeaderProps> = (props) => {
     }
   }, []);
 
+  console.log("Userdata: ", userData);
+  
+
   return (
     <header className={cx("header")}>
       <div
         style={{
+          opacity: isLogged ? "1" : "0",
           backgroundColor: `${type === "section" ? "#121212" : bgColor}`,
           backgroundImage: `${
             type === "home" &&
@@ -87,24 +108,46 @@ const Header: FC<HeaderProps> = (props) => {
       </div>
 
       <div className={cx("header-right")}>
-        <button className={cx("btn-title")}>Premium</button>
+        <Button type="text">Premium</Button>
         <button className={cx("btn-title")}>Support</button>
         <button className={cx("btn-title")}>Download</button>
-        <div className={cx("hr")}></div>
-        <div>
-          <button
-            className={cx("btn-title")}
-            style={{
-              paddingInlineStart: "8px",
-              paddingInlineEnd: "32px",
-            }}
-          >
-            Sign up
-          </button>
-          <button className={cx("btn-login")}>
-            <span>Log in</span>
-          </button>
+        {isLogged ? (
+          <div className={cx('user')}>
+          {userData?.images?.length === 0 ? (
+            <button name="user account">
+              <UserImgDefault />
+            </button>
+          ) : (
+            <div className={cx('user-avt')}>
+              <ImageLazy src={userData?.images?.[0].url} alt={userData?.display_name} />
+            </div>
+          )}
+
+          <div className={cx('user-dropdown')}>
+            <UserDropdown />
+          </div>
         </div>
+        ) : (
+        <>
+          <div className={cx("hr")}></div>
+          <div>
+            <button
+              className={cx("btn-title")}
+              style={{
+                paddingInlineStart: "8px",
+                paddingInlineEnd: "32px",
+              }}
+            >
+              Sign up
+            </button>
+            <button className={cx("btn-login")} onClick={handleLogin}>
+              <span>Log in</span>
+            </button>
+          </div>
+        </>
+
+        )}
+        
       </div>
     </header>
   );

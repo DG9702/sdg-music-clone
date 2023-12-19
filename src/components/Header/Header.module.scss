@@ -83,12 +83,12 @@
           font-weight: 600;
           border: none;
           border-radius: 500px;
-          color: #fff!important;
+          color: #fff !important;
 
           &:hover {
-              background-color: #2a2a2a;
-              box-shadow: 0 0 0 1px hsla(0,0%,100%,.2);
-              outline: none;
+            background-color: #2a2a2a;
+            box-shadow: 0 0 0 1px hsla(0, 0%, 100%, 0.2);
+            outline: none;
           }
 
           &:focus {
@@ -125,11 +125,9 @@
       background-color: transparent;
       border: 0px;
       border-radius: 9999px;
+      height: 48px;
+      padding: 8px 0;
       cursor: pointer;
-      position: relative;
-      text-align: center;
-      text-decoration: none;
-      text-transform: none;
       vertical-align: middle;
       transform: translate3d(0px, 0px, 0px);
       color: var(--text-subdued, #6a6a6a);
@@ -147,6 +145,35 @@
       &:hover {
         transform: scale(1.04);
         color: var(--white);
+      }
+    }
+
+    .user {
+      position: relative;
+      button[name="user account"] {
+        color: var(--white);
+        font-size: 16px;
+      }
+
+      &-avt {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+        cursor: pointer;
+        border: 4px rgba(0, 0, 0, 0.54) solid;
+      }
+
+      &-dropdown {
+        display: none;
+        position: absolute;
+        top: 26px;
+        right: -60%;
+        padding-top: 10px;
+      }
+
+      &:hover .user-dropdown {
+        display: block;
       }
     }
 
@@ -200,3 +227,4 @@
     }
   }
 }
+
