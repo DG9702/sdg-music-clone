@@ -5,13 +5,13 @@ import styles from "./Button.module.scss";
 const cx = classNames.bind(styles);
 
 interface ButtonProps {
-  type?: "default" | "text" | "primary" | "circle";
-  bgColor?: string | null;
+  type?: "default" | "text" | "primary" | "circle" | "menu";
+  bgColor?: string;
   navOpacity?: number;
   disabled?: Boolean;
   rightIcon?: ReactNode;
   leftIcon?: ReactNode;
-  handleClickPlayBtn?: any;
+  onClick?: any;
   small?: boolean;
   large?: boolean;
   children: ReactNode;
@@ -26,7 +26,7 @@ const Button: FC<ButtonProps> = (props) => {
     disabled = false,
     rightIcon,
     leftIcon,
-    handleClickPlayBtn,
+    onClick,
     small = false,
     large = false,
     className,
@@ -35,22 +35,36 @@ const Button: FC<ButtonProps> = (props) => {
 
   // Remove event listener when btn is disabled
 
-  const classes = cx("btn", {
-    "btn-default": type === "default",
-    "btn-text": type === "text",
-    "btn-primary": type === "primary",
-    "btn-circle": type === "circle",
-    bgColor,
-    navOpacity,
-  });
+  const classes = cx(
+    "btn",
+    {
+      "btn-default": type === "default",
+      "btn-menu": type === "menu",
+      "btn-text": type === "text",
+      "btn-primary": type === "primary",
+      "btn-circle": type === "circle",
+
+      navOpacity,
+      small,
+      large,
+    },
+    className,
+  );
 
   return (
-    <button className={classes}>
-      {leftIcon && <span className={cx("icon")}>{leftIcon}</span>}
-      <span className={cx("title")}>{children}</span>
-      {rightIcon && <span className={cx("icon")}>{rightIcon}</span>}
+    <button className={classes} onClick={onClick}>
+      <span
+        style={{
+          backgroundColor: bgColor,
+        }}
+        className={cx("btn-body")}
+      >
+        {leftIcon && <span className={cx("left-icon")}>{leftIcon}</span>}
+        <span className={cx("title")}>{children}</span>
+        {rightIcon && <span className={cx("right-icon")}>{rightIcon}</span>}
+      </span>
     </button>
   );
 };
 
-export default Button
+export default Button;

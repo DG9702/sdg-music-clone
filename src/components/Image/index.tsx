@@ -11,7 +11,7 @@ const ImageLazy: FC<ImageLazyProps> = (props) => {
   const { src = '', alt = '', colorRaw = '' } = props
 
   return (
-    <div className={styles.wrapper}>
+    <>
       <div>
 
           <div
@@ -23,7 +23,7 @@ const ImageLazy: FC<ImageLazyProps> = (props) => {
         src={src}
         alt={alt}
       />
-    </div>
+    </>
   )
 }
 

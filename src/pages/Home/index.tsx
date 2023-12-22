@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 const Home = () => {
   return (
     <div className={cx("home")}>
-      <Header />
+      <Header type="home" />
       <div className={cx("body")}>Home page</div>
       <Footer />
     </div>

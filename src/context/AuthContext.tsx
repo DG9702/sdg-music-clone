@@ -21,7 +21,6 @@ export const AuthContext = createContext({} as AuthContext)
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const refreshToken = localStorage.getItem('spotify_refresh_token')
   const authCode = localStorage.getItem('spotify_auth_code')
-  console.log('AAAA');
   
   const [isLogged, setLogged] = useState<boolean>(Boolean(refreshToken))
   const [userData, setUserData] = useState<UserData>({})
