@@ -1,0 +1,22 @@
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--black);
+}
+
+.spinner {
+  width: calc(100% - 16px);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-primary);
+  margin: 8px 8px 0;
+  border-radius: var(--panel-border-radius);
+}
+
+.audio-player-bar {
+  height: 88px;
+  padding: 8px;
+}

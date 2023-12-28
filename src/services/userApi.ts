@@ -2,7 +2,6 @@ import { spotifyApiClient, spotifyApiDev } from '~/configs/axiosClient'
 
 export const getUserData = async () => {
   const { data } = await spotifyApiClient.get(`me`)
-  console.log(data)
   return data
 }
 

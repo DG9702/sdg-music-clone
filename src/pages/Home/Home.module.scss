@@ -3,8 +3,14 @@
   position: relative;
   overflow: hidden;
   -webkit-overflow: hidden;
-
-  .body {
-    margin-top: 64px;
+  
+  .home-container {
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding-bottom: 32px;
+    padding-top: 64px;
+    position: relative;
+    
   }
 }

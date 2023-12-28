@@ -17,6 +17,10 @@ const scopes = [
   "user-top-read",
   "user-follow-read",
   "user-follow-modify",
+  "user-read-email",
+  "app-remote-control",
+  "streaming",
+
 ].join(" ");
 
 export { scopes };

@@ -7,8 +7,13 @@
   --black: #000;
   --white: #fff;
   --bg-primary: #121212;
+  --bg-section: #181818;
   --bg-card-highlight: #282828;
   --bg-highlight: rgba(0,0,0,.56);
+
+
+  --bg-noise: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=);
+
 
   --text-subdued: #a7a7a7;
   --text-neutral: #b3b3b3;
@@ -35,6 +40,16 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+
+  scrollbar-width: none;
+}
+
 html {
   font-size: 62.5%;
 }
@@ -45,22 +60,16 @@ body {
   text-rendering: optimizespeed;
   color: var(--white);
   overflow-y: overlay;
+
 }
 
 // Scrollbar CSS
-html *::-webkit-scrollbar {
-  border-radius: 0;
-  width: 8px;
+::-webkit-scrollbar {
+  width: 12px;
 }
 
-html *::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
-html *::-webkit-scrollbar-track {
-  border-radius: 0;
-  background-color: rgba(0, 0, 0, 0);
+::-webkit-scrollbar-thumb {
+  background-color: hsla(0,0%,100%,.3);
 }
 
 button,
@@ -80,34 +89,32 @@ li {
   list-style: none;
 }
 
+.gutter {
+  background-color: inherit;
+  cursor: col-resize;
+}
+
+.gutter.gutter-horizontal {
+  height: 100%;
+  cursor: col-resize;
+  width: var(--panel-gap) !important;
+}
+
 //Font embeded
 //ProximaNova
 @font-face {
-  font-family: ProximaNova;
-  src: url("/assets/fonts/Proxima-Nova-Regular.woff2");
+  font-family: CircularSp;
+  src: url('./assets/fonts/CircularSp-Book.woff2');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: ProximaNova;
-  src: url("/assets/fonts/ProximaNova-Semibold.woff2");
-  font-weight: 600;
+  font-family: CircularSp;
+  src: url('./assets/fonts/CircularSp-Bold.woff2');
+  font-weight: 700;
 }
 
 @font-face {
-  font-family: ProximaNova;
-  src: url("/assets/fonts/Proxima-Nova-Bold.woff2");
-  font-weight: 700;
-}
-//sofiapro
-@font-face {
-  font-family: SofiaPro;
-  src: url("/assets/fonts/sofiapro-semibold.otf");
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: SofiaPro;
-  src: url("/assets/fonts/sofiapro-bold.woff2");
-  font-weight: 700;
+  font-family: 'Spoticon';
+  src: url('./assets/fonts/spoticon_regular.woff2');
 }

@@ -20,6 +20,7 @@
         .linkGroup {
             display: flex;
             flex-direction: column;
+            min-width: 180px;
 
             .linkGroup-title {
                 font-size: 1.6rem;

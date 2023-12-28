@@ -12,8 +12,6 @@ import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 import { AuthContext } from "../../context/AuthContext";
-import UserDropdown from "../UserDropdown";
-import ImageLazy from "../Image";
 import Button from "../Button";
 import Menu from "../Menu";
 
@@ -46,16 +44,13 @@ const Header: FC<HeaderProps> = (props) => {
     showTitle = false,
   } = props;
 
-  const { isLogged, userData, handleLogin, handleLogout } =
+  const { isLogged, userData, handleLogin } =
     useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState<any>(false);
 
   const { key } = useLocation();
   const navigate = useNavigate();
   const queryRef = useRef<any>(null);
-
-  console.log("isLogged: ", isLogged);
-  
 
   const userMenu = [
     {
@@ -110,11 +105,6 @@ const Header: FC<HeaderProps> = (props) => {
 
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleBtnLogout = (menuItem: any) => {
-    console.log(menuItem);
-    
   };
 
   return (

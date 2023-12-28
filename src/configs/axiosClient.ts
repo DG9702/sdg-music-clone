@@ -1,57 +1,60 @@
-import axios from 'axios'
-import queryString from 'query-string'
-import { getAccessToken, getAccessTokenDev } from '~/services/getAccessToken'
+import axios from "axios";
+import queryString from "query-string";
+import { getAccessToken, getAccessTokenDev } from "~/services/getAccessToken";
 
 export const spotifyApiClient = axios.create({
-  baseURL: 'https://api.spotify.com/v1',
-  paramsSerializer: (params) => queryString.stringify(params, { encode: false }),
-})
+  baseURL: "https://api.spotify.com/v1",
+  paramsSerializer: (params) =>
+    queryString.stringify(params, { encode: false }),
+});
 
 spotifyApiClient.interceptors.request.use(async (config) => {
-  config.headers['Content-Type'] = 'application/json'
-  const isLogged = Boolean(localStorage.getItem('spotify_refresh_token'))
+  config.headers["Content-Type"] = "application/json";
+  const isLogged = Boolean(localStorage.getItem("spotify_refresh_token"));
 
   if (isLogged) {
-    const token = await getAccessToken()
+    const token = await getAccessToken();
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`;
     }
   } else {
-    const tokenDev = await getAccessTokenDev()
-    config.headers.Authorization = `Bearer ${tokenDev}`
+    const tokenDev = await getAccessTokenDev();
+    config.headers.Authorization = `Bearer ${tokenDev}`;
   }
 
-  return config
-})
+  return config;
+});
 
 export const spotifyApiDev = axios.create({
-  baseURL: 'https://api.spotify.com/v1',
-  paramsSerializer: (params) => queryString.stringify(params, { encode: false }),
-})
+  baseURL: "https://api.spotify.com/v1",
+  paramsSerializer: (params) =>
+    queryString.stringify(params, { encode: false }),
+});
 
 spotifyApiDev.interceptors.request.use(async (config) => {
-  config.headers['Content-Type'] = 'application/json'
+  config.headers["Content-Type"] = "application/json";
 
-  const tokenDev = await getAccessTokenDev()
-  config.headers.Authorization = `Bearer ${tokenDev}`
+  const tokenDev = await getAccessTokenDev();
+  config.headers.Authorization = "Bearer" + `${tokenDev}`;
 
-  return config
-})
+  return config;
+});
 
 //to get artists data
 export const rapidApiClient = axios.create({
-  baseURL: 'https://spotify23.p.rapidapi.com',
-  paramsSerializer: (params) => queryString.stringify(params, { encode: false }),
-})
+  baseURL: "https://spotify23.p.rapidapi.com",
+  paramsSerializer: (params) =>
+    queryString.stringify(params, { encode: false }),
+});
 
 rapidApiClient.interceptors.request.use((config) => {
-  const apiKey = import.meta.env.VITE_RAPID_SPOTIFY_API
+  const apiKey = import.meta.env.VITE_RAPID_SPOTIFY_API;
 
-  config.headers['X-RapidAPI-Key'] = apiKey
-  config.headers['X-RapidAPI-Host'] = 'spotify23.p.rapidapi.com'
+  config.headers["X-RapidAPI-Key"] = apiKey;
+  config.headers["X-RapidAPI-Host"] = "spotify23.p.rapidapi.com";
 
-  return config
-})
+  return config;
+});
 
 // youtube search
 // export const youtubeApiClient = axios.create({
