@@ -20,7 +20,7 @@ const fetchHomePageData = (params: Partial<PropsType>) => {
       const dataNormalized = data?.playlists?.items?.filter((item: any) => item)
       setData!({
         title: categoryName,
-        href: `/genre/${categoryId}`,
+        href: `/section/${categoryId}`,
         apiType: 'spotify',
         data: dataNormalized,
         dataType: 'playlist',

@@ -44,8 +44,7 @@ const Header: FC<HeaderProps> = (props) => {
     showTitle = false,
   } = props;
 
-  const { isLogged, userData, handleLogin } =
-    useContext(AuthContext);
+  const { isLogged, userData, handleLogin } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState<any>(false);
 
   const { key } = useLocation();
@@ -108,16 +107,20 @@ const Header: FC<HeaderProps> = (props) => {
   };
 
   return (
-    <header className={cx("header")}>
+    <header
+      style={{
+        backgroundColor: isLogged ? "transparent" : "rgba(0, 0, 0, 0.5)",
+      }}
+      className={cx("header")}
+    >
       <div
         style={{
           backgroundColor: `${type === "section" ? "#121212" : bgColor}`,
-          backgroundImage: isLogged
-            ? ""
-            : `${
-                type === "home" &&
-                "linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .6))"
-              }`,
+          opacity: `${navOpacity}`,
+          backgroundImage: `${
+            type === "home" &&
+            "linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .6))"
+          }`,
         }}
         className={cx({ "header-bg": true, darken: bgColor })}
       ></div>
@@ -206,13 +209,15 @@ const Header: FC<HeaderProps> = (props) => {
           <>
             <div className={cx("hr")}></div>
             <div>
-              <Button
-                type="text"
-                className={cx("btn-sign-up")}
-              >
+              <Button type="text" className={cx("btn-sign-up")}>
                 Sign up
               </Button>
-              <Button type="primary" large className={cx("btn-login")} onClick={handleLogin}>
+              <Button
+                type="primary"
+                large
+                className={cx("btn-login")}
+                onClick={handleLogin}
+              >
                 <span>Log in</span>
               </Button>
             </div>

@@ -1,5 +1,5 @@
 import { countries } from '~/types/countries'
-import { spotifyApiDev } from '~/configs/axiosClient'
+import { spotifyApiClient, spotifyApiDev } from '~/configs/axiosClient'
 
 type SearchTypes =
   | 'all'
@@ -22,7 +22,7 @@ const searchApi = async (params: Partial<SearchArgs>) => {
     typesParam = types.map((type) => encodeURIComponent(type)).join('%2C')
   }
 
-  const { data } = await spotifyApiDev('search', {
+  const { data } = await spotifyApiClient('search', {
     params: {
       q: encodeURIComponent(query),
       type: typesParam,

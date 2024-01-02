@@ -47,6 +47,20 @@ export function ArrowForwardIcon() {
   );
 }
 
+export function ArrowTop() {
+  return (
+    <svg
+      data-encore-id="icon"
+      role="img"
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+    >
+      <path d="M.47 11.03a.75.75 0 0 0 1.06 0L8 4.56l6.47 6.47a.75.75 0 1 0 1.06-1.06L8 2.44.47 9.97a.75.75 0 0 0 0 1.06z"></path>
+    </svg>
+  );
+}
+
 export function FaceBookIcon() {
   return (
     <svg
@@ -553,3 +567,36 @@ export function SingleMusicNote(props: Partial<IconProps>) {
   );
 }
 
+export function AddIcon(props: Partial<IconProps>) {
+  const { size = 16 } = props;
+  return (
+    <svg
+      data-encore-id="icon"
+      role="img"
+      height={size}
+      width={size}
+      fill="currentColor"
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+    >
+      <path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"></path>
+    </svg>
+  );
+}
+
+export function LibArrowRight(props: Partial<IconProps>) {
+  const { size = 16 } = props
+  return (
+    <svg
+      data-encore-id="icon"
+      role="img"
+      width={size}
+      height={size}
+      fill="currentColor"
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+    >
+      <path d="M7.19 1A.749.749 0 0 1 8.47.47L16 7.99l-7.53 7.521a.75.75 0 0 1-1.234-.815.75.75 0 0 1 .174-.243l5.72-5.714H.75a.75.75 0 1 1 0-1.498h12.38L7.41 1.529a.749.749 0 0 1-.22-.53z"></path>
+    </svg>
+  );
+}

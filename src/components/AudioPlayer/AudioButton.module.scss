@@ -1,0 +1,24 @@
+.audio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+
+    .audio-left {
+        padding-left: 8px;
+        min-width: 180px;
+        width: 30%;
+    }
+    .audio-center {
+        max-width: 722px;
+        width: 40%;
+    }
+    .audio-right {
+        min-width: 180px;
+        width: 30%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}

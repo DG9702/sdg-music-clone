@@ -57,4 +57,75 @@
   border-radius: 8px;
   height: 100%;
   overflow: hidden;
+
+  .playlist {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    .playlist-header {
+      display: flex;
+      gap: 8px;
+      padding: 8px 16px;
+      flex-direction: column;
+
+      .playlist-header-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--panel-gap);
+
+        .playlist-header-title {
+          display: flex;
+          gap: 4px;
+          align-items: center;
+          margin-inline-end: auto;
+          min-width: 0;
+
+          height: 40px;
+          cursor: pointer;
+          padding: 4px 8px;
+          min-block-size: 40px;
+          justify-content: flex-start;
+          color: #a7a7a7;
+          font-size: 1.5rem;
+
+          &:hover {
+            color: var(--white);
+          }
+
+          .playlist-header-icon {
+            display: flex;
+            margin-right: 12px;
+          }
+
+          .playlist-header-text {
+            font-weight: 600;
+          }
+
+        }
+        .playlist-button {
+          display: flex;
+          gap: 8px;
+          
+          button {
+            background-color: transparent;
+            padding: 8px;
+            color: #a7a7a7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:hover {
+              cursor: pointer;
+              background-color: #1a1a1a;
+              color: var(--white);
+              border-radius: 999px;
+            }
+            
+          }
+        }
+      }
+    }
+  }
 }

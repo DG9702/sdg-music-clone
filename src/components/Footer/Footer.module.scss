@@ -15,12 +15,17 @@
         margin-bottom: 32px;
         display: flex;
         flex: 1 1 50%;
-        gap: var(--col-gap);
+        flex-flow: column wrap;
+
+        &.flex {
+          flex-direction: row;
+        }
 
         .linkGroup {
             display: flex;
             flex-direction: column;
-            min-width: 180px;
+            width: 199px;
+            margin-right: 2.4rem;
 
             .linkGroup-title {
                 font-size: 1.6rem;

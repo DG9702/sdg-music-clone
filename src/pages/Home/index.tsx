@@ -5,18 +5,20 @@ import styles from "./Home.module.scss";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Section from "~/components/Section";
-import {HomePageContext} from "~/context/HomePageContext";
+import { HomePageContext } from "~/context/HomePageContext";
+import { AuthContext } from "~/context/AuthContext";
+import Greeting from "~/components/Greeting";
 
 const cx = classNames.bind(styles);
 
 const Home = () => {
-  const [bgColor, setBgColor] = useState<string>("#c0b8c1");
+  const [bgColor, setBgColor] = useState<string>("rgb(83, 83, 83)");
   const [navOpacity, setNavOpacity] = useState<number>(0);
 
-  const {
-    trending,
-    focus,
-  } = useContext(HomePageContext);
+  const { isLogged } = useContext(AuthContext);
+
+  const { trending, focus, jazz, chill, featurePlaylist, suggestArtists } =
+    useContext(HomePageContext);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>): void => {
     const yAxis = e.currentTarget.scrollTop;
@@ -30,6 +32,9 @@ const Home = () => {
     <div className={cx("home")}>
       <Header type="home" navOpacity={navOpacity} />
       <div onScroll={(e) => handleScroll(e)} className={cx("home-container")}>
+        {isLogged && (
+          <Greeting bgColor={bgColor} setBgColor={setBgColor} />
+        )}
         <Section
           apiType="spotify"
           title={trending?.title}
@@ -44,6 +49,39 @@ const Home = () => {
           data={focus?.data}
           dataType={focus?.dataType}
         />
+        {isLogged && (
+          <>
+            <Section
+              apiType="spotify"
+              title={featurePlaylist?.title}
+              href={featurePlaylist?.href}
+              data={featurePlaylist?.data}
+              dataType={featurePlaylist?.dataType}
+            />
+            <Section
+              apiType="spotify"
+              title={suggestArtists?.title}
+              href={suggestArtists?.href}
+              data={suggestArtists?.data}
+              dataType={suggestArtists?.dataType}
+            />
+            <Section
+              apiType="spotify"
+              title={chill?.title}
+              href={chill?.href}
+              data={chill?.data}
+              dataType={chill?.dataType}
+            />
+            <Section
+              apiType="spotify"
+              title={jazz?.title}
+              href={jazz?.href}
+              data={jazz?.data}
+              dataType={jazz?.dataType}
+            />
+        
+          </>
+        )}
         <Footer />
       </div>
     </div>

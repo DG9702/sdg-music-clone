@@ -7,7 +7,8 @@ import { Outlet } from "react-router-dom";
 import { AuthProvider } from "~/context/AuthContext";
 import { MainLayoutProvider } from "~/context/MainLayoutContext";
 import { SkeletonTheme } from "react-loading-skeleton";
-import {HomePageProvider} from "~/context/HomePageContext";
+import { HomePageProvider } from "~/context/HomePageContext";
+import AudioPlayer from "~/components/AudioPlayer";
 
 const cx = classNames.bind(styles);
 
@@ -36,9 +37,10 @@ const MainLayout = () => {
                 </MainLayoutProvider>
               </Split>
             </div>
-            <div className={cx("main-layout-bottom")}>Bottom layout</div>
+            <div className={cx("main-layout-bottom")}>
+              <AudioPlayer />
+            </div>
           </SkeletonTheme>
-
         </HomePageProvider>
       </AuthProvider>
     </div>

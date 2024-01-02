@@ -1,0 +1,63 @@
+.song-item-tag {
+  background-color: hsla(0,0%,100%,.07);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  color: var(--white);
+  transition: all .3s ease;
+  cursor: pointer;
+
+  &:hover .body .play-btn {
+    opacity: 1;
+  }
+
+  &:hover {
+    background-color: var(--bg-card-highlight);
+  }
+}
+
+.thumbnail {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.body {
+  margin-inline: 16px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+
+  &-name {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-family: CircularSp;
+    font-weight: 700;
+  }
+
+  .play-btn {
+    opacity: 0;
+    transition: all .3s ease;
+  }
+}
+
+.hidden {
+  display: none !important;
+}

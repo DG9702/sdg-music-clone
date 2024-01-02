@@ -15,7 +15,9 @@
   height: calc(100vh - 96px);
 }
 .main-layout-bottom {
-  height: 72px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
 }
 
 .split {

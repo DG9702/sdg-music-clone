@@ -10,7 +10,7 @@ const Footer: FC = () => {
     <footer className={cx("footer")}>
       <nav className={cx("footer-container")}>
         <div className={cx("footer__top")}>
-          <div className={cx("footer__top-left")}>
+          <div className={cx("footer__top-left", "flex")}>
             {topLinkGroups.map((links, index) => (
               <div key={index} className={cx("linkGroup")}>
                 <h3 className={cx("linkGroup-title")}>{links.title}</h3>
