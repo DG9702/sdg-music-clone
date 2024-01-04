@@ -1,0 +1,30 @@
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 16px;
+
+  .btn {
+    background-color: transparent;
+    color: var(--text-subdued);
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover {
+      color:var(--white);
+    }
+  }
+}
+
+.volume {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 125px;
+}
+
+//.active {
+//  @include button-active;
+//}

@@ -258,31 +258,35 @@ export function ClockIcon() {
 }
 
 export function PlayIcon(props: Partial<IconProps>) {
+  const { size = 32 } = props;
   return (
     <svg
+      data-encore-id="icon"
       role="img"
       fill="currentColor"
-      height="24"
-      width="24"
+      width={size}
+      height={size}
       aria-hidden="true"
-      viewBox="0 0 24 24"
-      data-encore-id="icon"
+      viewBox="0 0 16 16"
     >
-      <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
+      <path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"></path>
     </svg>
   );
 }
 
 export function PauseIcon(props: Partial<IconProps>) {
+  const { size = 16 } = props;
   return (
     <svg
       data-encore-id="icon"
       role="img"
       fill="currentColor"
+      width={size}
+      height={size}
       aria-hidden="true"
-      viewBox="0 0 24 24"
+      viewBox="0 0 16 16"
     >
-      <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7H5.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7h-2.6z"></path>
+      <path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"></path>
     </svg>
   );
 }
@@ -417,6 +421,22 @@ export function PlayingViewIcon() {
   );
 }
 
+export function LyricsIcon() {
+  return (
+    <svg
+      data-encore-id="icon"
+      role="img"
+      fill="currentColor"
+      height="16"
+      width="16"
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+    >
+      <path d="M13.426 2.574a2.831 2.831 0 0 0-4.797 1.55l3.247 3.247a2.831 2.831 0 0 0 1.55-4.797zM10.5 8.118l-2.619-2.62A63303.13 63303.13 0 0 0 4.74 9.075L2.065 12.12a1.287 1.287 0 0 0 1.816 1.816l3.06-2.688 3.56-3.129zM7.12 4.094a4.331 4.331 0 1 1 4.786 4.786l-3.974 3.493-3.06 2.689a2.787 2.787 0 0 1-3.933-3.933l2.676-3.045 3.505-3.99z"></path>
+    </svg>
+  );
+}
+
 export function QueueIcon() {
   return (
     <svg
@@ -429,6 +449,23 @@ export function QueueIcon() {
       data-encore-id="icon"
     >
       <path d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5zm2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2h-9z"></path>
+    </svg>
+  );
+}
+
+export function DeviceIcon() {
+  return (
+    <svg
+      data-encore-id="icon"
+      role="presentation"
+      aria-hidden="true"
+      fill="currentColor"
+      height="16"
+      width="16"
+      viewBox="0 0 16 16"
+    >
+      <path d="M6 2.75C6 1.784 6.784 1 7.75 1h6.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15h-6.5A1.75 1.75 0 0 1 6 13.25V2.75zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h6.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25h-6.5zm-6 0a.25.25 0 0 0-.25.25v6.5c0 .138.112.25.25.25H4V11H1.75A1.75 1.75 0 0 1 0 9.25v-6.5C0 1.784.784 1 1.75 1H4v1.5H1.75zM4 15H2v-1.5h2V15z"></path>
+      <path d="M13 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm-1-5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
     </svg>
   );
 }

@@ -49,7 +49,7 @@ const PlayButton: FC<PlayButtonProps> = (props) => {
           opacity: isHovering ? 1 : undefined,
         }}
       >
-        {!isPlay ? <PlayIcon /> : <PauseIcon />}
+        {!isPlay ? <PlayIcon size={fontSize} /> : <PauseIcon size={fontSize} />}
       </button>
     </div>
   );
