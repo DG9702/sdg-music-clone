@@ -4,16 +4,18 @@ import Home from "./pages/Home";
 import MainLayout from "./layouts/MainLayout";
 import Search from "./pages/Search";
 import LoadingLayout from "./layouts/LoadingLayout";
-import Section from "./pages/Section";
+import SectionContainer from "./pages/SectionContainer";
+import GenreContainer from "./pages/GenreContainer";
 
 const App = () => {
   return (
-    <Suspense fallback={<LoadingLayout  />}>
+    <Suspense fallback={<LoadingLayout />}>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/section/:id" element={<Section  />}  />
+          <Route path="/section/:id" element={<SectionContainer />} />
+          <Route path="/genre/:id" element={<GenreContainer />} />
         </Route>
       </Routes>
     </Suspense>

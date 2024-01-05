@@ -50,10 +50,7 @@
   overflow: hidden;
   display: grid;
   grid-gap: 24px;
-  // max-height: 305px;
   align-content: stretch;
-  grid-auto-rows: 0;
-    grid-template-rows: 1fr;
 }
 
 .un-clickable {

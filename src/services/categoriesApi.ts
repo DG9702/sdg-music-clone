@@ -1,42 +1,45 @@
-import { spotifyApiClient, spotifyApiDev } from "~/configs/axiosClient"
+import { spotifyApiClient, spotifyApiDev } from "~/configs/axiosClient";
 
 export const getCategories = async () => {
-  const { data } = await spotifyApiDev.get('browse/categories', {
+  const { data } = await spotifyApiDev.get("browse/categories", {
     params: {
-      country: 'VN',
+      country: "VN",
       limit: 50,
     },
-  })
+  });
 
-  return data
-}
+  return data;
+};
 
 interface getCategoryPlaylistProps {
-  id?: string
-  limit?: number
-  offset?: number
+  id?: string;
+  limit?: number;
+  offset?: number;
 }
 
 export const getCategoryPlaylist = async (params: getCategoryPlaylistProps) => {
-  const { id, limit = 50, offset = 0 } = params
-  if (!id) return
+  const { id, limit = 50, offset = 0 } = params;
+  if (!id) return;
 
-  const { data } = await spotifyApiClient?.get(`browse/categories/${id}/playlists`, {
-    params: {
-      limit,
-      country: 'VN',
-      offset,
+  const { data } = await spotifyApiClient?.get(
+    `browse/categories/${id}/playlists`,
+    {
+      params: {
+        limit,
+        country: "VN",
+        offset,
+      },
     },
-  })
+  );
 
-  return data
-}
+  return data;
+};
 
 export const getCategoryInfo = async (params: getCategoryPlaylistProps) => {
-  const { id } = params
-  if (!id) return
+  const { id } = params;
+  if (!id) return;
 
-  const { data } = await spotifyApiDev.get(`browse/categories/${id}`)
+  const { data } = await spotifyApiClient.get(`browse/categories/${id}`);
 
-  return data
-}
+  return data;
+};

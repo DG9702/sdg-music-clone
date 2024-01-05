@@ -17,8 +17,23 @@ const Home = () => {
 
   const { isLogged } = useContext(AuthContext);
 
-  const { trending, focus, jazz, chill, featurePlaylist, suggestArtists } =
-    useContext(HomePageContext);
+  const {
+    recently,
+    trending,
+    focus,
+    jazz,
+    chill,
+    featurePlaylist,
+    suggestArtists,
+    newReleases,
+    topMixes,
+  } = useContext(HomePageContext);
+
+  //console.log("recently: ", recently?.data);
+  //console.log("featurePlaylist: ", featurePlaylist);
+  //console.log("Artist: ", suggestArtists);
+  //console.log("New Releases: ", newReleases);
+  
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>): void => {
     const yAxis = e.currentTarget.scrollTop;
@@ -32,9 +47,14 @@ const Home = () => {
     <div className={cx("home")}>
       <Header type="home" navOpacity={navOpacity} />
       <div onScroll={(e) => handleScroll(e)} className={cx("home-container")}>
-        {isLogged && (
-          <Greeting bgColor={bgColor} setBgColor={setBgColor} />
-        )}
+        {isLogged && <Greeting bgColor={bgColor} setBgColor={setBgColor} />}
+        {/*<Section
+          apiType="spotify"
+          title={recently?.title}
+          href={recently?.href}
+          data={recently?.data}
+          dataType={recently?.dataType}
+        />*/}
         <Section
           apiType="spotify"
           title={trending?.title}
@@ -79,7 +99,20 @@ const Home = () => {
               data={jazz?.data}
               dataType={jazz?.dataType}
             />
-        
+            <Section
+              apiType="spotify"
+              title={newReleases?.title}
+              href={newReleases?.href}
+              data={newReleases?.data}
+              dataType={newReleases?.dataType}
+            />
+            <Section
+              apiType="spotify"
+              title={topMixes?.title}
+              href={topMixes?.href}
+              data={topMixes?.data}
+              dataType={topMixes?.dataType}
+            />
           </>
         )}
         <Footer />

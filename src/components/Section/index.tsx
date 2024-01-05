@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import SectionItem from "../SectionItem";
 import styles from "./Section.module.scss";
 import { SectionProps } from "~/types/section";
+import {useInView} from "react-intersection-observer";
 
 const cx = classNames.bind(styles);
 
@@ -29,7 +30,22 @@ const Section: React.FC<SectionProps> = ({
     return 9;
   });
 
+  const { ref: lazyRenderRef, inView: lazyRenderInView } = useInView({
+    threshold: 0,
+  })
+
   const columnWidth = (width - 2 * 24 - (quantityCol - 1) * 24) / quantityCol;
+
+  useEffect(() => {
+    if (renderNumb === data?.length) {
+      return
+    }
+    if (lazyRenderInView && data?.length && renderNumb + 9 > data?.length) {
+      setRenderNumb(data.length)
+    } else {
+      setRenderNumb((prev) => prev + 9)
+    }
+  }, [lazyRenderInView])
 
   const sectionProps = useMemo(() => {
     if (data) {
@@ -138,7 +154,7 @@ const Section: React.FC<SectionProps> = ({
                   author={item.author}
                 />
               ))}
-            {isFull && pageType !== "genre" && <div></div>}
+            {isFull && pageType !== "genre" && <div ref={lazyRenderRef}></div>}
           </>
         ) : (
           Array(quantityCol)
