@@ -1,0 +1,18 @@
+.search {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+
+}
+
+.body {
+  height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-bottom: 32px;
+  padding-top: 64px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

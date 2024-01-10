@@ -9,6 +9,7 @@ import { MainLayoutProvider } from "~/context/MainLayoutContext";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { HomePageProvider } from "~/context/HomePageContext";
 import AudioPlayer from "~/components/AudioPlayer";
+import {SearchProvider} from "~/context/SearchContext";
 
 const cx = classNames.bind(styles);
 
@@ -17,30 +18,32 @@ const MainLayout = () => {
     <div className={cx("main-layout")}>
       <AuthProvider>
         <HomePageProvider>
-          <SkeletonTheme baseColor="#333" highlightColor="hsla(0,0%,100%,.1)">
-            <div className={cx("main-layout-top")}>
-              <Split
-                cursor="col-resize"
-                minSize={[280, 600]}
-                maxSize={[500, 99999]}
-                // sizes={[20, 70, 10]}
-                sizes={[20, 80]}
-                className={cx("split")}
-                gutterSize={8}
-                snapOffset={20}
-              >
-                <Sidebar />
-                <MainLayoutProvider>
-                  <div className={cx("main-container")}>
-                    <Outlet />
-                  </div>
-                </MainLayoutProvider>
-              </Split>
-            </div>
-            <div className={cx("main-layout-bottom")}>
-              <AudioPlayer />
-            </div>
-          </SkeletonTheme>
+          <SearchProvider>
+            <SkeletonTheme baseColor="#333" highlightColor="hsla(0,0%,100%,.1)">
+              <div className={cx("main-layout-top")}>
+                <Split
+                  cursor="col-resize"
+                  minSize={[280, 600]}
+                  maxSize={[500, 99999]}
+                  // sizes={[20, 70, 10]}
+                  sizes={[20, 80]}
+                  className={cx("split")}
+                  gutterSize={8}
+                  snapOffset={20}
+                >
+                  <Sidebar />
+                  <MainLayoutProvider>
+                    <div className={cx("main-container")}>
+                      <Outlet />
+                    </div>
+                  </MainLayoutProvider>
+                </Split>
+              </div>
+              <div className={cx("main-layout-bottom")}>
+                <AudioPlayer />
+              </div>
+            </SkeletonTheme>
+          </SearchProvider>
         </HomePageProvider>
       </AuthProvider>
     </div>

@@ -6,7 +6,7 @@ export type LibSelection = {
   title: string
   id: string
   type: 'playlist' | 'album' | 'artist'
-  active: boolean
+  //active: boolean
 }
 
 export interface ResponseLibItem {
