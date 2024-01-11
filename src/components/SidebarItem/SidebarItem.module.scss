@@ -1,0 +1,49 @@
+.sidebar-item {
+  height: 64px;
+  padding: 8px;
+  align-items: inherit;
+  gap: var(--panel-gap);
+  border-radius: 6px;
+  transition: all .1s ease;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 48px auto;
+  gap: 8px 12px;
+
+
+  &:hover {
+    background-color: var(--bg-card-highlight);
+  }
+
+  .thumbnail {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4px 0;
+    overflow: hidden;
+
+    .heading {
+      font-size: 1.6rem;
+      margin: 0;
+      color: var(--white);
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .type {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text-subdued);
+    }
+  }
+}

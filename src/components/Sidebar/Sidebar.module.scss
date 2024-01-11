@@ -215,6 +215,7 @@
           display: block;
           position: relative;
           visibility: visible;
+
           .section-list-flex {
             display: flex;
             flex-direction: column;
@@ -303,6 +304,106 @@
           }
         }
 
+      }
+    }
+  }
+}
+
+.section-suggest {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #242424;
+  border-radius: 8px;
+  gap: 20px;
+  justify-content: center;
+  margin: 8px 0;
+  padding: 16px;
+
+  .section-suggest-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .section-text-medium {
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+    .section-text-small {
+      font-size: 1.2rem;
+      color: var(--white);
+      font-weight: 600;
+    }
+  }
+  .section-suggest-btn {
+    align-self: flex-start;
+  }
+}
+
+.left-sidebar-bottom {
+  overflow: hidden;
+
+  .left-sidebar-link {
+    margin: 32px 0;
+    padding: 0 24px;
+    text-align: start;
+
+    .BottomLinksList {
+      display: flex;
+      flex-wrap: wrap;
+      
+      .BottomLink-item {
+        display: flex;
+        margin-right: 16px;
+
+        .item-title {
+          margin-bottom: 12px;
+          text-decoration: none;
+          line-height: inherit;
+          border: none;
+          padding: 0px;
+          color: var(--text-subdued,#6a6a6a);
+          display: inline-flex;
+          align-items: center;
+
+          span {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: inherit;
+          }
+        }
+      }
+    }
+
+    .Cookie-link {
+      color: #b3b3b3;
+      margin-block-start: 12px;
+      padding-inline-end: 16px;
+      user-select: none;
+
+      span {
+        margin-block: 0px;
+        color: inherit;
+        font-size: 1.2rem;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .language {
+    margin-bottom: 32px;
+    padding: 0 24px;
+
+    button {
+      border: 1px solid var(--essential-subdued,#878787);
+
+      &:hover {
+        border: 1px solid var(--white,#000000);
+      }
+
+      span {
+        background-color: transparent;
       }
     }
   }

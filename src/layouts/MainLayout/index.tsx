@@ -26,7 +26,7 @@ const MainLayout = () => {
                   minSize={[280, 600]}
                   maxSize={[500, 99999]}
                   // sizes={[20, 70, 10]}
-                  sizes={[20, 80]}
+                  sizes={[30, 70]}
                   className={cx("split")}
                   gutterSize={8}
                   snapOffset={20}
