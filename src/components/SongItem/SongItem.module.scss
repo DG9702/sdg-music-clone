@@ -1,0 +1,172 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 16px minmax(300px, 6fr) 4fr 3fr 50px;
+  grid-gap: 16px;
+  height: 56px;
+  padding-inline: 16px;
+  align-items: center;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: hsla(0, 0%, 100%, 0.1);
+    cursor: pointer;
+
+    .order-icon {
+      opacity: 1;
+    }
+
+    .order-number {
+      opacity: 0;
+    }
+  }
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 8px;
+
+  .thumb {
+    height: 40px;
+    width: 40px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+
+    .default-thumb {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-card-highlight);
+      color: var(--text-neutral);
+    }
+
+    span {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: 5px;
+    flex: 1;
+    overflow: hidden;
+
+    .name {
+      color: var(--white);
+      font-size: 16px;
+      padding: 0;
+      margin: 0;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      white-space: unset;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sub-title {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .explicit {
+      font-size: 9px;
+      padding: 3px 6px;
+      text-transform: uppercase;
+      background-color: hsla(0, 0%, 100%, 0.6);
+      color: var(--bg-base);
+      border-radius: 2px;
+      margin-right: 8px;
+    }
+  }
+}
+
+.album {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  white-space: unset;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order {
+  font-size: 16px;
+  color: var(--text-neutral);
+  position: relative;
+
+  &-number {
+    opacity: 1;
+    z-index: -1;
+  }
+
+  &-icon {
+    color: #fff;
+    opacity: 0;
+    position: absolute;
+    top: -5px;
+    right: -3px;
+    transition: none;
+  }
+
+  .equaliser {
+    width: 14px;
+    height: 14px;
+    overflow: hidden;
+
+    & > img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.album,
+.date-add,
+.duration {
+  font-size: 14px;
+  color: var(--text-neutral);
+}
+
+.duration {
+  text-align: end;
+  transform: translateX(-10px);
+}
+
+.grid-md {
+  grid-template-columns: 16px minmax(300px, 4fr) 2fr 50px !important;
+}
+
+.is-album-track {
+  grid-template-columns: 16px minmax(300px, 4fr) 50px !important;
+}
+
+.is-search-result {
+  grid-template-columns: minmax(300px, 4fr) 50px !important;
+}
+
+.is-playing {
+  .order-number,
+  .name {
+    color: var(--tertiary) !important;
+  }
+}

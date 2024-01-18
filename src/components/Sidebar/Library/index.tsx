@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import classNames from "classnames/bind";
 import {
   AddIcon,
+  CompactIcon,
   EarthIcon,
+  Grid,
   LibArrowRight,
   LibraryIcon,
+  List,
   Recents,
   SearchIcon,
 } from "~/assets/icons";
@@ -15,6 +18,7 @@ import SidebarItem from "~/components/SidebarItem";
 import fetchSidebarData from "~/utils/fetchSidebarData";
 import Button from "~/components/Button";
 import { Link } from "react-router-dom";
+import Menu from "~/components/Menu";
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +28,8 @@ const Library: React.FC = () => {
   const { userData, isLogged, handleLogin } = useContext(AuthContext);
   const [category, setCategory] = useState<libCategory>("playlist");
   const [bottomShadow, setBottomShadow] = useState<boolean>(false);
+  const [showInput, setShowInput] = useState<boolean>(false);
+  const [showRecent, setShowRecent] = useState<boolean>(false);
   const [data, setData] = useState<LibDataItem[]>([]);
 
   useEffect(() => {
@@ -36,6 +42,42 @@ const Library: React.FC = () => {
     };
     fetchData();
   }, [category, userData]);
+
+  const sort = [
+    {
+      title: "Recents",
+      type: "Recents",
+    },
+    {
+      title: "Recently Added",
+      type: "Recently-Added",
+    },
+    {
+      title: "Alphabetical",
+      type: "Alphabetical",
+    },
+    {
+      title: "Creator",
+      type: "Creator",
+    },
+  ];
+  const viewas = [
+    {
+      icon: <CompactIcon />,
+      title: "Compact",
+      type: "Compact",
+    },
+    {
+      icon: <List />,
+      title: "List",
+      type: "List",
+    },
+    {
+      icon: <Grid />,
+      title: "Grid",
+      type: "Grid",
+    },
+  ];
 
   const libSelections: LibSelection[] = useMemo(
     () => [
@@ -80,10 +122,24 @@ const Library: React.FC = () => {
     }
   };
 
+  const handleClickSearchPlaylist = (): void => {
+    document.getElementById("inputSearch")?.classList.add(cx("hien"));
+    setShowInput(!showInput);
+  };
+
+  const handleBlurInputSearch = (): void => {
+    document.getElementById("inputSearch")?.classList.remove(cx("hien"));
+    setShowInput(!showInput);
+  };
+
+  const handleClickRecent = (): void => {
+    setShowRecent(!showRecent);
+  };
+
   return (
     <div className={cx("library")}>
       <div className={cx("playlist")}>
-        <div>
+        <div className={cx({ "bottom-shadow": bottomShadow })}>
           <header className={cx("playlist-header")}>
             <div className={cx("playlist-header-container")}>
               <div className={cx("playlist-header-title")}>
@@ -120,25 +176,44 @@ const Library: React.FC = () => {
             </div>
           )}
         </div>
-        <div onScroll={handleScroll} className={cx("playlist-section")}>
-          <div className={cx("section-list")}>
+        <div className={cx("playlist-section")}>
+          <div onScroll={handleScroll} className={cx("section-list")}>
             <div className={cx("section-list-body")}>
               <div className={cx("section-list-flex")}>
                 {isLogged ? (
                   <>
                     <div className={cx("section-head")}>
-                      <div className={cx("head-search")}>
+                      <div
+                        id="inputSearch"
+                        className={cx("head-search")}
+                        onClick={handleClickSearchPlaylist}
+                        onBlur={handleBlurInputSearch}
+                      >
+                        <input
+                          className={cx("inputSearch", "opacity")}
+                          placeholder="Search in Your Library"
+                        />
                         <button>
                           <SearchIcon />
                         </button>
                       </div>
 
-                      <button className={cx("head-recent")}>
-                        <span className={cx("recent-title")}>Recents</span>
-                        <span className={cx("recent-icon")}>
-                          <Recents />
-                        </span>
-                      </button>
+                      <Menu
+                        sort={sort}
+                        viewas={viewas}
+                        isLib={true}
+                        isOpen={showRecent}
+                      >
+                        <button
+                          onClick={handleClickRecent}
+                          className={cx("head-recent")}
+                        >
+                          <span className={cx("recent-title")}>Recents</span>
+                          <span className={cx("recent-icon")}>
+                            <Recents />
+                          </span>
+                        </button>
+                      </Menu>
                     </div>
                     <div className={cx("section-playlist")}>
                       {data?.map((item, index: number) => (
@@ -157,6 +232,7 @@ const Library: React.FC = () => {
                           }
                         />
                       ))}
+
                     </div>
                   </>
                 ) : (

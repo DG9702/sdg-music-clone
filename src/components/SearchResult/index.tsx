@@ -1,0 +1,134 @@
+import React, { useContext, useEffect, useState } from "react";
+import { SearchContext } from "~/context/SearchContext";
+import SearchNotFound from "./SearchNotFound";
+import styles from "./SearchResult.module.scss";
+import classNames from "classnames/bind";
+import Section from "../Section";
+import SongList from "../SongList";
+
+const cx = classNames.bind(styles);
+
+const SearchResult: React.FC = () => {
+  const { data, query, categoryRef, isLoading } = useContext(SearchContext);
+  const [category, setCategory] = useState<string>(categoryRef.current);
+  const [searchSelections, setSearchSelections] = useState<any>([]);
+
+  useEffect(() => {
+    setSearchSelections([
+      {
+        key: "all",
+        active: category === "all",
+        display: "All",
+        isExist: true,
+      },
+      {
+        key: "albums",
+        active: category === "albums",
+        display: "Albums",
+        isExist: Boolean(data?.albums?.total),
+      },
+      {
+        key: "artists",
+        active: category === "artists",
+        display: "Artists",
+        isExist: Boolean(data?.artists?.total),
+      },
+      {
+        key: "tracks",
+        active: category === "tracks",
+        display: "Songs",
+        isExist: Boolean(data?.tracks?.total),
+      },
+      {
+        key: "playlists",
+        active: category === "playlists",
+        display: "Playlists",
+        isExist: Boolean(data?.playlists?.total),
+      },
+      {
+        key: "shows",
+        active: category === "shows",
+        display: "Podcasts & Shows",
+        isExist: Boolean(data?.shows?.total),
+      },
+      {
+        key: "episodes",
+        active: category === "episodes",
+        display: "Episodes",
+        isExist: Boolean(data?.episodes?.total),
+      },
+    ]);
+  }, [category, data]);
+
+  if (
+    data?.albums.items.filter((item: any) => item).length === 0 &&
+    data?.artists.items.filter((item: any) => item).length === 0 &&
+    data?.episodes.items.filter((item: any) => item).length === 0 &&
+    data?.playlists.items.filter((item: any) => item).length === 0 &&
+    data?.shows.items.filter((item: any) => item).length === 0 &&
+    data?.tracks.items.filter((item: any) => item).length === 0
+  ) {
+    return <SearchNotFound query={query} />;
+  }
+
+  return (
+    <div className={cx("wrapper")}>
+      <div className={cx("search-kind")}>
+        {searchSelections
+          ?.filter((item: any) => item.isExist)
+          ?.map((item: any) => (
+            <button
+              name="search category"
+              key={item.key}
+              className={cx({ btn: true, active: item.active })}
+              onClick={() => {
+                categoryRef.current = item.key;
+                setCategory(item.key);
+              }}
+            >
+              <span>{item.display}</span>
+            </button>
+        ))}
+      </div>
+      <div className={cx("search-result-body")}>
+        {category !== 'all' ? (
+          searchSelections
+            .filter((item: any) => item.active)
+            .map((item: any, index: number) => {
+              if (item.key !== 'tracks') {
+                return (
+                  <div style={{ marginTop: '-64px' }} key={index}>
+                    <Section
+                      apiType="spotify"
+                      key={item.key}
+                      dataType={item.key.slice(0, -1)}
+                      isFull
+                      data={data?.[item?.key]?.items
+                        ?.filter((item: any) => item)
+                        ?.sort((a: any, b: any) => -a.popularity + b.popularity)}
+                    />
+                  </div>
+                )
+              } else {
+                return (
+                  <SongList
+                    top={52}
+                    pivotTop={126}
+                    key={item?.key}
+                    songList={data?.tracks?.items
+                      ?.filter((item: any) => item)
+                      ?.sort((a: any, b: any) => -a?.popularity + b?.popularity)}
+                    isLoading={isLoading}
+                  />
+                )
+              }
+            })
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SearchResult

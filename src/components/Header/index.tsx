@@ -3,6 +3,7 @@ import {
   ArrowForwardIcon,
   InstallApp,
   NotificationIcon,
+  OutlineCLear,
   SearchIcon,
   ToIcon,
   UserImgDefault,
@@ -134,7 +135,7 @@ const Header: FC<HeaderProps> = (props) => {
         </button>
         <button
           // disabled={Boolean(location.next)}
-          disabled
+          //disabled
           name="forward"
           onClick={() => navigate(1)}
         >
@@ -145,17 +146,30 @@ const Header: FC<HeaderProps> = (props) => {
       <div className={cx("header-search")}>
         {type === "search" && (
           <div className={cx("header-search-control")}>
-            <form onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="text"
-                ref={queryRef}
-                placeholder="What do you want to listen to?"
-                spellCheck={false}
-              />
-            </form>
-
-            <div className={cx({ icon: true, "search-icon": true })}>
-              <SearchIcon />
+            <div className={cx("header-search-body")}>
+              <form onSubmit={(e) => e.preventDefault()}>
+                <input
+                  type="text"
+                  ref={queryRef}
+                  placeholder="What do you want to listen to?"
+                  spellCheck={false}
+                  onChange={(e) => setQuery!(e.target.value)}
+                  value={query}
+                />
+              </form>
+  
+              <div className={cx({ icon: true, "search-icon": true })}>
+                <SearchIcon />
+              </div>
+              {query && (
+                <button
+                  name="clear query"
+                  className={cx({ icon: true, "clear-btn": true })}
+                  onClick={() => setQuery!("")}
+                >
+                  <OutlineCLear />
+                </button>
+              )}
             </div>
           </div>
         )}

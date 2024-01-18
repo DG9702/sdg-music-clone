@@ -1,0 +1,49 @@
+.wrapper {
+  position: relative;
+
+  .freeze-top-row {
+    display: grid;
+    // grid-template-columns: 16px 6fr 4fr 3fr 50px;
+    grid-template-columns: 16px minmax(300px, 6fr) 4fr 3fr 50px;
+    grid-gap: 16px;
+    padding-inline: 40px;
+    margin-inline: -24px;
+    height: 36px;
+    border-bottom: 1px solid hsla(0, 0%, 100%, .1);
+    align-items: center;
+    position: sticky;
+    z-index: 7;
+    transform: translateZ(10px);
+
+    div {
+      color: var(--text-neutral);
+      font-size: 14px;
+    }
+
+    .clock-icon {
+      display: flex;
+      justify-content: center;
+      transform: translateX(-5px);
+    }
+  }
+
+  .songs {
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px;
+  }
+
+  .stuck {
+    background-color: var(--bg-highlight);
+    box-shadow: 0 -1px 0 0 #181818;
+    -webkit-box-shadow: 0 -1px 0 0 #181818;
+  }
+}
+
+.grid-md {
+  grid-template-columns: 16px minmax(300px, 4fr) 2fr 50px !important;
+}
+
+.is-album-track {
+  grid-template-columns: 16px 4fr 50px !important;
+}

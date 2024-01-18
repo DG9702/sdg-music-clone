@@ -20,6 +20,9 @@ interface MenuItemData {
 interface MenuProps {
   children: React.ReactNode;
   items?: MenuItemData[];
+  sort?: MenuItemData[];
+  viewas?: MenuItemData[];
+  isLib?: boolean;
   onChange?: (item: MenuItemData) => void;
   isOpen?: boolean;
 }
@@ -31,6 +34,9 @@ const Menu: FC<MenuProps> = ({
   items = [],
   onChange = defaultFn,
   isOpen = false,
+  sort = [],
+  viewas = [],
+  isLib = false,
 }) => {
   const { handleLogout } = useContext(AuthContext);
 
@@ -53,10 +59,47 @@ const Menu: FC<MenuProps> = ({
     ));
   };
 
+  const renderLibMenuItem = () => {
+    return (
+      <>
+        <ul className={cx("menu-body", "menu-lib")}>
+          <li className={cx("menu-head")}>
+            <span>Sort by</span>
+          </li>
+          {sort.map((item, index) => (
+            <li key={index}>
+              <Button type="menu" leftIcon={item.icon}>
+                {item.title}
+              </Button>
+            </li>
+          ))}
+        </ul>
+        <ul className={cx("menu-body", "menu-lib")}>
+          <li className={cx("menu-head")}>
+            <span>View as</span>
+          </li>
+          {viewas.map((item, index) => (
+            <li key={index}>
+              <Button className={cx("lib")} type="menu" leftIcon={item.icon}>
+                {item.title}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  };
+
   const renderResult = (attrs: any) => (
     <div className={cx("menu-list")} tabIndex="-1" {...attrs}>
-      <div className={cx("menu-popper")}>
-        <ul className={cx("menu-body")}>{renderItems()}</ul>
+      <div className={cx("menu-popper")} style={{
+        minWidth: isLib ? '150px' : ''
+      }}>
+        {isLib ? (
+          renderLibMenuItem()
+        ) : (
+          <ul className={cx("menu-body")}>{renderItems()}</ul>
+        )}
       </div>
     </div>
   );
@@ -64,7 +107,7 @@ const Menu: FC<MenuProps> = ({
   return (
     <Tippy
       interactive={true}
-      placement="bottom-end"
+      placement={"bottom-end"}
       delay={[1000, 100]}
       zIndex={99999}
       offset={[0, 10]}
