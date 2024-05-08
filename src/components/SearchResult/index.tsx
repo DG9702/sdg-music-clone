@@ -5,6 +5,7 @@ import styles from "./SearchResult.module.scss";
 import classNames from "classnames/bind";
 import Section from "../Section";
 import SongList from "../SongList";
+import TopResult from "./TopResult/TopResult";
 
 const cx = classNames.bind(styles);
 
@@ -88,16 +89,16 @@ const SearchResult: React.FC = () => {
             >
               <span>{item.display}</span>
             </button>
-        ))}
+          ))}
       </div>
       <div className={cx("search-result-body")}>
-        {category !== 'all' ? (
+        {category !== "all" ? (
           searchSelections
             .filter((item: any) => item.active)
             .map((item: any, index: number) => {
-              if (item.key !== 'tracks') {
+              if (item.key !== "tracks") {
                 return (
-                  <div style={{ marginTop: '-64px' }} key={index}>
+                  <div style={{ marginTop: "-64px" }} key={index}>
                     <Section
                       apiType="spotify"
                       key={item.key}
@@ -105,10 +106,12 @@ const SearchResult: React.FC = () => {
                       isFull
                       data={data?.[item?.key]?.items
                         ?.filter((item: any) => item)
-                        ?.sort((a: any, b: any) => -a.popularity + b.popularity)}
+                        ?.sort(
+                          (a: any, b: any) => -a.popularity + b.popularity,
+                        )}
                     />
                   </div>
-                )
+                );
               } else {
                 return (
                   <SongList
@@ -117,14 +120,80 @@ const SearchResult: React.FC = () => {
                     key={item?.key}
                     songList={data?.tracks?.items
                       ?.filter((item: any) => item)
-                      ?.sort((a: any, b: any) => -a?.popularity + b?.popularity)}
+                      ?.sort(
+                        (a: any, b: any) => -a?.popularity + b?.popularity,
+                      )}
                     isLoading={isLoading}
                   />
-                )
+                );
               }
             })
         ) : (
-          <></>
+          <>
+            {data?.tracks.items?.filter((item: any) => item).length !== 0 && (
+              <TopResult
+                topResult={data?.tracks?.items[0]}
+                songs={data?.tracks?.items
+                  .filter((item: any) => item)
+                  .sort((a: any, b: any) => -a.popularity + b.popularity)}
+              />
+            )}
+            {data?.artists?.items.filter((item: any) => item).length !== 0 && (
+              <Section
+                apiType="spotify"
+                isClickable={false}
+                title="Artists"
+                dataType="artist"
+                data={data?.artists?.items.filter((item: any) => item)}
+              />
+            )}
+            {data?.albums?.items.filter((item: any) => item).length !== 0 && (
+              <Section
+                apiType="spotify"
+                isClickable={false}
+                title="Albums"
+                dataType="album"
+                data={data?.albums?.items
+                  .filter((item: any) => item)
+                  .sort((a: any, b: any) => -a.popularity + b.popularity)}
+              />
+            )}
+            {data?.playlists?.items.filter((item: any) => item).length !==
+              0 && (
+              <Section
+                apiType="spotify"
+                isClickable={false}
+                title="Playlists"
+                dataType="playlist"
+                data={data?.playlists?.items
+                  .filter((item: any) => item)
+                  .sort((a: any, b: any) => -a.popularity + b.popularity)}
+              />
+            )}
+            {data?.episodes?.items.filter((item: any) => item).length !== 0 && (
+              <Section
+                apiType="spotify"
+                isClickable={false}
+                title="Episodes"
+                dataType="episode"
+                data={data?.episodes?.items
+                  .filter((item: any) => item)
+                  .sort((a: any, b: any) => -a.popularity + b.popularity)}
+              />
+            )}
+            {data?.shows?.items.filter((item: any) => item).length !== 0 && (
+              <Section
+                apiType="spotify"
+                isClickable={false}
+                title="Podcasts"
+                dataType="show"
+                data={data?.shows?.items
+                  .filter((item: any) => item)
+                  .sort((a: any, b: any) => -a.popularity + b.popularity)}
+                type="show"
+              />
+            )}
+          </>
         )}
       </div>
     </div>
