@@ -6,6 +6,8 @@ import Search from "./pages/Search";
 import LoadingLayout from "./layouts/LoadingLayout";
 import SectionContainer from "./pages/SectionContainer";
 import GenreContainer from "./pages/GenreContainer";
+import Playlist from "./pages/Playlist";
+import Album from "./pages/Album";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/section/:id" element={<SectionContainer />} />
           <Route path="/genre/:id" element={<GenreContainer />} />
+          <Route path="/playlist/:id" element={<Playlist />} />
+          <Route path="/album/:id" element={<Album />} />
         </Route>
       </Routes>
     </Suspense>

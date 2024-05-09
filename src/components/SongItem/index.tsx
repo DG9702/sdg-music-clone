@@ -6,8 +6,11 @@ import ImageLazy from "../Image";
 import Skeleton from "react-loading-skeleton";
 import classNames from "classnames/bind";
 import styles from "./SongItem.module.scss";
-import {MainLayoutContext} from "~/context/MainLayoutContext";
+import { MainLayoutContext } from "~/context/MainLayoutContext";
 import SubTitleArtists from "../SubTitle";
+import { PlayerContext } from "~/context/PlayerContext";
+import durationConvertor from "~/utils/durationConvertor";
+import equaliser from "~/assets/images/animation/equaliser-animated-green.f5eb96f2.gif";
 
 const cx = classNames.bind(styles);
 
@@ -25,16 +28,68 @@ const SongItem: React.FC<SongItemProps> = ({
   originalData,
 }) => {
   const { width } = useContext(MainLayoutContext);
+  const {
+    setCurrentTrack,
+    setQueue,
+    setCurrentTrackIndex,
+    calNextTrackIndex,
+    setPlayingType,
+    queue,
+    isPlaying,
+    currentTrack,
+  } = useContext(PlayerContext);
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    if (currentTrack?.id === originalData?.id) return;
+    const indexOfTrackInQueue = queue.findIndex(
+      (item) => item?.id === originalData?.id,
+    );
+    if (indexOfTrackInQueue === -1) {
+      setQueue(originalData ? [{ ...originalData }] : []);
+      setCurrentTrack({ ...originalData });
+      setCurrentTrackIndex(0);
+      calNextTrackIndex();
+    } else {
+      setCurrentTrack({ ...originalData });
+      setCurrentTrackIndex(indexOfTrackInQueue);
+      calNextTrackIndex();
+    }
+    if (originalData?.album) {
+      setPlayingType("track");
+    } else {
+      setPlayingType("show");
+    }
+  };
 
   return (
     <div
+      onClick={(e) => handleClick(e)}
       className={cx({
         wrapper: true,
         "grid-md": width <= 780 && type !== "album",
         "is-album-track": type === "album",
         "is-search-result": type === "search",
+        "is-playing": currentTrack?.id === originalData?.id,
       })}
     >
+      {type !== "search" && (
+        <div className={cx("order")}>
+          {!isLoading &&
+            (isPlaying && currentTrack?.id === originalData?.id ? (
+              <div className={cx("equaliser")}>
+                <img src={equaliser} alt="equaliser" />
+              </div>
+            ) : (
+              <>
+                <span className={cx("order-number")}>{order}</span>
+                <button className={cx("order-icon")}>
+                  <PlayIcon />
+                </button>
+              </>
+            ))}
+        </div>
+      )}
       <div className={cx("main")}>
         {type !== "album" && (
           <div className={cx("thumb")}>
@@ -84,6 +139,9 @@ const SongItem: React.FC<SongItemProps> = ({
           )}
         </>
       )}
+      <div className={cx("duration")}>
+        {!isLoading && durationConvertor({ milliseconds: duration })}
+      </div>
     </div>
   );
 };

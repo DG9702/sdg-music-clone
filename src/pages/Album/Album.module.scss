@@ -1,0 +1,95 @@
+.wrapper {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+
+.body {
+  height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-bottom: 32px;
+  padding-top: var(--navbar-height);
+  position: relative;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.song-list {
+  position: relative;
+
+  .bg-blur {
+    position: absolute;
+    height: 232px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, .6) 0, var(--bg-primary) 100%), var(--bg-noise);
+    z-index: 0;
+  }
+
+  .main {
+    position: relative;
+    padding-inline: 24px;
+
+    .action-bar {
+      display: flex;
+      position: relative;
+      padding: 24px;
+      align-items: center;
+      gap: 32px;
+
+      .heart {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        color: var(--text-subdued);
+        transition: none;
+
+        &:hover {
+          color: var(--white);
+        }
+      }
+    }
+
+  }
+}
+
+.grid-md {
+  grid-template-columns: 16px minmax(300px, 4fr) 2fr 50px !important;
+}
+
+.copy-rights {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 24px;
+  margin-top: 32px;
+  line-height: 1.7;
+  gap: 4px;
+
+  p {
+    color: var(--text-neutral);
+    font-size: 11px;
+    margin: 0;
+  }
+
+  .date {
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+}
+
+.artist-albums {
+  margin-top: 32px;
+}
+
+.pivot-tracking {
+  position: absolute;
+  z-index: -999;
+}
