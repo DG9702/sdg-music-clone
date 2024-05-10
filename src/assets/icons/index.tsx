@@ -272,7 +272,7 @@ export function ClockIcon() {
 }
 
 export function PlayIcon(props: Partial<IconProps>) {
-  const { size = 32 } = props;
+  const { size = 24 } = props;
   return (
     <svg
       data-encore-id="icon"

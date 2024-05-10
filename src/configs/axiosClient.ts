@@ -42,13 +42,13 @@ spotifyApiDev.interceptors.request.use(async (config) => {
 
 //to get artists data
 export const rapidApiClient = axios.create({
-  baseURL: "https://spotify23.p.rapidapi.com",
+  baseURL: "https://spotify23.p.rapidapi.com/",
   paramsSerializer: (params) =>
     queryString.stringify(params, { encode: false }),
 });
 
 rapidApiClient.interceptors.request.use((config) => {
-  const apiKey = import.meta.env.VITE_RAPID_SPOTIFY_API;
+  const apiKey = import.meta.env.VITE_RAPID_SPOTIFY_API_KEY;
 
   config.headers["X-RapidAPI-Key"] = apiKey;
   config.headers["X-RapidAPI-Host"] = "spotify23.p.rapidapi.com";

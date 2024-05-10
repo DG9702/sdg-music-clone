@@ -30,7 +30,6 @@ const HeadSection: React.FC<HeaderProps> = ({
   showName,
   showId,
 }) => {
-  console.log("Header type: ", headerType);
   
 
   return (
