@@ -11,7 +11,8 @@ const SearchGenre: React.FC = () => {
   const { quantityCol } = useContext(MainLayoutContext);
   const { categoriesData } = useContext(SearchContext);
 
-  console.log("categoriesData:", categoriesData);
+  console.log("Check categoriesData: ", categoriesData);
+  
 
   return (
     <div className={cx("wrapper")}>

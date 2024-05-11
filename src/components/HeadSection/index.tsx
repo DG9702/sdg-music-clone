@@ -36,19 +36,7 @@ const HeadSection: React.FC<HeaderProps> = ({
     <main style={{ backgroundColor: `${bgColor}` }} className={cx("wrapper")}>
       {headerType !== "genre" ? (
         <div className={cx({ body: true, show: headerType === "show" })}>
-          {type !== "album" ? (
-            <div className={cx("img")}>
-              {!isLoading ? (
-                thumbnail ? (
-                  <ImageLazy src={thumbnail} alt={title} />
-                ) : (
-                  <ThumbDefault />
-                )
-              ) : (
-                <Skeleton height={"100%"} />
-              )}
-            </div>
-          ) : (
+          {type === "album" || type === "episode" ? (
             <div className={cx("img-album")}>
               {!isLoading ? (
                 thumbnail ? (
@@ -60,6 +48,19 @@ const HeadSection: React.FC<HeaderProps> = ({
                 <Skeleton height={"100%"} />
               )}
             </div>
+          ) : (
+            <div className={cx("img")}>
+              {!isLoading ? (
+                thumbnail ? (
+                  <ImageLazy src={thumbnail} alt={title} />
+                ) : (
+                  <ThumbDefault />
+                )
+              ) : (
+                <Skeleton height={"100%"} />
+              )}
+            </div>
+            
           )}
 
           <div className={cx("content")}>

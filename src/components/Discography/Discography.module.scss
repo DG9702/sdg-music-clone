@@ -1,3 +1,5 @@
+@import "../../scss/mixin";
+
 .wrapper {
   padding-inline: var(--col-gap);
   margin-top: 32px;
@@ -22,13 +24,16 @@
   
 
   .btn {
+    @include button-text(4px 12px, var(--bg-button), var(--bg-button-highlight));
     color: var(--white);
-    font-size: 14px;
+    font-size: 13px;
     border-radius: 32px;
+    font-weight: 600;
   }
 
   .active {
     color: var(--black);
+    @include button-text(4px 12px, var(--white), var(--white));
   }
 }
 

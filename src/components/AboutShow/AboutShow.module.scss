@@ -1,0 +1,47 @@
+@import '../../scss/mixin';
+
+.about-show-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 24px;
+  padding: 16px 0;
+  margin: 0;
+}
+
+.content {
+  overflow: hidden;
+  font-size: 16px;
+  color: var(--text-neutral);
+  line-height: 1.5;
+  margin-bottom: 24px;
+  position: relative;
+
+ 
+
+  a {
+    color: var(--text-neutral);
+    font-weight: 700;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.expand-btn {
+  button {
+    @include reset-button;
+    background-color: transparent;
+    font-size: 16px;
+    color: var(--white);
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+.expanded {
+  @include text-line-clamp(5);
+}

@@ -42,9 +42,6 @@ const Search: React.FC<SearchProps> = () => {
     setSearchQuery(debounceValue);
   }, [debounceValue]);
 
-  console.log("query: ", query);
-  console.log("debounce: ", debounceValue);
-
   return (
     <div className={cx("search")}>
       <Header type="search" {...{ query, setQuery }} />

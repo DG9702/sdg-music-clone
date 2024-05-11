@@ -15,6 +15,7 @@ import ArtistBanner from "~/components/ArtistBanner";
 import TopTracks from "~/components/TopTracks";
 import Section from "~/components/Section";
 import Discography from "~/components/Discography";
+import AboutArtist from "~/components/AboutArtist";
 
 const cx = classNames.bind(styles);
 
@@ -99,10 +100,7 @@ const Artist: React.FC = () => {
     setPlayingType("track");
   };
 
-  console.log(
-    "Check toptrack in Artist: ",
-    topTracks,
-  );
+  console.log("Check toptrack in Artist: ", topTracks);
 
   return (
     <main className={cx("wrapper")}>
@@ -237,6 +235,15 @@ const Artist: React.FC = () => {
               type="artist"
               isClickable={true}
               href="discovered-on"
+            />
+          )}
+          {aboutImg && (
+            <AboutArtist
+              stats={stats}
+              profile={profile}
+              visuals={visuals}
+              isLoading={isLoading}
+              aboutImg={aboutImg}
             />
           )}
           <Footer />

@@ -4,7 +4,7 @@ import { RapidArtistTrack, SpotifyTrack } from "~/types/track";
 import { normalizeTrack } from "~/utils";
 import { FC, ReactNode, createContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import ArtistModal from "~/components/ArtistModal/ArtistModal";
+import ArtistModal from "~/components/ArtistModal";
 
 interface ArtistProviderProps {
   children: ReactNode;

@@ -13,7 +13,7 @@ const durationConvertor = (params: Partial<durationConvertorParams>): string => 
 
   if (type === 'short') {
     if (hours > 0) {
-      return `${hours}:${minutes}:${seconds}`
+      return `${hours} hr ${minutes} min`
     }
 
     return `${minutes}:${seconds}`

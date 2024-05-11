@@ -10,6 +10,9 @@ import Playlist from "./pages/Playlist";
 import Album from "./pages/Album";
 import Artist from "./pages/Artist";
 import deleteAllCookies from "./utils/deleteAllCookies";
+import SectionPage from "./pages/SectionPage";
+import Show from "./pages/Show";
+import Episode from "./pages/Episode";
 
 interface AppContext {
   isPlayingViewShowed: boolean;
@@ -35,7 +38,19 @@ const App = () => {
             <Route path="/genre/:id" element={<GenreContainer />} />
             <Route path="/playlist/:id" element={<Playlist />} />
             <Route path="/album/:id" element={<Album />} />
-            <Route path="/artist/:id" element={<Artist />} />
+            <Route path="/show/:id" element={<Show />} />
+            <Route path="/episode/:id" element={<Episode />} />
+            <Route path="/artist/:id">
+              <Route index element={<Artist />} />
+              <Route path="/artist/:id/featuring" element={<SectionPage />} />
+              <Route path="/artist/:id/related" element={<SectionPage />} />
+              <Route
+                path="/artist/:id/discovered-on"
+                element={<SectionPage />}
+              />
+              <Route path="/artist/:id/appears-on" element={<SectionPage />} />
+              <Route path="/artist/:id/playlists" element={<SectionPage />} />
+            </Route>
           </Route>
         </Routes>
       </Suspense>

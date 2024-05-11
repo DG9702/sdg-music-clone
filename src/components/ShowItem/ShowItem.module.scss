@@ -1,0 +1,107 @@
+@import "../../scss/mixin";
+
+.main {
+  border-top: 2px solid rgba($color: #fff, $alpha: 0.1);
+  cursor: pointer;
+}
+
+.main:hover,
+.main:hover + .main {
+  border-color: transparent;
+}
+
+.show-item-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  color: var(--white);
+  padding: 16px;
+
+  &:hover {
+    background-color: rgba($color: #fff, $alpha: 0.1);
+    border-radius: 4px;
+  }
+}
+
+.thumb {
+  width: 112px;
+  height: 112px;
+  overflow: hidden;
+  border-radius: 4px;
+  margin-right: 24px;
+}
+
+.body {
+  flex: 1;
+}
+
+.title {
+  h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.desc {
+  font-size: 14px;
+  color: var(--text-neutral);
+  line-height: 1.5;
+  margin: 10px 0 8px;
+  @include text-line-clamp(2);
+}
+
+.release-date {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  color: rgba($color: #fff, $alpha: 0.7);
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+
+  .dot {
+    height: 3px;
+    width: 3px;
+    border-radius: 500px;
+    background-color: rgba($color: #fff, $alpha: 0.7);
+  }
+}
+
+.action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+
+  .plus-btn {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+
+    color: var(--text-subdued);
+    transform-origin: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+
+      &:hover {
+        cursor: pointer;
+        color: var(--white);
+        transform: scale(1.04);
+      }
+    }
+
+    
+  }
+
+  .play-btn {
+    margin-right: 16px;
+  }
+}

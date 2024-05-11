@@ -45,7 +45,7 @@ const Playlist: React.FC = () => {
     },
   );
 
-  const bgColor = dataColor?.[2] ?? "#121212";
+  const bgColor = dataColor?.[0] ?? "#121212";
 
   const { ref: pivotTrackingRef, inView: isTracking } = useInView({
     threshold: 0,
