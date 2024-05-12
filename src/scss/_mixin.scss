@@ -71,7 +71,7 @@
 }
 
 @mixin button-active {
-  color: $secondary !important;
+  color: var(--secondary) !important;
   position: relative;
 
   &::after {
@@ -79,7 +79,7 @@
     height: 4px;
     width: 4px;
     position: absolute;
-    background-color: $secondary;
+    background-color: var(--secondary);
     border-radius: 50%;
     bottom: 4px;
     left: 50%;
@@ -87,7 +87,7 @@
   }
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 

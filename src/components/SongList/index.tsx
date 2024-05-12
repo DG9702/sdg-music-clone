@@ -7,6 +7,7 @@ import { MainLayoutContext } from '~/context/MainLayoutContext'
 import { useInView } from 'react-intersection-observer'
 import { ClockIcon } from '~/assets/icons'
 import { SongListProps } from '~/types/track'
+import {AppContext} from '~/App'
 
 const cx = classNames.bind(styles)
 
@@ -24,6 +25,8 @@ const SongList: FC<SongListProps> = ({
   adjustOrder = 0,
 }) => {
   const { width } = useContext(MainLayoutContext)
+  const { isQueueShowed } = useContext(AppContext);
+
   const [renderNumb, setRenderNumb] = useState<number>(() => {
     if ((songList?.length ?? 0 < 9) && songList?.length) return songList.length
     return 9
@@ -89,7 +92,7 @@ const SongList: FC<SongListProps> = ({
           </div>
         </>
       )}
-      <div className={cx('songs')}>
+      <div style={{ paddingTop: isQueueShowed ? '0' : '16px'  }} className={cx('songs')}>
         {(() => {
           let order = 1
           if (!isLoading) {

@@ -17,18 +17,21 @@ import Episode from "./pages/Episode";
 interface AppContext {
   isPlayingViewShowed: boolean;
   setPlayingViewShowed: React.Dispatch<React.SetStateAction<boolean>>;
+  isQueueShowed: boolean;
+  setQueueShowed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AppContext = createContext({} as AppContext);
 
 const App = () => {
   const [isPlayingViewShowed, setPlayingViewShowed] = useState<boolean>(false);
+  const [isQueueShowed, setQueueShowed] = useState<boolean>(false);
   useEffect(() => {
     deleteAllCookies();
   }, []);
 
   return (
-    <AppContext.Provider value={{ isPlayingViewShowed, setPlayingViewShowed }}>
+    <AppContext.Provider value={{ isPlayingViewShowed, setPlayingViewShowed, isQueueShowed, setQueueShowed }}>
       <Suspense fallback={<LoadingLayout />}>
         <Routes>
           <Route path="/" element={<MainLayout />}>

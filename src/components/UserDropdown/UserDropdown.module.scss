@@ -1,3 +1,5 @@
+@import '../../scss/mixin';
+
 .user-dropdown-wrapper {
   display: flex;
   flex-direction: column;
@@ -8,6 +10,7 @@
 }
 
 .logout-btn {
+  @include reset-button;
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 700;

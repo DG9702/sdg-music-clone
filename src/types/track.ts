@@ -21,7 +21,7 @@ export interface SongItemProps {
   albumData?: SpotifyAlbum
   dateAdd?: string
   isExplicit?: boolean
-  type?: 'default' | 'playlist' | 'album' | 'search' | 'artist'
+  type?: 'default' | 'playlist' | 'album' | 'search' | 'artist' | 'queue'
   id?: string
   originalData?: SpotifyTrack
   isPlaying?: boolean
@@ -32,7 +32,7 @@ export interface SongListProps {
   pivotTop?: number
   top?: number
   isLoading?: boolean
-  type?: 'default' | 'playlist' | 'album' | 'search' | 'artist'
+  type?: 'default' | 'playlist' | 'album' | 'search' | 'artist' | 'queue'
   albumId?: string
   albumImages?: ImageSource[]
   inclHeader?: boolean

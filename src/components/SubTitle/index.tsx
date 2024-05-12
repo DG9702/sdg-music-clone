@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import classNames from 'classnames/bind'
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './SubTitle.module.scss'
+import {AppContext} from '~/App'
 
 const cx = classNames.bind(styles)
 
@@ -21,6 +22,7 @@ const SubTitleArtists: FC<ArtistsProps> = ({
   fontSize,
   apiType = 'spotify',
 }) => {
+  const { isQueueShowed } = useContext(AppContext);
   const renderData: any[] = []
   let dataNormalized: any
 
@@ -112,7 +114,9 @@ const SubTitleArtists: FC<ArtistsProps> = ({
 
   return (
     <div onClick={(e) => e.stopPropagation()} className={cx('artists')}>
-      {renderData}
+      <span 
+        className={cx({ subIsQueue: isQueueShowed })}
+      >{renderData}</span>
     </div>
   )
 }

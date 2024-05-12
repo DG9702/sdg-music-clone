@@ -1,5 +1,5 @@
 import React, { memo, useContext } from "react";
-import { PlayIcon, SingleMusicNote } from "~/assets/icons";
+import { MoreIcon, PlayIcon, SingleMusicNote } from "~/assets/icons";
 import { SongItemProps } from "~/types/track";
 import dateFormatConvertor from "~/utils/dateFormatConvertor";
 import ImageLazy from "../Image";
@@ -11,6 +11,7 @@ import SubTitleArtists from "../SubTitle";
 import { PlayerContext } from "~/context/PlayerContext";
 import durationConvertor from "~/utils/durationConvertor";
 import equaliser from "~/assets/images/animation/equaliser-animated-green.f5eb96f2.gif";
+import { AppContext } from "~/App";
 
 const cx = classNames.bind(styles);
 
@@ -70,10 +71,11 @@ const SongItem: React.FC<SongItemProps> = ({
         "grid-md": width <= 780 && type !== "album",
         "is-album-track": type === "album",
         "is-search-result": type === "search",
+        "is-queue-result": type === "queue",
         "is-playing": currentTrack?.id === originalData?.id,
       })}
     >
-      {type !== "search" && (
+      {type !== "queue" && type !== "search" && (
         <div className={cx("order")}>
           {!isLoading &&
             (isPlaying && currentTrack?.id === originalData?.id ? (
@@ -95,7 +97,19 @@ const SongItem: React.FC<SongItemProps> = ({
           <div className={cx("thumb")}>
             {!isLoading ? (
               thumb ? (
-                <ImageLazy src={thumb} alt={songName} />
+                <>
+                  <ImageLazy src={thumb} alt={songName} />
+                  {type === "queue" && (
+                    <button className={cx("order-icon")}>
+                      <PlayIcon />
+                    </button>
+                  )}
+                  {type === "search" && (
+                    <button className={cx("order-icon")}>
+                      <PlayIcon />
+                    </button>
+                  )}
+                </>
               ) : (
                 <div className={cx("default-thumb")}>
                   <SingleMusicNote />
@@ -109,7 +123,9 @@ const SongItem: React.FC<SongItemProps> = ({
         <div className={cx("title")}>
           {!isLoading ? (
             <>
-              <p className={cx("name")}>{songName}</p>
+              <p className={cx("name", { namequeue: type === "queue" })}>
+                {songName}
+              </p>
               {type !== "artist" && (
                 <div className={cx("sub-title")}>
                   {isExplicit && <span className={cx("explicit")}>E</span>}
@@ -125,10 +141,12 @@ const SongItem: React.FC<SongItemProps> = ({
           )}
         </div>
       </div>
-      {type !== "album" && type !== "search" && (
+      {type !== "album" && type !== "search" && type !== "queue" && (
         <>
           <div className={cx("album")}>
-            {!isLoading && <SubTitleArtists type="album" data={[{ ...albumData }]} />}
+            {!isLoading && (
+              <SubTitleArtists type="album" data={[{ ...albumData }]} />
+            )}
           </div>
           {width > 780 && (
             <div className={cx("date-add")}>
@@ -139,8 +157,13 @@ const SongItem: React.FC<SongItemProps> = ({
           )}
         </>
       )}
-      <div className={cx("duration")}>
-        {!isLoading && durationConvertor({ milliseconds: duration })}
+      {type !== "queue" && (
+        <div className={cx("duration")}>
+          {!isLoading && durationConvertor({ milliseconds: duration })}
+        </div>
+      )}
+      <div className={cx("action")}>
+        <MoreIcon />
       </div>
     </div>
   );

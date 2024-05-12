@@ -3,14 +3,19 @@
   color: var(--text-neutral);
   display: flex;
   gap: 3px;
-  overflow: hidden;
+  
   width: 100%;
   flex: 1;
+
+  .subIsQueue {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
   .artist-item {
     font-size: 14px;
     color: var(--text-neutral);
-
 
     &:hover {
       text-decoration: underline;
@@ -22,7 +27,6 @@
 .artist-item {
   font-size: 14px;
   color: var(--text-neutral);
-
 
   &:hover {
     text-decoration: underline;

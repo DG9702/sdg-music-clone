@@ -1,3 +1,5 @@
+@import '../../scss/mixin';
+
 .wrapper {
   height: 100%;
   display: flex;
@@ -9,6 +11,7 @@
   .btn {
     background-color: transparent;
     color: var(--text-subdued);
+    @include reset-button;
     padding: 8px;
     cursor: pointer;
 
@@ -25,6 +28,6 @@
   width: 125px;
 }
 
-//.active {
-//  @include button-active;
-//}
+.active {
+  @include button-active;
+}

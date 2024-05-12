@@ -1,3 +1,5 @@
+@import '../../scss/mixin';
+
 .wrapper {
   position: relative;
   height: max(40vh, 330px);
@@ -81,11 +83,7 @@
     margin: 28px 0 22px;
     letter-spacing: -2px;
     line-height: 1.2;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    white-space: normal;
+    @include text-line-clamp(2);
   }
 
   .monthly-listener {

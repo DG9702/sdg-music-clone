@@ -32,6 +32,21 @@
     width: 40px;
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .order-icon {
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
 
     .default-thumb {
       display: flex;
@@ -69,6 +84,7 @@
       font-size: 16px;
       padding: 0;
       margin: 0;
+      display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       white-space: unset;
@@ -158,9 +174,16 @@
   color: var(--text-neutral);
 }
 
-.duration {
+.duration,
+.action {
   text-align: end;
   transform: translateX(-10px);
+
+}
+
+.action {
+  display: none;
+  transform: translateX(-16px);
 }
 
 .grid-md {
@@ -173,6 +196,21 @@
 
 .is-search-result {
   grid-template-columns: minmax(300px, 4fr) 50px !important;
+}
+.is-queue-result {
+  grid-template-columns: minmax(300px, 4fr) 50px !important;
+
+  &:hover {
+    .action {
+      display: block;
+
+      svg {
+        width: 14px;
+        height: 14px;
+        margin-right: 16px;
+      }
+    }
+  }
 }
 
 .is-playing {

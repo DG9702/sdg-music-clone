@@ -13,11 +13,12 @@ import { SearchProvider } from "~/context/SearchContext";
 import { ArtistProvider } from "~/context/ArtistContext";
 import { PlayerProvider } from "~/context/PlayerContext";
 import { AppContext } from "~/App";
+import Queue from "~/components/Queue";
 
 const cx = classNames.bind(styles);
 
 const MainLayout = () => {
-  const { isPlayingViewShowed } = useContext(AppContext);
+  const { isPlayingViewShowed, isQueueShowed } = useContext(AppContext);
 
   return (
     <div className={cx("main-layout")}>
@@ -33,10 +34,22 @@ const MainLayout = () => {
                   <div className={cx("main-layout-top")}>
                     <Split
                       cursor="col-resize"
-                      minSize={isPlayingViewShowed ? [280, 400, 0] : [280, 600]}
-                      maxSize={isPlayingViewShowed ? [500, 99999, 400] : [500, 99999]}
+                      minSize={
+                        isPlayingViewShowed || isQueueShowed
+                          ? [280, 400, 0]
+                          : [280, 600]
+                      }
+                      maxSize={
+                        isPlayingViewShowed || isQueueShowed
+                          ? [500, 99999, 400]
+                          : [500, 99999]
+                      }
                       // sizes={[20, 70, 10]}
-                      sizes={isPlayingViewShowed ? [20, 60, 20] : [20, 80]}
+                      sizes={
+                        isPlayingViewShowed || isQueueShowed
+                          ? [20, 50, 30]
+                          : [20, 80]
+                      }
                       className={cx("split")}
                       gutterSize={8}
                       snapOffset={20}
@@ -47,6 +60,11 @@ const MainLayout = () => {
                           <Outlet />
                         </div>
                       </MainLayoutProvider>
+                      {isQueueShowed ? (
+                        <Queue />
+                      ) : (
+                        <div style={{ marginRight: "-8px" }}></div>
+                      )}
                     </Split>
                   </div>
                   <div className={cx("main-layout-bottom")}>
