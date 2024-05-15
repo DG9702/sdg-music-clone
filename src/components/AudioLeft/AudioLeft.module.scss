@@ -1,119 +1,11 @@
+@import '../../scss/mixin';
+
 .wrapper {
-  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   gap: var(--panel-gap);
-
-  .avatar {
-    position: relative;
-    margin-right: 8px;
-    overflow: hidden;
-    border-radius: 4px;
-
-    .avatar-link {
-      position: relative;
-      user-select: none;
-      display: block;
-      width: 56px;
-      height: 56px;
-      border: 0;
-      margin: 0;
-      z-index: 0;
-      background-color: #282828;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    &:hover .arrow-top {
-      opacity: 1;
-    }
-
-    .arrow-top {
-      align-items: center;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 500px;
-      border-width: 0;
-      color: #b3b3b3;
-      display: flex;
-      height: 24px;
-      justify-content: center;
-      line-height: 24px;
-      opacity: 0;
-      padding: 0;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 24px;
-      z-index: 1;
-
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      &:hover {
-        transform: scale(1.1);
-        color: #fff;
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.8);
-      }
-    }
-  }
-  .textSong {
-    display: grid;
-    column-gap: 8px;
-    align-items: center;
-
-    .textSong-item {
-      width: 100%;
-      justify-self: left;
-      position: relative;
-      mask-image: linear-gradient(
-        90deg,
-        transparent 0,
-        #000 6px,
-        #000 calc(100% - 12px),
-        transparent
-      );
-      overflow: hidden;
-
-      .textSong-body {
-        overflow: hidden;
-        display: flex;
-        padding-inline: 6px 12px;
-        transform: translateX(0);
-        white-space: nowrap;
-        width: fit-content;
-
-        .textSong-pivot {
-          font-size: 1.2rem;
-          font-weight: 600;
-          width: 100%;
-
-          span {
-            user-select: none;
-
-            &:hover {
-              a {
-                color: var(--white);
-                text-decoration: underline;
-              }
-            }
-
-            a {
-              color: #b3b3b3;
-            }
-          }
-
-          &.textSong-artist {
-            font-weight: 400;
-            font-size: 1.1rem;
-          }
-        }
-      }
-    }
-  }
 
   .btn-audio-icon {
     background-color: transparent;
@@ -126,9 +18,9 @@
     padding: 8px 0;
 
     &:hover {
-        fill: var(--white);
-        color: var(--white);
-        transform: scale(1.04);
+      fill: var(--white);
+      color: var(--white);
+      transform: scale(1.04);
     }
 
     span {
@@ -142,3 +34,94 @@
   }
 }
 
+.avatar {
+  position: relative;
+  margin-right: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  margin: 0;
+  background-color: #282828;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+  &:hover .arrow-top {
+    opacity: 1;
+  }
+
+  .arrow-top {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 500px;
+    border-width: 0;
+    color: #b3b3b3;
+    display: flex;
+    height: 24px;
+    justify-content: center;
+    line-height: 24px;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    z-index: 1;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      color: #fff;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+
+.textSong {
+  display: grid;
+  column-gap: 8px;
+  align-items: center;
+
+  .textSong-item {
+    width: 100%;
+    justify-self: left;
+    position: relative;
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 6px,
+      #000 calc(100% - 12px),
+      transparent
+    );
+    overflow: hidden;
+
+    .textSong-body {
+      font-size: 14px;
+      font-weight: 700;
+      padding-inline: 6px 12px;
+      transform: translateX(0);
+      cursor: pointer;
+      @include text-in-one-line;
+      position: relative;
+
+      a {
+        color: var(--white);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &.textSong-artist {
+        font-weight: 500;
+        @include text-in-one-line;
+        display: flex;
+      }
+    }
+  }
+}

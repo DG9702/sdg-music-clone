@@ -14,6 +14,7 @@ import { ArtistProvider } from "~/context/ArtistContext";
 import { PlayerProvider } from "~/context/PlayerContext";
 import { AppContext } from "~/App";
 import Queue from "~/components/Queue";
+import PlayingView from "~/components/PlayingView";
 
 const cx = classNames.bind(styles);
 
@@ -35,19 +36,19 @@ const MainLayout = () => {
                     <Split
                       cursor="col-resize"
                       minSize={
-                        isPlayingViewShowed || isQueueShowed
+                        isPlayingViewShowed
                           ? [280, 400, 0]
                           : [280, 600]
                       }
                       maxSize={
-                        isPlayingViewShowed || isQueueShowed
+                        isPlayingViewShowed
                           ? [500, 99999, 400]
                           : [500, 99999]
                       }
                       // sizes={[20, 70, 10]}
                       sizes={
-                        isPlayingViewShowed || isQueueShowed
-                          ? [20, 50, 30]
+                        isPlayingViewShowed
+                          ? [20, 55, 25]
                           : [20, 80]
                       }
                       className={cx("split")}
@@ -60,10 +61,17 @@ const MainLayout = () => {
                           <Outlet />
                         </div>
                       </MainLayoutProvider>
-                      {isQueueShowed ? (
-                        <Queue />
-                      ) : (
-                        <div style={{ marginRight: "-8px" }}></div>
+                      {isPlayingViewShowed && !isQueueShowed && (
+                        <>
+                          <div></div>
+                          <PlayingView />
+                        </>
+                      )}
+                      {isQueueShowed && !isPlayingViewShowed && (
+                        <>
+                          <div></div>
+                          <Queue />
+                        </>
                       )}
                     </Split>
                   </div>

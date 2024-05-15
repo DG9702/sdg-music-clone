@@ -31,8 +31,6 @@ const Queue = () => {
     } else setNavOpacity(yAxis / 64);
   };
 
-  console.log("Check queue: ", queue);
-
   return (
     <div className={cx("queue-view-wrapper")}>
         <div className={cx("header")}>

@@ -9,6 +9,9 @@
   padding-right: 16px;
 
   .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: transparent;
     color: var(--text-subdued);
     @include reset-button;

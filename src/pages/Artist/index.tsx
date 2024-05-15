@@ -100,8 +100,6 @@ const Artist: React.FC = () => {
     setPlayingType("track");
   };
 
-  console.log("Check toptrack in Artist: ", topTracks);
-
   return (
     <main className={cx("wrapper")}>
       <Header

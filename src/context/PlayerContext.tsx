@@ -231,6 +231,9 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
 
   // -----------------------------------------
 
+  console.log("check audio in context: ", audioRef);
+  console.log("check current in context: ", currentTrack);
+  
   const handlePlay = () => {
     if (audioRef.current?.paused) {
       audioRef.current.play()
