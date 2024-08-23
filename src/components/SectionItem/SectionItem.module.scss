@@ -12,8 +12,10 @@
   }
 
   &:hover .btn-pivot {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
+    .play-btn {
+      opacity: 1 !important;
+      transform: translateY(-16px);
+    }
   }
 
   .container {
@@ -28,18 +30,24 @@
       overflow: hidden;
       box-shadow: 0 8px 24px #00000080;
   
-      .btn-pivot {
+    }
+    .btn-pivot {
+      width: 100%;
+      height: 0;
+      position: relative;
+
+      .play-btn {
         right: 8px;
         bottom: 8px;
         border-radius: 500px;
         opacity: 0;
         pointer-events: none;
         position: absolute;
-        transform: translateY(8px);
         z-index: 9;
         transition: all 0.3s ease;
-  
+        
       }
+
     }
   
     .body {
@@ -72,4 +80,8 @@
     }
   }
 
+}
+
+.isArtist {
+  border-radius: 50% !important;
 }

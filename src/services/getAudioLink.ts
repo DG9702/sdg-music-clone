@@ -57,29 +57,30 @@ export const getYoutubeAudioId = async (paramsSearch: GetAudioLinkParams) => {
 };
 
 export const getAudioLink = async (params: GetAudioLinkParams) => {
-  const { query } = params
-  console.log(query)
-  const id = await getYoutubeAudioId(params)
-  console.log(id)
+  const { query } = params;
+  console.log(query);
+  const id = await getYoutubeAudioId(params);
+  console.log(id);
   const options = {
-    method: 'GET',
-    url: 'https://yt-api.p.rapidapi.com/dl',
+    method: "GET",
+    url: "https://yt-api.p.rapidapi.com/dl",
     params: { id },
     headers: {
-      'X-RapidAPI-Key': import.meta.env.VITE_RAPID_YOUTUBE_SEARCH_PODCAST_AND_AUDIO,
-      'X-RapidAPI-Host': 'ytstream-download-youtube-videos.p.rapidapi.com',
+      "X-RapidAPI-Key": import.meta.env
+        .VITE_RAPID_YOUTUBE_SEARCH_PODCAST_AND_AUDIO,
+      "X-RapidAPI-Host": "ytstream-download-youtube-videos.p.rapidapi.com",
     },
-  }
-  const { data } = await axios.request(options)
+  };
+  const { data } = await axios.request(options);
   const returnData = data.adaptiveFormats
-    .filter((item: any) => item.mimeType.includes('audio'))
-    .sort((a: any, b: any) => -a.bitrate + b.bitrate)[0]
+    .filter((item: any) => item.mimeType.includes("audio"))
+    .sort((a: any, b: any) => -a.bitrate + b.bitrate)[0];
 
   return {
     audioLink: returnData.url,
     durationMs: Number(returnData.approxDurationMs),
-  }
-}
+  };
+};
 
 // export const getAudioLink = async (params: GetAudioLinkParams) => {
 //   const { query } = params

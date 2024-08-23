@@ -8,8 +8,8 @@ interface RangeProps {
   maxValue?: number;
   step?: number;
   process?: number;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleMouseUp: (
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleMouseUp?: (
     e?: React.MouseEvent<HTMLInputElement> | React.TouchEvent<HTMLInputElement>,
   ) => void;
 }

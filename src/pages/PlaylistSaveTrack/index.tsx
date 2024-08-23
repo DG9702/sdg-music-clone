@@ -1,43 +1,41 @@
-import React, { memo, useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
-import styles from "./Playlist.module.scss";
+import styles from "./PlaylistSaveTrack.module.scss";
 import Header from "~/components/Header";
+import HeadSection from "~/components/HeadSection";
 import PlayButton from "~/components/PlayButton";
-import { HeartIcon, SaveTrack } from "~/assets/icons";
+import { SaveTrack } from "~/assets/icons";
 import SongList from "~/components/SongList";
 import Footer from "~/components/Footer";
-import HeadSection from "~/components/HeadSection";
-import { PlaylistData } from "~/types/playlist";
+import { PlaylistData, PlaylistSaveData } from "~/types/playlist";
 import { usePalette } from "color-thief-react";
 import { useInView } from "react-intersection-observer";
 import useComponentSize from "~/hook/useComponentSize";
-import { useNavigate, useParams } from "react-router-dom";
-import categoryApi from "~/services/categoryApi";
 import { PlayerContext } from "~/context/PlayerContext";
-import documentTitle from "~/utils/documentTitle";
-import {getUserSaveTrack} from "~/services/trackApi";
+import { getUserSaveTrack } from "~/services/trackApi";
+import {getUserData} from "~/services/userApi";
+import {PlaylistOwner} from "~/types/artist";
 
 const cx = classNames.bind(styles);
 
-const Playlist: React.FC = () => {
-  const {
-    setQueue,
-    setCurrentTrack,
-    setCurrentTrackIndex,
-    calNextTrackIndex,
-    setPlayingType,
-    isPlaying,
-    prevDocumentTitle,
-  } = useContext(PlayerContext);
+const PlaylistSaveSong: React.FC = () => {
+  //const {
+  //  setQueue,
+  //  setCurrentTrack,
+  //  setCurrentTrackIndex,
+  //  calNextTrackIndex,
+  //  setPlayingType,
+  //  isPlaying,
+  //  prevDocumentTitle,
+  //} = useContext(PlayerContext);
+
   const [navOpacity, setNavOpacity] = useState<number>(0);
-  const [data, setData] = useState<PlaylistData>();
+  const [data, setData] = useState<PlaylistSaveData>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [navPlayBtnVisible, setNavPlayBtnVisible] = useState<boolean>(false);
-
-  // const bgColor = useRaiseColorTone(useDominantColor(data?.images?.[0]?.url) || '#121212')
-
+  const [owner, setOwner] = useState<PlaylistOwner>();
   const { data: dataColor } = usePalette(
-    data?.images?.[0]?.url as string,
+    "https://misc.scdn.co/liked-songs/liked-songs-64.png",
     10,
     "hex",
     {
@@ -52,55 +50,31 @@ const Playlist: React.FC = () => {
     threshold: 0,
   });
 
-  useEffect(() => {
-    if (isPlaying) {
-      prevDocumentTitle.current = `${
-        data?.name ? data?.name : "Playlist"
-      } | Spotify Playlist`;
-    } else {
-      documentTitle(
-        `${data?.name ? data?.name : "Playlist"} | Spotify Playlist`,
-      );
-    }
-  }, [isPlaying, data]);
-
   const headerRef = useRef<any>();
   const { height: headerHeight } = useComponentSize(headerRef);
 
-  const { id } = useParams();
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUserData();      
+      setOwner({
+        image: user?.images[0].url,
+        display_name: user?.display_name,
+        id: user?.id
+      });
+    };
+    fetchUser();
+  }, [])  
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await categoryApi({
-        type: "playlists",
-        id: id,
+    const fetchLikeSong = async () => {
+      const result = await getUserSaveTrack({
+        market: "VN",
+        limit: 20,
       });
-      if (data?.error) {
-        navigate("/not-found");
-      } else {
-        setData({ ...data });
-      }
+      setData(result);
     };
-
-    //const fetchLikeSong = async () => {
-    //  const data = await getUserSaveTrack({
-    //    market: "VN",
-    //    limit: 20,
-    //    offset: 0
-    //  });
-    //  if (data?.error) {
-    //    navigate("/not-found");
-    //  } else {
-    //    setData({ ...data });
-    //  }
-    //}
-    if (id !== "undefined") {
-      fetchData();
-    }
-  }, [id]);
-  
+    fetchLikeSong();
+  }, []);
 
   useEffect(() => {
     setLoading(Boolean(!data));
@@ -117,21 +91,22 @@ const Playlist: React.FC = () => {
   };
 
   const handleClickPlayBtn = () => {
-    setQueue(data?.tracks?.items?.map((item) => item.track) || []);
-    setCurrentTrack(data?.tracks?.items?.[0]?.track);
-    setCurrentTrackIndex(0);
-    calNextTrackIndex();
-    setPlayingType("track");
-  };  
+  //  setQueue(data?.items?.map((item) => item?.track) || []);
+  //  setCurrentTrack(data?.items?.[0]?.track);
+  //  setCurrentTrackIndex(0);
+  //  calNextTrackIndex();
+  //  setPlayingType("track");
+  };
+  
 
   return (
     <main className={cx("wrapper")}>
       <Header
         navOpacity={navOpacity}
         bgColor={bgColor}
+        title="Liked Songs"
         playBtnVisible={navPlayBtnVisible}
         inclPlayBtn
-        title={data?.name}
       />
       <div
         onScroll={(e) => isTracking && handleScroll(e)}
@@ -142,16 +117,15 @@ const Playlist: React.FC = () => {
           className={cx("pivot-tracking")}
           style={{ top: `${headerHeight + 104}px` }}
         ></div>
-        <div ref={headerRef}>
+        <div>
           <HeadSection
             type="Playlist"
-            desc={data?.description}
             isLoading={isLoading}
-            owner={data?.owner}
+            title="Liked Song"
+            owner={owner}
             bgColor={bgColor}
-            title={data?.name}
-            thumbnail={data?.images?.[0]?.url}
-            quantity={data?.tracks?.total}
+            thumbnail="https://misc.scdn.co/liked-songs/liked-songs-64.png"
+            quantity={data?.total}
           />
         </div>
         <div className={cx("song-list")}>
@@ -169,23 +143,20 @@ const Playlist: React.FC = () => {
                   transitionDuration={33}
                 />
               </div>
-              <button className={cx("heart")}>
-                <SaveTrack />
-              </button>
             </div>
             <SongList
               isLoading={isLoading}
               top={0}
               pivotTop={64}
-              songList={data?.tracks?.items}
+              songList={data?.items}
               type={"playlist"}
             />
           </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     </main>
   );
 };
 
-export default memo(Playlist);
+export default PlaylistSaveSong;

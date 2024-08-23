@@ -27,6 +27,7 @@
     "react-router-dom": "^6.20.1",
     "react-spinners-kit": "^1.9.1",
     "react-split": "^2.0.14",
+    "react-toastify": "^10.0.5",
     "sass": "^1.69.5",
     "usehooks-ts": "^2.9.1"
   },

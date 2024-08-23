@@ -41,14 +41,11 @@ const GenreContainer: FC = () => {
     threshold: 0,
   });
 
-  console.log("Check data in genre page: ", categoriesData);
-
   const { id } = useParams();
 
   useEffect(() => {
     categoriesData.map((item) => {
       if (item?.id === id) {
-        console.log("check data id categoriesData: ", item?.bgColor);
         setBgColorTest(item?.bgColor);
       }
     });

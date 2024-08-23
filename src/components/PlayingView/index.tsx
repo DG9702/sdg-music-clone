@@ -8,7 +8,7 @@ import {ArtistContext} from "~/context/ArtistContext"
 import {AppContext} from "~/App"
 import {CloseIcon, HeartIcon, MusicNote} from "~/assets/icons"
 import ImageLazy from "../Image"
-import SubTitleArtists from "../SubTitle"
+import {SubTitleArtists} from "../SubTitle";
 import AboutArtist from "../AboutArtist"
 import NextSong from "./NextSong"
 

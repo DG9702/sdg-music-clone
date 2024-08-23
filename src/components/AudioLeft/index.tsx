@@ -1,16 +1,25 @@
-import React, { useContext, useMemo, useRef } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./AudioLeft.module.scss";
-import { ArrowDown, ArrowTop, HeartIcon, MusicNote } from "~/assets/icons";
+import {
+  ArrowDown,
+  ArrowTop,
+  MusicNote,
+  SaveTrack,
+  UserSavedTrack,
+} from "~/assets/icons";
 import ImageLazy from "../Image";
 import { Link } from "react-router-dom";
 import { PlayerContext } from "~/context/PlayerContext";
 import useEllipsisHorizontal from "~/hook/useEllipsisHorizontal";
 import Marquee from "react-fast-marquee";
 import Skeleton from "react-loading-skeleton";
-import SubTitleArtists from "../SubTitle";
 import { AppContext } from "~/App";
 import { Tooltip } from "antd";
+import { checkUserSaveTrack, removeTrackForCurrentUser, saveTrackForCurrentUser} from "~/services/trackApi";
+import { toast, ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {SubTitleArtists} from "../SubTitle";
 
 const cx = classNames.bind(styles);
 
@@ -24,15 +33,58 @@ const AudioLeft: React.FC = () => {
     setQueueShowed,
   } = useContext(AppContext);
   const isLoading = useMemo(
-    () => Boolean(!playBarData?.trackName),
-    [playBarData?.trackName],
+    () => Boolean(!playBarData?.trackId),
+    [playBarData?.trackId],
+    
   );
+
+  const [isSaving, setSaving] = useState<boolean>(false)
+
+    useEffect(() => {
+    if (playBarData?.trackId) {
+      const fetchData = async () => {
+        const result = await checkUserSaveTrack({ids: `${playBarData?.trackId}`});
+        
+        if (result.data[0] === true) {
+          setSaving(true);
+        } else {
+          setSaving(false)
+        }
+      }
+      fetchData();
+    } else {
+      //
+    }
+  }, [isSaving, setSaving, playBarData?.trackId])
 
   const trackNameRef = useRef<any>();
   const isEllipsisActive = useEllipsisHorizontal(
     trackNameRef.current,
     playBarData?.trackName,
   );
+
+  const addTrackRequest = async () => {
+    const result = await saveTrackForCurrentUser(`${playBarData?.trackId}`);
+    return result;
+  }
+
+  const removeTrackRequest = async () => {
+    const result = await removeTrackForCurrentUser(`${playBarData?.trackId}`);
+    return result;
+  }
+
+  const handleSaveTrack = async () => {
+    if (isSaving) {
+      await removeTrackRequest();
+      setSaving(false)
+      toast('🦄 Remove from liked Song');
+    } else {
+      await addTrackRequest();
+      setSaving(true);
+      toast('🦄 Added to liked Song');
+    }
+  };
+
 
   const handleClickPlayingView = () => {
     if (playingType === "show") return;
@@ -52,13 +104,13 @@ const AudioLeft: React.FC = () => {
               overlayInnerStyle={{ backgroundColor: "#282828" }}
               title={isPlayingViewShowed ? "collapse" : "Extend"}
             >
-            <button
-              className={cx("arrow-top")}
-              onClick={handleClickPlayingView}
-            >
+              <button
+                className={cx("arrow-top")}
+                onClick={handleClickPlayingView}
+              >
                 {isPlayingViewShowed ? <ArrowDown /> : <ArrowTop />}
-            </button>
-              </Tooltip>
+              </button>
+            </Tooltip>
           </>
         ) : (
           <div className={cx("default-thumb")}>
@@ -117,11 +169,28 @@ const AudioLeft: React.FC = () => {
           </div>
         </div>
       </div>
-      <button className={cx("btn-audio-icon")}>
-        <span>
-          <HeartIcon />
-        </span>
-      </button>
+      <div>
+        <button
+          onClick={() => isBtnClickable && handleSaveTrack()}
+          className={cx("btn-audio-icon", { active: isSaving })}
+        >
+          <span>{isSaving ? <UserSavedTrack  /> : <SaveTrack />}</span>
+        </button>
+        <ToastContainer
+          position="bottom-center"
+          className={cx("toast")}
+          autoClose={1000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Zoom}
+        />
+      </div>
     </div>
   );
 };

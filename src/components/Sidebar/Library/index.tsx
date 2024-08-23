@@ -22,7 +22,7 @@ import Menu from "~/components/Menu";
 
 const cx = classNames.bind(styles);
 
-type libCategory = "playlist" | "album" | "artist";
+type libCategory = "playlist" | "album";
 
 const Library: React.FC = () => {
   const { userData, isLogged, handleLogin } = useContext(AuthContext);
@@ -42,7 +42,6 @@ const Library: React.FC = () => {
     };
     fetchData();
   }, [category, userData]);
-
   const sort = [
     {
       title: "Recents",
@@ -88,12 +87,6 @@ const Library: React.FC = () => {
         active: category === "playlist",
       },
       {
-        type: "artist",
-        title: "Artists",
-        id: "00004",
-        active: category === "artist",
-      },
-      {
         type: "album",
         title: "Albums",
         id: "00005",
@@ -103,12 +96,14 @@ const Library: React.FC = () => {
     [category],
   );
 
+  const likeSong = [];
+
   const libSelection = useMemo(
     () => libSelections.find((libSelection) => libSelection.active),
     [category],
   );
 
-  const handleClick = (type: "playlist" | "album" | "artist"): void => {
+  const handleClick = (type: "playlist" | "album"): void => {
     setCategory(type);
   };
 
@@ -124,11 +119,6 @@ const Library: React.FC = () => {
 
   const handleClickSearchPlaylist = (): void => {
     document.getElementById("inputSearch")?.classList.add(cx("hien"));
-    setShowInput(!showInput);
-  };
-
-  const handleBlurInputSearch = (): void => {
-    document.getElementById("inputSearch")?.classList.remove(cx("hien"));
     setShowInput(!showInput);
   };
 
@@ -165,7 +155,7 @@ const Library: React.FC = () => {
               <div className={cx("selection-body")}>
                 {libSelections.map((item, index) => (
                   <button
-                    onClick={() => handleClick(item.type)}
+                    onClick={() => handleClick(item?.type)}
                     className={cx("libSelect-btn")}
                     key={index}
                   >
@@ -187,7 +177,6 @@ const Library: React.FC = () => {
                         id="inputSearch"
                         className={cx("head-search")}
                         onClick={handleClickSearchPlaylist}
-                        onBlur={handleBlurInputSearch}
                       >
                         <input
                           className={cx("inputSearch", "opacity")}
@@ -216,6 +205,11 @@ const Library: React.FC = () => {
                       </Menu>
                     </div>
                     <div className={cx("section-playlist")}>
+                      <SidebarItem
+                        name="Liked Songs"
+                        thumbnail="https://misc.scdn.co/liked-songs/liked-songs-64.png"
+                        type="collection"
+                      />
                       {data?.map((item, index: number) => (
                         <SidebarItem
                           key={item?.id || index}
@@ -232,7 +226,6 @@ const Library: React.FC = () => {
                           }
                         />
                       ))}
-
                     </div>
                   </>
                 ) : (

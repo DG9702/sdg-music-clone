@@ -12,6 +12,7 @@ interface PlayButtonProps {
   scaleHovering?: number;
   bgColor?: string;
   isPlay?: boolean;
+  setPlaying?: any;
 }
 
 const PlayButton: FC<PlayButtonProps> = (props) => {
@@ -21,7 +22,8 @@ const PlayButton: FC<PlayButtonProps> = (props) => {
     transitionDuration,
     scaleHovering,
     bgColor,
-    isPlay = false,
+    isPlay,
+    setPlaying,
   } = props;
   const [isHovering, setHovering] = useState<boolean>(false);
 
@@ -48,6 +50,7 @@ const PlayButton: FC<PlayButtonProps> = (props) => {
           backgroundColor: bgColor ? bgColor : undefined,
           opacity: isHovering ? 1 : undefined,
         }}
+        onClick={() => setPlaying(!isPlay)}
       >
         {!isPlay ? <PlayIcon size={fontSize} /> : <PauseIcon size={fontSize} />}
       </button>

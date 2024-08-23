@@ -117,6 +117,12 @@
         background-repeat: no-repeat;
         background-size: cover;
         margin-right: 10px;
+
+        &.is-owner-image {
+          width: 24px;
+          height: 24px;
+          border-radius: 999px;
+        }
       }
 
       .dot {

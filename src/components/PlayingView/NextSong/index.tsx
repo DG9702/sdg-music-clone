@@ -6,7 +6,7 @@ import {PlayerContext} from "~/context/PlayerContext"
 import {Link} from "react-router-dom"
 import {SingleMusicNote} from "~/assets/icons"
 import ImageLazy from "~/components/Image"
-import SubTitleArtists from "~/components/SubTitle"
+import {SubTitleArtists} from "~/components/SubTitle"
 
 const cx = classNames.bind(styles)
 

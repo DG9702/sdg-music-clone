@@ -9,10 +9,7 @@ const cx = classNames.bind(styles);
 
 const SearchGenre: React.FC = () => {
   const { quantityCol } = useContext(MainLayoutContext);
-  const { categoriesData } = useContext(SearchContext);
-
-  console.log("Check categoriesData: ", categoriesData);
-  
+  const { categoriesData } = useContext(SearchContext);  
 
   return (
     <div className={cx("wrapper")}>

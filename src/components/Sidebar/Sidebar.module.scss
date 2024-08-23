@@ -159,8 +159,8 @@
           position: relative;
 
           span {
-            font-size: 1.35rem;
-            font-weight: 400;
+            font-size: 1.275rem;
+            font-weight: 600;
             position: relative;
             color: var(--white);
             display: flex;
@@ -221,7 +221,7 @@
             flex-direction: column;
             gap: var(--panel-gap);
             min-height: 100%;
-            padding: 0 0 8px 8px;
+            padding: 0 8px 8px 8px;
 
             .section-head {
               display: flex;

@@ -68,8 +68,6 @@ export const ArtistProvider: FC<ArtistProviderProps> = ({ children }) => {
     if (id !== "") fetchData();
   }, [id]);
 
-  // console.log(artistData)
-
   useEffect(() => {
     setArtistData((prev: any) => {
       return {

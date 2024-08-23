@@ -1,5 +1,5 @@
-import React, { memo, useContext } from "react";
-import { MoreIcon, PlayIcon, SingleMusicNote } from "~/assets/icons";
+import React, { memo, useContext, useEffect, useState } from "react";
+import { MoreIcon, PlayIcon, SaveTrack, SingleMusicNote, UserSavedTrack } from "~/assets/icons";
 import { SongItemProps } from "~/types/track";
 import dateFormatConvertor from "~/utils/dateFormatConvertor";
 import ImageLazy from "../Image";
@@ -7,11 +7,11 @@ import Skeleton from "react-loading-skeleton";
 import classNames from "classnames/bind";
 import styles from "./SongItem.module.scss";
 import { MainLayoutContext } from "~/context/MainLayoutContext";
-import SubTitleArtists from "../SubTitle";
+import {SubTitleArtists} from "../SubTitle";
 import { PlayerContext } from "~/context/PlayerContext";
 import durationConvertor from "~/utils/durationConvertor";
 import equaliser from "~/assets/images/animation/equaliser-animated-green.f5eb96f2.gif";
-import { AppContext } from "~/App";
+import {checkUserSaveTrack} from "~/services/trackApi";
 
 const cx = classNames.bind(styles);
 
@@ -35,11 +35,14 @@ const SongItem: React.FC<SongItemProps> = ({
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
+    //setSaving,
     queue,
+    //isSaving,
     isPlaying,
     currentTrack,
   } = useContext(PlayerContext);
 
+  const [isSaving, setSaving] = useState<Boolean>(false);
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     if (currentTrack?.id === originalData?.id) return;
@@ -63,9 +66,27 @@ const SongItem: React.FC<SongItemProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (originalData?.id) {
+      const fetchData = async () => {
+        const result = await checkUserSaveTrack({ids: `${originalData?.id}`});
+        
+        if (result.data[0] === true) {
+          setSaving(true);
+        } else {
+          setSaving(false)
+        }
+      }
+      fetchData();
+    } else {
+      //
+    }
+  }, [isSaving, setSaving, originalData?.id])  
+
   return (
     <div
       onClick={(e) => handleClick(e)}
+      //onMouseOver={() => setHover(!isHover)}
       className={cx({
         wrapper: true,
         "grid-md": width <= 780 && type !== "album",
@@ -157,13 +178,18 @@ const SongItem: React.FC<SongItemProps> = ({
           )}
         </>
       )}
-      {type !== "queue" && (
-        <div className={cx("duration")}>
-          {!isLoading && durationConvertor({ milliseconds: duration })}
+      <div className={cx("right-action")}>
+        <div onClick={() => SaveTrack} className={cx("action", { active: isSaving })}>
+          {isSaving ? <UserSavedTrack /> : <SaveTrack />}
         </div>
-      )}
-      <div className={cx("action")}>
-        <MoreIcon />
+        {type !== "queue" && (
+          <div className={cx("duration")}>
+            {!isLoading && durationConvertor({ milliseconds: duration })}
+          </div>
+        )}
+        <div className={cx("action")}>
+          <MoreIcon />
+        </div>
       </div>
     </div>
   );

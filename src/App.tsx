@@ -13,6 +13,8 @@ import deleteAllCookies from "./utils/deleteAllCookies";
 import SectionPage from "./pages/SectionPage";
 import Show from "./pages/Show";
 import Episode from "./pages/Episode";
+import PlaylistSaveTrack from "./pages/PlaylistSaveTrack";
+//import PlaylistLikeSong from "./pages/PlaylistLikeSong";
 
 interface AppContext {
   isPlayingViewShowed: boolean;
@@ -31,7 +33,14 @@ const App = () => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ isPlayingViewShowed, setPlayingViewShowed, isQueueShowed, setQueueShowed }}>
+    <AppContext.Provider
+      value={{
+        isPlayingViewShowed,
+        setPlayingViewShowed,
+        isQueueShowed,
+        setQueueShowed,
+      }}
+    >
       <Suspense fallback={<LoadingLayout />}>
         <Routes>
           <Route path="/" element={<MainLayout />}>
@@ -40,6 +49,7 @@ const App = () => {
             <Route path="/section/:id" element={<SectionContainer />} />
             <Route path="/genre/:id" element={<GenreContainer />} />
             <Route path="/playlist/:id" element={<Playlist />} />
+            <Route path="/collection/track" element={<PlaylistSaveTrack />} />
             <Route path="/album/:id" element={<Album />} />
             <Route path="/show/:id" element={<Show />} />
             <Route path="/episode/:id" element={<Episode />} />

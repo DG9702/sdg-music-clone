@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./Album.module.scss";
 import HeadSection from "~/components/HeadSection";
 import PlayButton from "~/components/PlayButton";
-import { HeartIcon } from "~/assets/icons";
+import { HeartIcon, SaveTrack } from "~/assets/icons";
 import SongList from "~/components/SongList";
 import Footer from "~/components/Footer";
 import Header from "~/components/Header";
@@ -192,7 +192,7 @@ const Album: React.FC = () => {
                 />
               </div>
               <button className={cx("heart")}>
-                <HeartIcon />
+                <SaveTrack />
               </button>
             </div>
             <SongList

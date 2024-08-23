@@ -5,7 +5,7 @@ import { PlayListItem } from './playlist'
 export type LibSelection = {
   title: string
   id: string
-  type: 'playlist' | 'album' | 'artist'
+  type: 'playlist' | 'album'
   active: boolean
 }
 
@@ -23,7 +23,7 @@ export interface ResponseLibItem {
 
 export interface SidebarItemProps {
   author?: string
-  type?: 'playlist' | 'artist' | 'album'
+  type?: 'playlist' | 'artist' | 'album' | 'collection'
   thumbnail?: string | undefined
   name?: string | undefined
   id?: string

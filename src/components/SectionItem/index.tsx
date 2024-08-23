@@ -13,7 +13,7 @@ import categoryApi from "~/services/categoryApi";
 import showApi from "~/services/showApi";
 import episodeApi from "~/services/episodeApi";
 import { getArtistTopTrack } from "~/services/artistApi";
-import SubTitleArtists from "../SubTitle";
+import {SubTitleArtists} from "../SubTitle";
 
 const cx = classNames.bind(styles);
 
@@ -154,23 +154,23 @@ const SectionItem: React.FC<SectionItemI> = ({
           ) : (
             <Skeleton height={"100%"} />
           )}
-          <div className={cx("btn-pivot")}>
-            {!isLoading && (
-              <div
-                className={cx({
-                  "play-btn": true,
-                })}
-                onClick={handleClickPlayBtn}
-              >
-                <PlayButton
-                  size={50}
-                  fontSize={24}
-                  scaleHovering={1.05}
-                  transitionDuration={33}
-                />
-              </div>
-            )}
-          </div>
+        </div>
+        <div className={cx("btn-pivot")}>
+          {!isLoading && (
+            <div
+              className={cx({
+                "play-btn": true,
+              })}
+              onClick={handleClickPlayBtn}
+            >
+              <PlayButton
+                size={50}
+                fontSize={24}
+                scaleHovering={1.05}
+                transitionDuration={33}
+              />
+            </div>
+          )}
         </div>
 
         <div className={cx("body")}>

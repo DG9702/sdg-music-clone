@@ -74,11 +74,12 @@
     letter-spacing: 0.1em;
     min-block-size: 32px;
     padding: 4px 16px;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     cursor: pointer;
 
     &:hover {
       border-color: var(--white);
+      transform: scale(1.04);
     }
   }
 }

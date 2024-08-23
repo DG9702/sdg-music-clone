@@ -1,6 +1,7 @@
 .wrapper {
   display: grid;
-  grid-template-columns: 16px minmax(300px, 6fr) 4fr 3fr 50px;
+  //grid-template-columns: 16px minmax(300px, 6fr) 4fr 3fr 50px;
+  grid-template-columns: [index] var(--tracklist-index-column-width, 16px) [first] minmax(120px, var(--col1, 6fr)) [var1] minmax(120px, var(--col2, 4fr)) [var2] minmax(120px, var(--col3, 3fr)) [last] minmax(120px, var(--col4, 1fr));
   grid-gap: 16px;
   height: 56px;
   padding-inline: 16px;
@@ -17,6 +18,11 @@
 
     .order-number {
       opacity: 0;
+    }
+
+    .action {
+      //display: block;
+      opacity: 1;
     }
   }
 }
@@ -167,27 +173,58 @@
   }
 }
 
+.right-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .action {
+    opacity: 0;
+    &.active {
+      color: var(--secondary) !important;
+    }
+
+    &:first-child {
+      margin-right: 16px;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  .duration {
+    display: flex;
+    justify-content: flex-end;
+    color: var(--text-neutral);
+    width: 5ch;
+    margin: 0;
+    font-size: 14px;
+    margin-right: 12px;
+  }
+}
+
 .album,
-.date-add,
-.duration {
+.date-add {
   font-size: 14px;
   color: var(--text-neutral);
 }
 
-.duration,
-.action {
-  text-align: end;
-  transform: translateX(-10px);
+//.duration,
+//.action {
+//  text-align: end;
+//  transform: translateX(-10px);
 
-}
+//}
 
-.action {
-  display: none;
-  transform: translateX(-16px);
-}
+//.action {
+//  //display: none;
+//  opacity: 0;
+//  //transform: translateX(-16px);
+//}
 
 .grid-md {
-  grid-template-columns: 16px minmax(300px, 4fr) 2fr 50px !important;
+  grid-template-columns: [index] var(--tracklist-index-column-width, 16px) [first] minmax(120px, var(--col1, 6fr)) [var1] minmax(120px, var(--col2, 4fr)) [var2] minmax(120px, var(--col3, 3fr)) [last] minmax(120px, var(--col4, 1fr)) !important;
 }
 
 .is-album-track {
@@ -202,13 +239,8 @@
 
   &:hover {
     .action {
-      display: block;
-
-      svg {
-        width: 14px;
-        height: 14px;
-        margin-right: 16px;
-      }
+      //display: block;
+      opacity: 1;
     }
   }
 }

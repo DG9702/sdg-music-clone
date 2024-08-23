@@ -10,12 +10,12 @@ const cx = classNames.bind(styles)
 interface ArtistsProps {
   data: any
   isWhiteColor?: boolean
-  type?: 'artist' | 'album' | 'show'
+  type?: 'artist' | 'album' | 'show' | 'owner'
   apiType?: 'spotify' | 'rapid'
   fontSize?: number
 }
 
-const SubTitleArtists: FC<ArtistsProps> = ({
+export const SubTitleArtists: FC<ArtistsProps> = ({
   data,
   isWhiteColor,
   type = 'artist',
@@ -37,7 +37,7 @@ const SubTitleArtists: FC<ArtistsProps> = ({
     }
   } else {
     dataNormalized = data
-  }
+  }  
 
   if (dataNormalized) {
     if (dataNormalized.length === 1) {
@@ -121,4 +121,52 @@ const SubTitleArtists: FC<ArtistsProps> = ({
   )
 }
 
-export default SubTitleArtists
+export const SubTitleOwner: FC<ArtistsProps> = ({
+  data,
+  isWhiteColor,
+  type = 'owner',
+  fontSize,
+  apiType = 'spotify',
+}) => {
+  const { isQueueShowed } = useContext(AppContext);
+  //const renderData: any = []
+  let dataNormalized: any
+
+  if (apiType === 'rapid') {
+    if (type === 'owner') {
+      dataNormalized = {
+        id: data?.id,
+        name: data?.display_name
+      }
+    }
+  } else {
+    dataNormalized = {
+        id: data?.id,
+        name: data?.display_name
+      }
+  }
+  
+  return (
+    <div onClick={(e) => e.stopPropagation()} className={cx('artists')}>
+      <span 
+        className={cx({ subIsQueue: isQueueShowed })}
+      >
+        <Link
+            to={
+              `/user/${dataNormalized?.id}`
+            }
+          >
+            <span
+              style={{ fontSize: fontSize ? fontSize : undefined }}
+              className={cx({
+                'artist-item': true,
+                'white-color': isWhiteColor,
+              })}
+            >
+              {dataNormalized?.name}
+            </span>
+          </Link>
+      </span>
+    </div>
+  )
+}

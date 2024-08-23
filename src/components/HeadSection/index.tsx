@@ -9,8 +9,8 @@ import { HeaderProps } from "~/types/others";
 import ImageLazy from "../Image";
 import ThumbDefault from "../ThumbDefault";
 import { Link } from "react-router-dom";
-import SubTitleArtists from "../SubTitle";
 import transformDomain from "~/utils/transformDomain";
+import {SubTitleArtists, SubTitleOwner} from "../SubTitle";
 
 const cx = classNames.bind(styles);
 
@@ -23,14 +23,14 @@ const HeadSection: React.FC<HeaderProps> = ({
   isLoading,
   type,
   artists,
+  owner,
   releaseDate,
   isWhiteColor = false,
   headerType,
   publisher,
   showName,
   showId,
-}) => {
-  
+}) => {  
 
   return (
     <main style={{ backgroundColor: `${bgColor}` }} className={cx("wrapper")}>
@@ -84,7 +84,7 @@ const HeadSection: React.FC<HeaderProps> = ({
                   }}
                   className={cx("desc")}
                 >
-                  {/* <ArtistList data={htmlCleaner(stringCleaner(desc))} /> */}
+                  {/*<ArtistList data={htmlCleaner(stringCleaner(desc))} />*/}
                 </div>
                 {headerType === "show" ? (
                   <Link to={type === "episode" ? `/show/${showId}` : ""}>
@@ -100,12 +100,14 @@ const HeadSection: React.FC<HeaderProps> = ({
                 ) : (
                   <div className={cx("quantity")}>
                     <div
-                      style={{ backgroundImage: `url(${logoImage})` }}
-                      className={cx("logo")}
+                      style={{  backgroundImage: `url(${ owner?.image ? owner?.image : logoImage})` }}
+                      className={cx("logo", {
+                        "is-owner-image": owner?.image,
+                      })}
                     ></div>
                     {(type === "album" ||
                       type === "single" ||
-                      type === "compilation") && (
+                      type === "compilation") ? (
                       <>
                         <div className={cx("artist")}>
                           {
@@ -119,6 +121,17 @@ const HeadSection: React.FC<HeaderProps> = ({
                         <div className={cx("release-date")}>
                           {releaseDate?.slice(0, 4)}
                         </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={cx("artist")}>
+                          {
+                            <SubTitleOwner
+                              isWhiteColor={isWhiteColor}
+                              data={owner}
+                            />
+                          }
+                        </div>{" "}
                       </>
                     )}
                     <div className={cx("dot")}></div>

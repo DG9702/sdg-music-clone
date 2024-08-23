@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./AudioControl.module.scss";
 import { Tooltip } from "antd";
@@ -18,9 +18,12 @@ const cx = classNames.bind(styles);
 const PlayerControl: React.FC = () => {
   const {
     currentTrack,
-    intervalIdRef,
-    isPlaying,
+    currentTrackIndex,
     duration,
+    durationAudio,
+    intervalIdRef,
+    audioData,
+    isPlaying,
     audioRef,
     isReady,
     userClicked,
@@ -31,44 +34,61 @@ const PlayerControl: React.FC = () => {
     handlePause,
     setCurrentTime,
     handleForward,
+    setPlaying,
     handleBack,
     setUserClicked,
     setShuffle,
+    setReady,
     setRepeat,
-  } = useContext(PlayerContext);
-  const [trackProcess, setTrackProcess] = useState<number>(
-    audioRef?.current?.currentTime,
-  );
-
+  }=useContext(PlayerContext);
+  const [trackProgress, setTrackProgress]=useState<number>(audioRef?.current?.currentTime);
+  
+  const intervalRef=useRef<any>();
+  
   const startTimer = () => {
-    clearInterval(intervalIdRef?.current);
-    intervalIdRef.current = setInterval(() => {
+    clearInterval(intervalRef.current);
+
+    intervalRef.current=setInterval(() => {
       if (!audioRef?.current?.paused) {
-        setTrackProcess((prev) => +prev + 1);
+        setTrackProgress(audioRef.current.currentTime);
       }
+
+      if (audioRef?.current?.ended) {
+        handleForward();
+        setReady(true)
+        setPlaying(true)
+      } else {
+        setTrackProgress(audioRef.current.currentTime);
+      }
+
     }, 1000);
   };
 
   useEffect(() => {
-    setTrackProcess(0);
+    setTrackProgress(0);
     clearInterval(intervalIdRef?.current);
-  }, [currentTrack]);
+  }, [currentTrack, intervalIdRef]);
 
   useEffect(() => {
-    // console.log(isPlaying)
-    if (isPlaying) {
-      startTimer();
-      handlePlay();
+    if(audioRef.current.src) {
+      if (isPlaying) {
+        startTimer();
+        handlePlay();
+        setTrackProgress(audioRef.current.currentTime);
+      } else {
+        clearInterval(intervalRef.current);
+        handlePause();
+      }
     }
   }, [isPlaying]);
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     clearInterval(intervalIdRef?.current);
-    setTrackProcess(+e.target.value);
+    setTrackProgress(+e.target.value);
   };
 
   const handleMouseUp = () => {
-    setCurrentTime(trackProcess);
+    setCurrentTime(trackProgress);
     startTimer();
   };
 
@@ -77,11 +97,13 @@ const PlayerControl: React.FC = () => {
       if (isRepeat) {
         // console.log('repeated')
         setCurrentTime(0);
-        setTrackProcess(0);
+        setTrackProgress(0);
         startTimer();
         handlePlay();
       } else {
         handleForward();
+        setReady(true)
+        setPlaying(true)
       }
     };
   }
@@ -94,7 +116,7 @@ const PlayerControl: React.FC = () => {
       clearInterval(intervalIdRef?.current);
       handlePause();
     } else {
-      setTrackProcess(audioRef?.current?.currentTime);
+      setTrackProgress(audioRef?.current?.currentTime);
       startTimer();
       handlePlay();
     }
@@ -122,10 +144,16 @@ const PlayerControl: React.FC = () => {
     handleForward();
   });
 
-  //console.log("Check CurrentTrack: ", currentTrack);
-  //console.log("Check audioRef: ", audioRef);
-  //console.log("Check isPlaying: ", isPlaying);
-  //console.log("Check intervalIdRef: ", intervalIdRef);
+  console.log("Check audioData: ", audioData);
+  
+
+  console.log("Check durationAudio: ", durationAudio);  
+
+  console.log("Check CurrentTrack: ", currentTrack);
+  console.log("Check audioRef: ", audioRef?.current?.src);
+  console.log("Check isPlaying: ", isPlaying);
+  console.log("Check isReady: ", isReady);
+  
 
   return (
     <div className={cx("wrapper")}>
@@ -165,6 +193,7 @@ const PlayerControl: React.FC = () => {
               bgColor="#fff"
               transitionDuration={0}
               isPlay={isPlaying}
+              setPlaying={setPlaying}
               scaleHovering={1}
             />
           </div>
@@ -196,17 +225,17 @@ const PlayerControl: React.FC = () => {
       </div>
       <div className={cx("playback-bar")}>
         <div className={cx("playback-position")}>
-          {durationConvertor({ milliseconds: +trackProcess * 1000 })}
+          {durationConvertor({ milliseconds: +trackProgress * 1000 })}
         </div>
         <Range
-          maxValue={Math.floor(duration ? duration : 0)}
+          maxValue={Math.floor(durationAudio ? durationAudio : 0)}
           step={1}
-          process={trackProcess}
+          process={trackProgress}
           handleChange={handleRangeChange}
           handleMouseUp={handleMouseUp}
         />
         <div className={cx("playback-duration")}>
-          {durationConvertor({ milliseconds: duration ? duration * 1000 : 0 })}
+          {durationConvertor({ milliseconds: durationAudio ? durationAudio * 1000 : 0 })}
         </div>
       </div>
     </div>

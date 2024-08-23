@@ -125,3 +125,18 @@
     }
   }
 }
+
+.active {
+  @include button-active;
+
+  color: var(--secondary) !important;
+  position: relative;
+
+  &::after {
+    display: none;
+  }
+}
+
+.toast {
+  font-size: 14px;
+}

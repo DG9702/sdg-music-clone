@@ -47,7 +47,7 @@ const SongList: FC<SongListProps> = ({
     } else {
       setRenderNumb((prev) => prev + 10)
     }
-  }, [lazyRenderInView])
+  }, [lazyRenderInView])    
 
   return (
     <div className={cx('wrapper')}>
@@ -100,13 +100,12 @@ const SongList: FC<SongListProps> = ({
               <>
                 {songList?.slice(0, renderNumb)?.map((item: any, index: number) => (
                   <SongItem
-                    type={type}
-                    key={item?.id ?? index}
+                    type={type || item?.track?.type}
+                    key={(item?.id || item?.track?.id) ?? index}
                     order={order++ + adjustOrder}
                     thumb={
                       item?.album?.images?.[item?.album?.images?.length - 1]?.url ||
-                      item?.track?.album?.images[item?.track?.album?.images?.length - 1]
-                        ?.url ||
+                      item?.track?.album?.images[item?.track?.album?.images?.length - 1]?.url ||
                       item?.images?.[item?.images?.length - 1]?.url
                     }
                     songName={item?.name ?? item?.track?.name}

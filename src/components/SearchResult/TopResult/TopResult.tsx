@@ -7,9 +7,9 @@ import { SpotifyTrack } from '~/types/track'
 import { MusicNote } from '~/assets/icons'
 import {MainLayoutContext} from '~/context/MainLayoutContext'
 import ImageLazy from '~/components/Image'
-import SubTitleArtists from '~/components/SubTitle'
 import PlayButton from '~/components/PlayButton'
 import SongItem from '~/components/SongItem'
+import {SubTitleArtists} from '~/components/SubTitle'
 
 const cx = classNames.bind(styles)
 

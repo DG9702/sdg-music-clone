@@ -106,10 +106,7 @@ const SectionPage: React.FC = () => {
       }
     };
     fetchData();
-  }, [pathname]);
-
-  console.log("check datatype: ", data?.dataType);
-  
+  }, [pathname]);  
 
   return (
     <div className={cx("wrapper")}>
