@@ -1,5 +1,5 @@
 import { countries } from "~/types/countries";
-import { spotifyApiDev, spotifyApiClient } from "~/configs/axiosClient";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 interface GetTrackParams {
   id: string;

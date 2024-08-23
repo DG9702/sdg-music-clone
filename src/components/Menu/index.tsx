@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import Tippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
 
@@ -27,12 +27,12 @@ interface MenuProps {
   isOpen?: boolean;
 }
 
-const defaultFn = () => {};
+//const defaultFn = () => {};
 
 const Menu: FC<MenuProps> = ({
   children,
   items = [],
-  onChange = defaultFn,
+  //onChange = defaultFn,
   isOpen = false,
   sort = [],
   viewas = [],

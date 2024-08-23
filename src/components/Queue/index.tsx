@@ -6,7 +6,6 @@ import { CloseIcon } from "~/assets/icons";
 import SongItem from "../SongItem";
 import SongList from "../SongList";
 import { PlayerContext } from "~/context/PlayerContext";
-import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -17,8 +16,8 @@ const Queue = () => {
     currentTrack,
     currentTrackIndex,
     isShuffle,
-    isPlaying,
-    prevDocumentTitle,
+    //isPlaying,
+    //prevDocumentTitle,
   } = useContext(PlayerContext);
   const [navOpacity, setNavOpacity] = useState<number>(0);
   const queueNormalized = queue.filter((item) => item);
@@ -30,6 +29,9 @@ const Queue = () => {
       setNavOpacity(1);
     } else setNavOpacity(yAxis / 64);
   };
+
+  console.log("Check navOpacity: ", navOpacity);
+  
 
   return (
     <div className={cx("queue-view-wrapper")}>

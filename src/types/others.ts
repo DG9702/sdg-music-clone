@@ -1,4 +1,4 @@
-import { ArtistData, PlaylistOwner } from "./artist";
+import { ArtistData } from "./artist";
 
 export interface ImageSource {
   url: string;

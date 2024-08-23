@@ -1,29 +1,29 @@
-import { countries } from '~/types/countries'
-import { spotifyApiClient, spotifyApiDev } from '~/configs/axiosClient'
+import { countries } from "~/types/countries";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 interface browserApiProps {
-  limit: number
-  country: countries
-  type: 'featured-playlists' | 'new-releases'
+  limit: number;
+  country: countries;
+  type: "featured-playlists" | "new-releases";
 }
 
 const browserApi = async (params: Partial<browserApiProps>) => {
-  const { country, limit, type } = params
+  const { country, limit, type } = params;
 
   const { data } = await spotifyApiClient.get(`browse/${type}`, {
     params: {
       country: country,
       limit: limit,
     },
-  })
+  });
 
   if (data?.albums) {
-    return data.albums.items
+    return data.albums.items;
   }
 
   if (data?.playlists) {
-    return data.playlists.items
+    return data.playlists.items;
   }
-}
+};
 
-export default browserApi
+export default browserApi;

@@ -18,7 +18,6 @@ const cx = classNames.bind(styles);
 const PlayerControl: React.FC = () => {
   const {
     currentTrack,
-    currentTrackIndex,
     duration,
     durationAudio,
     intervalIdRef,

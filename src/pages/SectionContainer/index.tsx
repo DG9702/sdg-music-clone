@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styles from "./SectionContainer.module.scss";
 import Header from "~/components/Header";
 import { SectionProps } from "~/types/section";

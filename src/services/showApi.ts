@@ -1,4 +1,4 @@
-import { spotifyApiDev, spotifyApiClient } from "~/configs/axiosClient";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 interface ShowApiProps {
   id?: string;
@@ -12,4 +12,4 @@ const showApi = async (params: ShowApiProps) => {
   return data;
 };
 
-export default showApi
+export default showApi;

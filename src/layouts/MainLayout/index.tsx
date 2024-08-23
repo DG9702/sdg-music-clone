@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import classNames from "classnames/bind";
 import styles from "./MainLayout.module.scss";
 import Split from "react-split";

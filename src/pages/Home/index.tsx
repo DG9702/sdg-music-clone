@@ -18,7 +18,7 @@ const Home = () => {
   const { isLogged } = useContext(AuthContext);
 
   const {
-    recently,
+    //recently,
     trending,
     focus,
     jazz,

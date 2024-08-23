@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { getAudioLink } from '~/services/getAudioLink'
 import { getTrackRecommendation } from '~/services/trackApi'
 import { ArtistData } from '~/types/artist'
 import { ImageSource } from '~/types/others'
@@ -196,8 +195,11 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
                 : ''
             }`
           : `${currentTrack?.show?.publisher} ${currentTrack?.name} ${currentTrack?.type} original`
-      
+    
+          console.log("Check query: ", query);
     }
+      
+
     handlePause()
     setReady(false)
     if (queue?.filter((item: CurrentTrack) => item).length !== 0) {

@@ -29,10 +29,6 @@ const GenreContainer: FC = () => {
   const [isShowNavTitle, setShowNavTitle] = useState<boolean>(false);
   const [bgColorTest, setBgColorTest] = useState<any>("rgb(18, 18, 18)");
 
-  const bgColor = "rgb(18, 18, 18)";
-
-  const imgURL = "";
-
   const { ref: pivotTrackingRef, inView: isTracking } = useInView({
     threshold: 0,
   });

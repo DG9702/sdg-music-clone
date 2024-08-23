@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import classNames from "classnames/bind";
 import styles from "./Button.module.scss";
 
@@ -18,12 +18,11 @@ interface ButtonProps {
   className?: string;
 }
 
-const Button: FC<ButtonProps> = (props) => {
+const Button: React.FC<ButtonProps> = (props) => {
   const {
     type = "default",
     bgColor,
     navOpacity = 1,
-    disabled = false,
     rightIcon,
     leftIcon,
     onClick,

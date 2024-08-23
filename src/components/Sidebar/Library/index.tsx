@@ -25,7 +25,7 @@ const cx = classNames.bind(styles);
 type libCategory = "playlist" | "album";
 
 const Library: React.FC = () => {
-  const { userData, isLogged, handleLogin } = useContext(AuthContext);
+  const { userData, isLogged } = useContext(AuthContext);
   const [category, setCategory] = useState<libCategory>("playlist");
   const [bottomShadow, setBottomShadow] = useState<boolean>(false);
   const [showInput, setShowInput] = useState<boolean>(false);
@@ -95,8 +95,6 @@ const Library: React.FC = () => {
     ],
     [category],
   );
-
-  const likeSong = [];
 
   const libSelection = useMemo(
     () => libSelections.find((libSelection) => libSelection.active),

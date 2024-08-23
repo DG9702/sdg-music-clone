@@ -38,11 +38,11 @@ const Header: FC<HeaderProps> = (props) => {
     query,
     setQuery,
     type = "default",
-    title = "",
-    playBtnVisible = false,
-    inclPlayBtn = false,
-    handleClickPlayBtn,
-    showTitle = false,
+    //title = "",
+    //playBtnVisible = false,
+    //inclPlayBtn = false,
+    //handleClickPlayBtn,
+    //showTitle = false,
   } = props;
 
   const { isLogged, userData, handleLogin } = useContext(AuthContext);

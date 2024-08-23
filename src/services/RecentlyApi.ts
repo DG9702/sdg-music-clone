@@ -1,5 +1,5 @@
 import { countries } from "~/types/countries";
-import { spotifyApiClient, spotifyApiDev } from "~/configs/axiosClient";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 interface browserApiProps {
   limit: number;

@@ -28,7 +28,6 @@ const AudioLeft: React.FC = () => {
     useContext(PlayerContext);
   const {
     isPlayingViewShowed,
-    isQueueShowed,
     setPlayingViewShowed,
     setQueueShowed,
   } = useContext(AppContext);

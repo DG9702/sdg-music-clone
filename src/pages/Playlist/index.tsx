@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./Playlist.module.scss";
 import Header from "~/components/Header";
 import PlayButton from "~/components/PlayButton";
-import { HeartIcon, SaveTrack } from "~/assets/icons";
+import { SaveTrack } from "~/assets/icons";
 import SongList from "~/components/SongList";
 import Footer from "~/components/Footer";
 import HeadSection from "~/components/HeadSection";
@@ -15,7 +15,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import categoryApi from "~/services/categoryApi";
 import { PlayerContext } from "~/context/PlayerContext";
 import documentTitle from "~/utils/documentTitle";
-import {getUserSaveTrack} from "~/services/trackApi";
 
 const cx = classNames.bind(styles);
 
