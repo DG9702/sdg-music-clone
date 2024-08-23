@@ -2,9 +2,9 @@
 
 Use a demo account to experience the website's features:
 
-20a10010236@students.hou.edu.vn
+- email: 20a10010236@students.hou.edu.vn
 
-dw-rei9702
+- password: dw-rei9702
 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
