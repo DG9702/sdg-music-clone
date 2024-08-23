@@ -1,5 +1,5 @@
 import { countries } from "~/types/countries";
-import { spotifyApiClient } from "~/configs/axiosClient";
+import { spotifyApiDev } from "~/configs/axiosClient";
 
 interface GetTrackParams {
   id: string;
@@ -8,7 +8,7 @@ interface GetTrackParams {
 export const getTrack = async (params: GetTrackParams) => {
   const { id } = params;
 
-  const { data } = await spotifyApiClient.get(`tracks/${id}`);
+  const { data } = await spotifyApiDev.get(`tracks/${id}`);
 
   return data;
 };
@@ -24,7 +24,7 @@ export const getTrackRecommendation = async (
   params: getTrackRecommendationParams,
 ) => {
   const { limit = 19, market = "VN", seed_artists, seed_tracks } = params;
-  const { data } = await spotifyApiClient.get("recommendations", {
+  const { data } = await spotifyApiDev.get("recommendations", {
     params: {
       limit,
       market,
@@ -44,7 +44,7 @@ interface getUserSaveParams {
 
 export const checkUserSaveTrack = async (params: any) => {
   const ids = params;
-  const result = await spotifyApiClient.get("me/tracks/contains", {
+  const result = await spotifyApiDev.get("me/tracks/contains", {
     params: ids,
   });
   return result;
@@ -52,7 +52,7 @@ export const checkUserSaveTrack = async (params: any) => {
 
 export const getUserSaveTrack = async (params: getUserSaveParams) => {
   const { limit = 50, market = "VN", offset = 0 } = params;
-  const { data } = await spotifyApiClient.get("me/tracks", {
+  const { data } = await spotifyApiDev.get("me/tracks", {
     params: {
       limit,
       market,
@@ -67,7 +67,7 @@ export const saveTrackForCurrentUser = async (params: any) => {
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
   const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
-  const result = await spotifyApiClient.put(`me/tracks?ids=${params}`, {
+  const result = await spotifyApiDev.put(`me/tracks?ids=${params}`, {
     headers: {
       Authorization: "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
       "Content-type": "application/json",
@@ -82,7 +82,7 @@ export const removeTrackForCurrentUser = async (params: any) => {
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
   const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
-  const result = await spotifyApiClient.delete(`me/tracks?ids=${params}`, {
+  const result = await spotifyApiDev.delete(`me/tracks?ids=${params}`, {
     headers: {
       Authorization: "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
       "Content-type": "application/json",

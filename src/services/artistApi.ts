@@ -1,4 +1,4 @@
-import { rapidApiClient, spotifyApiClient } from "~/configs/axiosClient";
+import { rapidApiClient, spotifyApiDev } from "~/configs/axiosClient";
 
 const artistApi = async (id?: string) => {
   if (!id) return;
@@ -13,7 +13,7 @@ const artistApi = async (id?: string) => {
 
 export const getArtistTopTrack = async (id?: string) => {
   if (!id) return;
-  const { data } = await spotifyApiClient.get(
+  const { data } = await spotifyApiDev.get(
     `artists/${id}/top-tracks?market=VN`,
   );
   return data;
@@ -21,8 +21,8 @@ export const getArtistTopTrack = async (id?: string) => {
 
 export const getArtistAlbums = async (id?: string) => {
   if (!id) return;
-  const { data } = await spotifyApiClient.get(`artists/${id}/albums`);
+  const { data } = await spotifyApiDev.get(`artists/${id}/albums`);
   return data;
 };
 
-export default artistApi
+export default artistApi;

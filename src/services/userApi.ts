@@ -1,12 +1,12 @@
-import { spotifyApiClient } from "~/configs/axiosClient";
+import { spotifyApiDev } from "~/configs/axiosClient";
 
 export const getUserData = async () => {
-  const { data } = await spotifyApiClient.get(`me`);
+  const { data } = await spotifyApiDev.get(`me`);
   return data;
 };
 
 export const getUserPlaylist = async (id: string) => {
-  const { data } = await spotifyApiClient.get(`users/${id}/playlists`, {
+  const { data } = await spotifyApiDev.get(`users/${id}/playlists`, {
     params: {
       limit: 50,
     },
@@ -15,15 +15,15 @@ export const getUserPlaylist = async (id: string) => {
 };
 
 export const getUserAlbum = async () => {
-  const { data } = await spotifyApiClient.get('me/albums')
-  return data
-}
+  const { data } = await spotifyApiDev.get("me/albums");
+  return data;
+};
 
 export const getUserTopArtists = async () => {
-  const { data } = await spotifyApiClient.get('me/top/artists', {
+  const { data } = await spotifyApiDev.get("me/top/artists", {
     params: {
       limit: 50,
     },
-  })
-  return data
-}
+  });
+  return data;
+};
