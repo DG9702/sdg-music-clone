@@ -1,7 +1,7 @@
-import { spotifyApiDev } from "~/configs/axiosClient";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 export const getCategories = async () => {
-  const { data } = await spotifyApiDev.get("browse/categories", {
+  const { data } = await spotifyApiClient.get("browse/categories", {
     params: {
       country: "VN",
       limit: 50,
@@ -21,7 +21,7 @@ export const getCategoryPlaylist = async (params: getCategoryPlaylistProps) => {
   const { id, limit = 50, offset = 0 } = params;
   if (!id) return;
 
-  const { data } = await spotifyApiDev?.get(
+  const { data } = await spotifyApiClient?.get(
     `browse/categories/${id}/playlists`,
     {
       params: {
@@ -39,7 +39,7 @@ export const getCategoryInfo = async (params: getCategoryPlaylistProps) => {
   const { id } = params;
   if (!id) return;
 
-  const { data } = await spotifyApiDev.get(`browse/categories/${id}`);
+  const { data } = await spotifyApiClient.get(`browse/categories/${id}`);
 
   return data;
 };

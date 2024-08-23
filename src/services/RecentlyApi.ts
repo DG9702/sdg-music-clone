@@ -1,5 +1,5 @@
 import { countries } from "~/types/countries";
-import { spotifyApiDev } from "~/configs/axiosClient";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 interface browserApiProps {
   limit: number;
@@ -10,7 +10,7 @@ interface browserApiProps {
 const recentlyApi = async (params: Partial<browserApiProps>) => {
   const { limit } = params;
 
-  const { data } = await spotifyApiDev.get(`me/player/recently-played`, {
+  const { data } = await spotifyApiClient.get(`me/player/recently-played`, {
     params: {
       limit: limit,
     },
