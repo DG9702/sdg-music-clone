@@ -9,7 +9,6 @@ import {
 } from "~/assets/icons";
 
 import styles from "../Sidebar.module.scss";
-import { MenuProps } from "antd/lib";
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +19,6 @@ export interface AreaProps {
     setSearchValue?: any;
 }
 
-const SORT = ["Recents", "Recently Added", "Alphabetical", "Creator"] as const;
 const VIEW = ["Compact", "List", "Grid"] as const;
 
 const SearchSelector: FC<AreaProps> = memo(({ searchValue, setSearchValue }) => {

@@ -29,7 +29,6 @@ const Playlist: React.FC = () => {
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
-    setPlaying,
     isPlaying,
     prevDocumentTitle,
     isBtnClickable

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { checkUserSaveTrack, getTrackRecommendation } from '~/services/trackApi'
+import { getTrackRecommendation } from '~/services/trackApi'
 import { ArtistData } from '~/types/artist'
 import { ImageSource } from '~/types/others'
 import { Episode } from '~/types/show'

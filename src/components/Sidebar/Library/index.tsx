@@ -6,9 +6,7 @@ import {
   EpisodesIcon,
   LibraryCollapseIcon,
   LibraryIcon,
-  MusicNote,
   NewPlaylistIcon,
-  SearchIcon,
 } from "~/assets/icons";
 import { LibDataItem, LibSelection } from "~/types/sidebar";
 import styles from "../Sidebar.module.scss";
@@ -30,8 +28,6 @@ export interface yourLibraryState {
 }
 
 type libCategory = 'playlist' | 'album' | 'artist'; 
-
-type sortBy = "Recents" | "Recently Added" | "Alphabetical" | "Creator";
 type viewAs = "Compact" | "List" | "Grid";
 
 const Library: React.FC<yourLibraryState>=({ isCollapsed, setCollapsed }) => {

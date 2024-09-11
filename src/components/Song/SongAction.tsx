@@ -1,4 +1,4 @@
-import { FC, memo, useContext, useEffect, useMemo } from "react";
+import { FC, memo, useContext, useMemo } from "react";
 
 import { Dropdown, MenuProps } from "antd";
 import {

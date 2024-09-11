@@ -1,8 +1,4 @@
-import {
-    rapidApiClient,
-    spotifyApiDev,
-    spotifyApiClient,
-} from "~/configs/axiosClient";
+import { rapidApiClient, spotifyApiClient } from "~/configs/axiosClient";
 
 const artistApi = async (id?: string) => {
     if (!id) return;

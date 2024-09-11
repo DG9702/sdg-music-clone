@@ -1,4 +1,4 @@
-import { spotifyApiDev, spotifyApiClient } from "~/configs/axiosClient";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 export const getCategories = async () => {
     const { data } = await spotifyApiClient.get("browse/categories", {

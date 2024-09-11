@@ -56,7 +56,6 @@ const Artist: React.FC = () => {
     prevDocumentTitle,
     queue,
     isBtnClickable,
-    currentTrack
   }=useContext(PlayerContext);
   
   const [isFollow, setIsFollow]=useState<boolean>(false);

@@ -6,7 +6,6 @@ import styles from "./SidebarItem.module.scss";
 import { SidebarItemProps } from "~/types/sidebar";
 import ImageLazy from "../Image";
 import ThumbDefault from "../ThumbDefault";
-import {SubTitleArtists} from "../SubTitle";
 import {AuthContext} from "~/context/AuthContext";
 
 const cx = classNames.bind(styles);

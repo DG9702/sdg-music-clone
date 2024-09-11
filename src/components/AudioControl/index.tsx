@@ -21,7 +21,6 @@ const PlayerControl: React.FC = () => {
     duration,
     durationAudio,
     intervalIdRef,
-    audioData,
     isPlaying,
     audioRef,
     isReady,

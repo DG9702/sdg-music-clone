@@ -5,11 +5,9 @@ import classNames from "classnames/bind";
 import SongItem from "../SongItem";
 import { MainLayoutContext } from "~/context/MainLayoutContext";
 import { useInView } from "react-intersection-observer";
-import { ClockIcon, OrderCompactIcon, OrderListIcon } from "~/assets/icons";
+import { ClockIcon } from "~/assets/icons";
 import { SongListProps } from "~/types/track";
 import { AppContext } from "~/App";
-import { Dropdown, Space } from "antd";
-import { Tooltip } from "../Tooltip";
 import { fetchSidebarData } from "~/utils";
 import { AuthContext } from "~/context/AuthContext";
 import {useParams} from "react-router-dom";
@@ -58,7 +56,7 @@ const SongList: FC<SongListProps> = ({
             setMyPlaylists(data);
         };
         fetchData();
-    }, [userData]);
+    }, [userData, setCategory]);
 
     const [renderNumb, setRenderNumb] = useState<number>(() => {
         if ((songList?.length ?? 0 < 9) && songList?.length)

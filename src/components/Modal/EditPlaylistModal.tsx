@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useContext, useEffect, useRef, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import {Col, Modal, Row} from 'antd';
 import ProForm, { ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import {AppContext} from '~/App';
@@ -8,9 +8,6 @@ import type { FormInstance } from 'antd/lib';
 import {changePlaylistDetails, changePlaylistImage} from '~/services/playlistApi';
 import {toast} from 'react-toastify';
 
-interface EditPlaylistModalProps {
-  children?: ReactNode;
-}
 
 const toBase64 = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {

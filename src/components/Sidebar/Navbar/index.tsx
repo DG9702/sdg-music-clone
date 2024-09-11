@@ -3,7 +3,6 @@ import {
   HomeIcon,
   SearchActiveIcon,
   SearchIcon,
-  logoIcon,
 } from "~/assets/icons";
 import classNames from "classnames/bind";
 import { useMemo } from "react";

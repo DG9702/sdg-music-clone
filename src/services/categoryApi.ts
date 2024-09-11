@@ -1,4 +1,4 @@
-import { spotifyApiDev, spotifyApiClient } from "~/configs/axiosClient";
+import { spotifyApiClient } from "~/configs/axiosClient";
 
 interface categoryApiProps {
     type: string;

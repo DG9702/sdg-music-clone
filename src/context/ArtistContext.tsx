@@ -1,7 +1,6 @@
 import artistApi, {getArtistTopTrack} from "~/services/artistApi";
 import { ArtistProfile } from "~/types/artist";
-import { RapidArtistTrack, SpotifyTrack } from "~/types/track";
-import { normalizeTrack } from "~/utils";
+import { SpotifyTrack } from "~/types/track";
 import { FC, ReactNode, createContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import ArtistModal from "~/components/ArtistModal";

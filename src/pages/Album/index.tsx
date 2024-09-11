@@ -82,6 +82,9 @@ const Album: React.FC = () => {
     threshold: 0,
   });
 
+  console.log("Check isPlay in album: ", isPlay);
+  
+
   useEffect(() => {
     if (isPlaying) {
       prevDocumentTitle.current = `${

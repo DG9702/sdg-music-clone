@@ -16,7 +16,7 @@ import Marquee from "react-fast-marquee";
 import Skeleton from "react-loading-skeleton";
 import { AppContext } from "~/App";
 import { Tooltip } from "antd";
-import { checkUserSaveTrack, removeTrackForCurrentUser, saveTrackForCurrentUser} from "~/services/trackApi";
+import { removeTrackForCurrentUser, saveTrackForCurrentUser} from "~/services/trackApi";
 import { toast, ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {SubTitleArtists} from "../SubTitle";
@@ -25,7 +25,7 @@ import {TrackContext} from "~/context/TrackContext";
 const cx = classNames.bind(styles);
 
 const AudioLeft: React.FC = () => {
-  const { playBarData, playingType, isBtnClickable, isSaving, setSaving } =
+  const { playBarData, playingType, isBtnClickable } =
     useContext(PlayerContext);
   const {
     isPlayingViewShowed,
