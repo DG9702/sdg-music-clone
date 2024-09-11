@@ -69,9 +69,6 @@ export const unFollowArtistForCurrentUser = async (params: any) => {
             type,
             ids,
         },
-        body: {
-            ids: ["string"],
-        },
         headers: {
             Authorization: "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
             "Content-type": "application/json",

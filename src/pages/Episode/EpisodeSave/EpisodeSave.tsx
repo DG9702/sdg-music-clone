@@ -14,6 +14,7 @@ import Footer from "~/components/Footer"
 import {getUserEpisodeSaveApi} from "~/services/showApi"
 import ShowItem from "~/components/ShowItem"
 import {EpisodesIcon} from "~/assets/icons"
+import PlayButton from "~/components/PlayButton"
 
 const cx = classNames.bind(styles)
 
@@ -96,8 +97,10 @@ const EpisodeSave: FC = () => {
     }
   }, [inView])
 
-
-  console.log("Check data in episodes Save User: ", data?.images?.[0].url);
+  const handleClickPlayBtn = () => {
+    console.log("Check play episodes");
+    
+  };  
 
   return (
     <main className={cx({ 'show-wrapper': true, 'col-layout': width <= 1100 })}>
@@ -126,7 +129,14 @@ const EpisodeSave: FC = () => {
         <div className={cx('main')}>
           <div style={{ backgroundColor: bgColor }} className={cx('bg-blur')}></div>
           <div className={cx('action-bar')}>
-            <button className={cx('follow-btn')}>Follow</button>
+            <div className={cx("action-left")} onClick={handleClickPlayBtn}>
+                <PlayButton
+                  size={56}
+                  fontSize={24}
+                  scaleHovering={1.05}
+                  transitionDuration={33}
+                />
+              </div>
           </div>
           <div className={cx('content')}>
             <div className={cx('episodes-list')}>

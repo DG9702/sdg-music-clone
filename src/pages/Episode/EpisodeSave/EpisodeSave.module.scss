@@ -42,27 +42,19 @@
 .action-bar {
   display: flex;
   position: relative;
+  justify-content: space-between;
   padding: 24px;
   align-items: center;
   gap: 32px;
 
-  .follow-btn {
-    @include reset-button;
-    padding: 8px 15px;
-    font-size: 14px;
-    font-weight: 700;
-    background-color: transparent;
-    color: var(--white);
-    border: 1px solid #878787;
-    border-radius: 500px;
-    cursor: pointer;
-    transition: all 33ms ease;
+  .action-left {
+        display: flex;
+        position: relative;
+        gap: 32px;
+        align-items: center;
 
-    &:hover {
-      border-color: var(--white);
-      transform: scale(1.04);
-    }
-  }
+        
+      }
 }
 
 .content {
