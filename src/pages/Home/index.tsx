@@ -30,7 +30,6 @@ const Home = () => {
   } = useContext(HomePageContext);
 
   //console.log("recently: ", recently?.data);
-  //console.log("featurePlaylist: ", featurePlaylist);
   //console.log("Artist: ", suggestArtists);
   //console.log("New Releases: ", newReleases);
   

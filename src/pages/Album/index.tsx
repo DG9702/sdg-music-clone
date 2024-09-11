@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./Album.module.scss";
 import HeadSection from "~/components/HeadSection";
 import PlayButton from "~/components/PlayButton";
-import { SaveTrack } from "~/assets/icons";
+import { OrderCompactIcon, OrderListIcon, SaveTrack, UserSavedTrack } from "~/assets/icons";
 import SongList from "~/components/SongList";
 import Footer from "~/components/Footer";
 import Header from "~/components/Header";
@@ -19,6 +19,9 @@ import { getArtistAlbums } from "~/services/artistApi";
 import dateFormatConvertor from "~/utils/dateFormatConvertor";
 import {ResponseSectionItem} from "~/types/section";
 import Section from "~/components/Section";
+import {checkCurrentUserSaveAlbum, removeAlbumForCurrentUser, saveAlbumForCurrentUser} from "~/services/albumApi";
+import {toast} from "react-toastify";
+import {Dropdown, MenuProps, Space, Tooltip} from "antd";
 
 const cx = classNames.bind(styles);
 
@@ -29,15 +32,37 @@ const Album: React.FC = () => {
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
+    setPlaying,
     isPlaying,
     prevDocumentTitle,
     currentTrack,
+    isBtnClickable
   } = useContext(PlayerContext);
   const [navOpacity, setNavOpacity] = useState<number>(0);
   const [data, setData] = useState<SpotifyAlbum>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [navPlayBtnVisible, setNavPlayBtnVisible] = useState<boolean>(false);
   const [artistAlbums, setArtistAlbums] = useState<SpotifyAlbum[]>();
+  const [isPlay, setIsPlay]=useState<boolean>();
+  const [isSaving, setSaving]=useState<boolean>(false);
+  const [view, setView]=useState<boolean>(false);
+
+  const items: MenuProps['items'] = [
+      {
+        label: 'LIST',
+        key: 'LIST',
+        onClick: () => {
+          setView(false)
+        }
+      },
+      {
+        label: 'COMPACT',
+        key: 'COMPACT',
+        onClick: () => {
+          setView(true)
+        }
+      }
+    ];
 
   // const bgColor = useRaiseColorTone(useDominantColor(data?.images?.[0]?.url) || '#121212')
 
@@ -140,6 +165,58 @@ const Album: React.FC = () => {
     setPlayingType("track");
     calNextTrackIndex();
   };
+  
+  const handleSetPlay=() => {
+    setPlaying(!isPlaying)
+  }
+
+  useEffect(() => {
+    if(data?.id===currentTrack?.album?.id && isPlaying===true) {
+      setIsPlay(true);
+    } else if(data?.id===currentTrack?.album?.id || isPlaying===true) {
+      setIsPlay(false)
+    };
+  }, [data, currentTrack])
+
+  useEffect(() => {
+    if (data?.id) {
+      const fetchData = async () => {
+        const result = await checkCurrentUserSaveAlbum({ids: `${data?.id}`});
+        console.log("Check result: ", result);
+        
+        if (result.data[0] === true) {
+          setSaving(true);
+        } else {
+          setSaving(false)
+        }
+      }
+      fetchData();
+    } else {
+      //
+    }
+  }, [isSaving, setSaving, data?.id])
+
+  const addTrackRequest = async () => {
+    const result = await saveAlbumForCurrentUser(`${data?.id}`);
+    return result;
+  }
+
+  const removeTrackRequest = async () => {
+    const result = await removeAlbumForCurrentUser(`${data?.id}`);
+    return result;
+  }
+
+  const handleSaveEpisode = async () => {
+    if (isSaving) {
+      await removeTrackRequest();
+      setSaving(false)
+      toast('🦄 Remove from liked Song');
+    } else {
+      await addTrackRequest();
+      setSaving(true);
+      toast('🦄 Added to liked Song');
+    }
+  };    
 
   return (
     <main className={cx("wrapper")}>
@@ -181,21 +258,42 @@ const Album: React.FC = () => {
           ></div>
           <div className={cx("main")}>
             <div className={cx("action-bar")}>
-              <div onClick={handleClickPlayBtn}>
-                <PlayButton
-                  size={56}
-                  fontSize={24}
-                  scaleHovering={1.05}
-                  transitionDuration={33}
-                  isPlay={data?.id === currentTrack?.album?.id}
-                />
+              <div className={cx("action-left")}>
+                <div onClick={handleClickPlayBtn}>
+                  <PlayButton
+                    size={56}
+                    fontSize={24}
+                    scaleHovering={1.05}
+                    transitionDuration={33}
+                    isPlay={isPlaying}
+                    setPlaying={handleSetPlay}
+                  />
+                </div>
+                <button
+                  className={cx("heart", {active: isSaving})}
+                  onClick={() => isBtnClickable && handleSaveEpisode()}
+                >
+                  {isSaving ? <UserSavedTrack /> : <SaveTrack />}
+                </button>
               </div>
-              <button className={cx("heart")}>
-                <SaveTrack />
-              </button>
+              <div className={cx("action-right")}>
+                <Space className='mobile-hidden'>
+                  <Tooltip title={'VIEW'}>
+                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view === false ? "LIST" : "COMPACT"] }}>
+                      <button className={cx('order-button')}>
+                        <Space align='center'>
+                          <span>{view === false ? "LIST" : "COMPACT"}</span>
+                          {view === false ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
+                        </Space>
+                      </button>
+                    </Dropdown>
+                  </Tooltip>
+                </Space>
+              </div>
             </div>
             <SongList
               type="album"
+              view={view}
               top={0}
               pivotTop={64}
               songList={data?.tracks?.items || []}
@@ -207,7 +305,6 @@ const Album: React.FC = () => {
             />
           </div>
         </div>
-
         <div className={cx("copy-rights")}>
           <p className={cx("date")}>
             {dateFormatConvertor(data?.release_date)}

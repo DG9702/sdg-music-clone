@@ -2,13 +2,12 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import classNames from "classnames/bind";
 import {
   AddIcon,
-  CompactIcon,
   EarthIcon,
-  Grid,
-  LibArrowRight,
+  EpisodesIcon,
+  LibraryCollapseIcon,
   LibraryIcon,
-  List,
-  Recents,
+  MusicNote,
+  NewPlaylistIcon,
   SearchIcon,
 } from "~/assets/icons";
 import { LibDataItem, LibSelection } from "~/types/sidebar";
@@ -17,20 +16,36 @@ import { AuthContext } from "~/context/AuthContext";
 import SidebarItem from "~/components/SidebarItem";
 import fetchSidebarData from "~/utils/fetchSidebarData";
 import Button from "~/components/Button";
-import { Link } from "react-router-dom";
-import Menu from "~/components/Menu";
+import { Link, useNavigate } from "react-router-dom";
+import {Dropdown} from "antd";
+import {createPlaylist} from "~/services/playlistApi";
+import {toast} from "react-toastify";
+import {SearchArea} from "./Filters";
 
 const cx = classNames.bind(styles);
 
-type libCategory = "playlist" | "album";
+export interface yourLibraryState {
+  isCollapsed?: boolean;
+  setCollapsed?: any;
+}
 
-const Library: React.FC = () => {
+type libCategory = 'playlist' | 'album' | 'artist'; 
+
+type sortBy = "Recents" | "Recently Added" | "Alphabetical" | "Creator";
+type viewAs = "Compact" | "List" | "Grid";
+
+const Library: React.FC<yourLibraryState>=({ isCollapsed, setCollapsed }) => {
+  const navigate = useNavigate();
+
   const { userData, isLogged } = useContext(AuthContext);
   const [category, setCategory] = useState<libCategory>("playlist");
   const [bottomShadow, setBottomShadow] = useState<boolean>(false);
-  const [showInput, setShowInput] = useState<boolean>(false);
-  const [showRecent, setShowRecent] = useState<boolean>(false);
-  const [data, setData] = useState<LibDataItem[]>([]);
+  const [data, setData]=useState<LibDataItem[]>([]);
+  const [totalMyPlaylist, setTotalMyPlaylist]=useState<number>(0);
+
+  const [searchValue, setSearchValue]=useState<any>();
+
+  const [view, setView]=useState<viewAs>("List");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,42 +56,10 @@ const Library: React.FC = () => {
       setData(data);
     };
     fetchData();
+    if(data) {
+      setTotalMyPlaylist(data?.filter((p: any) => p?.owner?.id === userData?.id)?.length);
+    }
   }, [category, userData]);
-  const sort = [
-    {
-      title: "Recents",
-      type: "Recents",
-    },
-    {
-      title: "Recently Added",
-      type: "Recently-Added",
-    },
-    {
-      title: "Alphabetical",
-      type: "Alphabetical",
-    },
-    {
-      title: "Creator",
-      type: "Creator",
-    },
-  ];
-  const viewas = [
-    {
-      icon: <CompactIcon />,
-      title: "Compact",
-      type: "Compact",
-    },
-    {
-      icon: <List />,
-      title: "List",
-      type: "List",
-    },
-    {
-      icon: <Grid />,
-      title: "Grid",
-      type: "Grid",
-    },
-  ];
 
   const libSelections: LibSelection[] = useMemo(
     () => [
@@ -85,6 +68,12 @@ const Library: React.FC = () => {
         title: "Playlists",
         id: "00003",
         active: category === "playlist",
+      },
+      {
+        type: "artist",
+        title: "Artist",
+        id: "00004",
+        active: category === "artist",
       },
       {
         type: "album",
@@ -101,7 +90,7 @@ const Library: React.FC = () => {
     [category],
   );
 
-  const handleClick = (type: "playlist" | "album"): void => {
+  const handleClick = (type: "playlist" | "artist" | "album"): void => {
     setCategory(type);
   };
 
@@ -115,40 +104,58 @@ const Library: React.FC = () => {
     }
   };
 
-  const handleClickSearchPlaylist = (): void => {
-    document.getElementById("inputSearch")?.classList.add(cx("hien"));
-    setShowInput(!showInput);
-  };
-
-  const handleClickRecent = (): void => {
-    setShowRecent(!showRecent);
-  };
-
+  console.log("Check data in category: ", category, data);
+  
+  
   return (
     <div className={cx("library")}>
-      <div className={cx("playlist")}>
+      <div className={cx("playlist", { "open": isCollapsed === true })}>
         <div className={cx({ "bottom-shadow": bottomShadow })}>
           <header className={cx("playlist-header")}>
             <div className={cx("playlist-header-container")}>
-              <div className={cx("playlist-header-title")}>
+              <div
+                className={cx("playlist-header-title")}
+                onClick={() => setCollapsed(!isCollapsed)}
+                style={{
+                  gap: isCollapsed? 0 : 20,
+                  justifyContent: isCollapsed ? "center" : ""
+
+                 }}
+              >
                 <div className={cx("playlist-header-icon")}>
-                  <LibraryIcon />
+                  {!isCollapsed ? <LibraryIcon /> : <LibraryCollapseIcon  />}
                 </div>
-                <span className={cx("playlist-header-text")}>Your Library</span>
+                {!isCollapsed && (<span className={cx("playlist-header-text")}>Your Library</span>)}
               </div>
-              <div className={cx("playlist-button")}>
-                <button>
-                  <AddIcon size={16} />
-                </button>
-                {isLogged && (
-                  <button>
-                    <LibArrowRight size={16} />
+              {!isCollapsed && (<div className={cx("playlist-button")}>
+                <Dropdown
+                  placement='bottomRight'
+                  trigger={['click']}
+                  menu={{
+                    items: [
+                      {
+                        key: 'create',
+                        icon: <NewPlaylistIcon />,
+                        label: 'Create a new Playlist',
+                        onClick: () => {
+                          createPlaylist(userData?.id, {name: `My Playlist ${totalMyPlaylist+1}`}).then((playlist) => {
+                            toast.success("Create playlist success");
+                            navigate(`/playlist/${playlist.data.id}`);
+                          });
+
+                        },
+                      },
+                    ],
+                  }}
+                >
+                  <button className='addButton'>
+                    <AddIcon />
                   </button>
-                )}
-              </div>
+                </Dropdown>
+              </div>)}
             </div>
           </header>
-          {isLogged && (
+          {isLogged && !isCollapsed && (
             <div className={cx("selection")}>
               <div className={cx("selection-body")}>
                 {libSelections.map((item, index) => (
@@ -170,46 +177,34 @@ const Library: React.FC = () => {
               <div className={cx("section-list-flex")}>
                 {isLogged ? (
                   <>
-                    <div className={cx("section-head")}>
-                      <div
-                        id="inputSearch"
-                        className={cx("head-search")}
-                        onClick={handleClickSearchPlaylist}
-                      >
-                        <input
-                          className={cx("inputSearch", "opacity")}
-                          placeholder="Search in Your Library"
-                        />
-                        <button>
-                          <SearchIcon />
-                        </button>
-                      </div>
-
-                      <Menu
-                        sort={sort}
-                        viewas={viewas}
-                        isLib={true}
-                        isOpen={showRecent}
-                      >
-                        <button
-                          onClick={handleClickRecent}
-                          className={cx("head-recent")}
-                        >
-                          <span className={cx("recent-title")}>Recents</span>
-                          <span className={cx("recent-icon")}>
-                            <Recents />
-                          </span>
-                        </button>
-                      </Menu>
-                    </div>
-                    <div className={cx("section-playlist")}>
+                    {!isCollapsed &&
+                      <SearchArea
+                        searchValue={searchValue}
+                        setSearchValue={setSearchValue}
+                        view={view}
+                        setView={setView}
+                      />
+                    }
+                    <div className={cx("section-playlist", { "section-playlist-grid": view === 'Grid' })}>
                       <SidebarItem
+                        view={view}
+                        searchValue={searchValue}
                         name="Liked Songs"
                         thumbnail="https://misc.scdn.co/liked-songs/liked-songs-64.png"
                         type="collection"
                       />
-                      {data?.map((item, index: number) => (
+                      <SidebarItem
+                        view={view}
+                        searchValue={searchValue}
+                        isEpisodes={true}
+                        icon={<EpisodesIcon  />}
+                        name="Your Episodes"
+                        type="collection"
+                      />
+                      {data?.sort()?.map((item, index: number) => (
                         <SidebarItem
+                          searchValue={searchValue}
+                          view={view}
                           key={item?.id || index}
                           id={item?.id || item?.album?.id}
                           author={item?.owner && item?.owner?.display_name}

@@ -9,7 +9,7 @@ import {PlayerContext} from "~/context/PlayerContext";
 const cx = classNames.bind(styles);
 
 const AudioPlayer: React.FC = () => {
-  const { currentTrack } = useContext(PlayerContext);
+  const { currentTrack } = useContext(PlayerContext);  
 
   return (
     <div className={cx("audio-wrapper")}>

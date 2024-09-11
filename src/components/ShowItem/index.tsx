@@ -1,4 +1,4 @@
-import { FC, memo, useContext } from "react";
+import { FC, memo, useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
@@ -9,7 +9,9 @@ import { dateFormatConvertor, durationConvertor } from "~/utils";
 import styles from "./ShowItem.module.scss";
 import PlayButton from "../PlayButton";
 import ImageLazy from "../Image";
-import {PlusCircle} from "~/assets/icons";
+import {SaveTrack, UserSavedTrack} from "~/assets/icons";
+import {checkUserSaveEpisode, removeEpisodeForCurrentUser, saveEpisodeForCurrentUser} from "~/services/episodeApi";
+import {toast} from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -30,7 +32,9 @@ const ShowItem: FC<ShowItemComponentProps> = ({ item, show, isLoading }) => {
     setCurrentTrackIndex,
     setPlayingType,
     calNextTrackIndex,
+    isBtnClickable
   } = useContext(PlayerContext);
+  const [isSaving, setSaving]=useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -44,6 +48,46 @@ const ShowItem: FC<ShowItemComponentProps> = ({ item, show, isLoading }) => {
     setCurrentTrackIndex(0);
     setPlayingType("show");
     calNextTrackIndex();
+  };
+
+  useEffect(() => {
+    if (item?.id) {
+      const fetchData = async () => {
+        const result = await checkUserSaveEpisode({ids: `${item?.id}`});
+        console.log("Check result: ", result);
+        
+        if (result.data[0] === true) {
+          setSaving(true);
+        } else {
+          setSaving(false)
+        }
+      }
+      fetchData();
+    } else {
+      //
+    }
+  }, [isSaving, setSaving, item?.id])
+
+  const addTrackRequest = async () => {
+    const result = await saveEpisodeForCurrentUser(`${item?.id}`);
+    return result;
+  }
+
+  const removeTrackRequest = async () => {
+    const result = await removeEpisodeForCurrentUser(`${item?.id}`);
+    return result;
+  }
+
+  const handleSaveEpisode = async () => {
+    if (isSaving) {
+      await removeTrackRequest();
+      setSaving(false)
+      toast('🦄 Remove from liked Song');
+    } else {
+      await addTrackRequest();
+      setSaving(true);
+      toast('🦄 Added to liked Song');
+    }
   };
 
   return (
@@ -96,8 +140,11 @@ const ShowItem: FC<ShowItemComponentProps> = ({ item, show, isLoading }) => {
                 </span>
               </div>
               <div className={cx("action")}>
-                <div className={cx("plus-btn")}>
-                  <PlusCircle />
+                <div
+                  className={cx("plus-btn", {active: isSaving})}
+                  onClick={() => isBtnClickable&&handleSaveEpisode()}
+                >
+                  {isSaving ? <UserSavedTrack /> : <SaveTrack />}
                 </div>
                 <div onClick={handleClickPlayBtn} className={cx("play-btn")}>
                   <PlayButton

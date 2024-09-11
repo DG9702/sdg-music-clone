@@ -24,7 +24,7 @@ export const SubTitleArtists: FC<ArtistsProps> = ({
 }) => {
   const { isQueueShowed } = useContext(AppContext);
   const renderData: any[] = []
-  let dataNormalized: any
+  let dataNormalized: any  
 
   if (apiType === 'rapid') {
     if (type === 'artist') {
@@ -37,7 +37,7 @@ export const SubTitleArtists: FC<ArtistsProps> = ({
     }
   } else {
     dataNormalized = data
-  }  
+  }    
 
   if (dataNormalized) {
     if (dataNormalized.length === 1) {

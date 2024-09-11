@@ -17,6 +17,10 @@
     font-size: 14px;
     color: var(--text-neutral);
 
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
     &:hover {
       text-decoration: underline;
       color: var(--white);

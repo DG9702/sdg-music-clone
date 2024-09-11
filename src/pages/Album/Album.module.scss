@@ -38,22 +38,51 @@
 
     .action-bar {
       display: flex;
+      justify-content: space-between;
       position: relative;
       padding: 24px;
       align-items: center;
-      gap: 32px;
 
-      .heart {
-        cursor: pointer;
+      .action-left {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: transparent;
-        color: var(--text-subdued);
-        transition: none;
+        position: relative;
+        gap: 32px;
 
-        &:hover {
-          color: var(--white);
+
+        .heart {
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: transparent;
+          color: var(--text-subdued);
+          transition: none;
+  
+          &.active {
+            color: var(--secondary) !important;
+          }
+  
+          &:hover {
+            color: var(--white);
+          }
+        }
+      }
+
+      .action-right {
+        .order-button {
+          cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            color: #bababa;
+            transition: none;
+            font-size: 1.4rem;
+            font-weight: bold;
+    
+            &:hover {
+              color: var(--white);
+            }
         }
       }
     }

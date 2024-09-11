@@ -10,10 +10,10 @@ import dateFormatConvertor from "~/utils/dateFormatConvertor";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from "~/context/PlayerContext";
 import categoryApi from "~/services/categoryApi";
-import showApi from "~/services/showApi";
-import episodeApi from "~/services/episodeApi";
 import { getArtistTopTrack } from "~/services/artistApi";
 import {SubTitleArtists} from "../SubTitle";
+import {episodeApi} from "~/services/episodeApi";
+import {showApi} from "~/services/showApi";
 
 const cx = classNames.bind(styles);
 

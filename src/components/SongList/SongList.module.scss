@@ -20,6 +20,11 @@
       font-size: 14px;
     }
 
+    div:last-child {
+      grid-column: last;
+      margin-right: 32px;
+    }
+
     .clock-icon {
       display: flex;
       justify-content: center;
@@ -46,4 +51,30 @@
 
 .is-album-track {
   grid-template-columns: 16px 4fr 50px !important;
+
+  &.is-compact {
+    grid-template-columns: 16px minmax(120px, 4fr) minmax(120px, 2fr) minmax(120px, 1fr) !important;
+
+    div:nth-child(3) {
+      margin-left: 40px;
+    }
+  }
 }
+
+.is-compact {
+  grid-template-columns: 16px minmax(120px, 6fr) minmax(120px, 4fr) minmax(120px, 3fr) minmax(120px, 2fr) minmax(120px, 1fr) !important;
+
+  div:last-child {
+    grid-column: last;
+    margin-right: 32px;
+  }
+}
+
+//.is-compact {
+//  grid-template-columns: 120px minmax(120px, 4fr) minmax(120px, 2fr) minmax(120px, 1fr) !important;
+
+//  div:last-child {
+//    grid-column: last;
+//    margin-right: 32px;
+//  }
+//}

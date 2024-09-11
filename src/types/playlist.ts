@@ -28,6 +28,6 @@ export interface PlaylistData {
 
 export interface PlaylistSaveData {
   href?: string;
-  items?: SongItemProps[] | { track?: SpotifyTrack }[];
+  items?: { track?: SpotifyTrack }[];
   total?: number;
 }

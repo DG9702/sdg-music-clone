@@ -1,16 +1,16 @@
-import { spotifyApiClient } from "~/configs/axiosClient";
+import { spotifyApiDev, spotifyApiClient } from "~/configs/axiosClient";
 
 interface categoryApiProps {
-  type: string;
-  id: string;
+    type: string;
+    id: string;
 }
 
 const categoryApi = async (params: Partial<categoryApiProps>) => {
-  const { type, id } = params;
+    const { type, id } = params;
 
-  const { data } = await spotifyApiClient.get(`${type}/${id}`);
+    const { data } = await spotifyApiClient.get(`${type}/${id}`);
 
-  return data;
+    return data;
 };
 
 export default categoryApi;

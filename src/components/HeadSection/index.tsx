@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import classNames from "classnames/bind";
 import Skeleton from "react-loading-skeleton";
 
@@ -11,12 +11,15 @@ import ThumbDefault from "../ThumbDefault";
 import { Link } from "react-router-dom";
 import transformDomain from "~/utils/transformDomain";
 import {SubTitleArtists, SubTitleOwner} from "../SubTitle";
+import {AuthContext} from "~/context/AuthContext";
+import {AppContext} from "~/App";
 
 const cx = classNames.bind(styles);
 
 const HeadSection: React.FC<HeaderProps> = ({
   title,
   thumbnail,
+  iconHead,
   quantity,
   bgColor,
   desc,
@@ -31,6 +34,15 @@ const HeadSection: React.FC<HeaderProps> = ({
   showName,
   showId,
 }) => {  
+  const {userData}=useContext(AuthContext);
+  const { setModalEditPlaylist }=useContext(AppContext);
+
+  const isMine=userData?.id===owner?.id;
+  
+  const handleOpenModal=() => {
+    setModalEditPlaylist(true);
+  }
+
 
   return (
     <main style={{ backgroundColor: `${bgColor}` }} className={cx("wrapper")}>
@@ -39,23 +51,31 @@ const HeadSection: React.FC<HeaderProps> = ({
           {type === "album" || type === "episode" ? (
             <div className={cx("img-album")}>
               {!isLoading ? (
-                thumbnail ? (
-                  <ImageLazy src={thumbnail} alt={title} />
-                ) : (
-                  <ThumbDefault />
-                )
+                thumbnail ?
+                  (
+                    <ImageLazy src={thumbnail} alt={title} />
+                  ) :
+                  iconHead ? (
+                    <div className="episodes-icon">{iconHead}</div>
+                  ) : (
+                    <ThumbDefault />
+                  )
               ) : (
                 <Skeleton height={"100%"} />
               )}
             </div>
           ) : (
-            <div className={cx("img")}>
+            <div className={cx("img", {"pointer": isMine===true})} onClick={() => isMine && handleOpenModal()}>
               {!isLoading ? (
-                thumbnail ? (
-                  <ImageLazy src={thumbnail} alt={title} />
-                ) : (
-                  <ThumbDefault />
-                )
+                thumbnail ?
+                  (
+                    <ImageLazy src={thumbnail} alt={title} />
+                  ) :
+                  iconHead ? (
+                    <div className={cx("episodes-icon")}>{iconHead}</div>
+                  ) : (
+                    <ThumbDefault />
+                  )
               ) : (
                 <Skeleton height={"100%"} />
               )}
@@ -75,14 +95,15 @@ const HeadSection: React.FC<HeaderProps> = ({
                     (type === "episode" && "Podcast Episode") ||
                     type}
                 </p>
-                <h2 title={title} className={cx("title")}>
+                <h2 title={title} className={cx("title", { "pointer": isMine === true })} onClick={() => isMine && handleOpenModal()}>
                   {title}
                 </h2>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: desc ? transformDomain(desc) : "",
                   }}
-                  className={cx("desc")}
+                  className={cx("desc", {"pointer": isMine===true})}
+                  onClick={() => isMine && handleOpenModal()}
                 >
                   {/*<ArtistList data={htmlCleaner(stringCleaner(desc))} />*/}
                 </div>

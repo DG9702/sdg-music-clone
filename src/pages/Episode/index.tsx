@@ -11,9 +11,10 @@ import Header from "~/components/Header";
 import HeadSection from "~/components/HeadSection";
 import { dateFormatConvertor, documentTitle, durationConvertor } from "~/utils";
 import PlayButton from "~/components/PlayButton";
-import { PlusCircle } from "~/assets/icons";
+import { SaveTrack, UserSavedTrack } from "~/assets/icons";
 import Footer from "~/components/Footer";
-import episodeApi from "~/services/episodeApi";
+import {toast} from "react-toastify";
+import {checkUserSaveEpisode, episodeApi, removeEpisodeForCurrentUser, saveEpisodeForCurrentUser} from "~/services/episodeApi";
 
 const cx = classNames.bind(styles);
 
@@ -24,13 +25,17 @@ const Episode: React.FC = () => {
     setCurrentTrackIndex,
     setPlayingType,
     calNextTrackIndex,
+    setPlaying,
     currentTrack,
+    queue,
     isPlaying,
     prevDocumentTitle,
+    isBtnClickable
   } = useContext(PlayerContext);
   const [navOpacity, setNavOpacity] = useState<number>(0);
   const [data, setData] = useState<EpisodeData>();
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setLoading]=useState<boolean>(true);
+  const [isSaving, setSaving]=useState<boolean>(false);
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const { ref: pivotTrackingRef, inView: isTracking } = useInView(); //put above all
 
@@ -46,9 +51,6 @@ const Episode: React.FC = () => {
       );
     }
   }, [isPlaying, data]);
-
-  console.log(data);
-
   const { data: dataColor } = usePalette(
     data?.images?.[0]?.url as string,
     10,
@@ -71,7 +73,10 @@ const Episode: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await episodeApi({ id });
-      setData(data);
+      setData({
+        preview_url: data?.audio_preview_url,
+        ...data
+      });
     };
     fetchData();
   }, []);
@@ -98,6 +103,52 @@ const Episode: React.FC = () => {
     setPlayingType("show");
     calNextTrackIndex();
   };
+
+  useEffect(() => {
+    if (data?.id) {
+      const fetchData = async () => {
+        const result = await checkUserSaveEpisode({ids: `${data?.id}`});
+        console.log("Check result: ", result);
+        
+        if (result.data[0] === true) {
+          setSaving(true);
+        } else {
+          setSaving(false)
+        }
+      }
+      fetchData();
+    } else {
+      //
+    }
+  }, [isSaving, setSaving, data?.id])
+
+  const addTrackRequest = async () => {
+    const result = await saveEpisodeForCurrentUser(`${data?.id}`);
+    return result;
+  }
+
+  const removeTrackRequest = async () => {
+    const result = await removeEpisodeForCurrentUser(`${data?.id}`);
+    return result;
+  }
+
+  const handleSaveEpisode = async () => {
+    if (isSaving) {
+      await removeTrackRequest();
+      setSaving(false)
+      toast('🦄 Remove from liked Song');
+    } else {
+      await addTrackRequest();
+      setSaving(true);
+      toast('🦄 Added to liked Song');
+    }
+  };
+
+  console.log("Check data in episode: ", data);
+  
+
+  console.log("Check queue: ", queue);
+  
 
   return (
     <main className={cx("episode-wrapper")}>
@@ -145,10 +196,12 @@ const Episode: React.FC = () => {
                   size={56}
                   scaleHovering={1.04}
                   transitionDuration={33}
+                  isPlay={isPlaying}
+                  setPlaying={setPlaying}
                 />
               </div>
-              <div className={cx("plus-btn")}>
-                <PlusCircle />
+              <div className={cx("plus-btn", { active: isSaving })} onClick={() => isBtnClickable && handleSaveEpisode()}>
+                {isSaving ? <UserSavedTrack /> : <SaveTrack />}
               </div>
             </div>
           </div>

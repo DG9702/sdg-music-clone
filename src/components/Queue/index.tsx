@@ -20,7 +20,10 @@ const Queue = () => {
     //prevDocumentTitle,
   } = useContext(PlayerContext);
   const [navOpacity, setNavOpacity] = useState<number>(0);
-  const queueNormalized = queue.filter((item) => item);
+  const queueNormalized=queue.filter((item) => item);
+  
+  console.log("Check queueNormalized after add track: ", queueNormalized);
+  
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>): void => {
     const yAxis = e.currentTarget.scrollTop;
@@ -28,10 +31,7 @@ const Queue = () => {
     if (yAxis > 64) {
       setNavOpacity(1);
     } else setNavOpacity(yAxis / 64);
-  };
-
-  console.log("Check navOpacity: ", navOpacity);
-  
+  };  
 
   return (
     <div className={cx("queue-view-wrapper")}>

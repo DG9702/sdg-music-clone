@@ -1,4 +1,4 @@
-import artistApi from "~/services/artistApi";
+import artistApi, {getArtistTopTrack} from "~/services/artistApi";
 import { ArtistProfile } from "~/types/artist";
 import { RapidArtistTrack, SpotifyTrack } from "~/types/track";
 import { normalizeTrack } from "~/utils";
@@ -47,7 +47,8 @@ export const ArtistProvider: FC<ArtistProviderProps> = ({ children }) => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const regex = /^\/artist\//;
   const { pathname } = useLocation();
-  const { id: artistId } = useParams();
+  const {id: artistId}=useParams();
+  const [topTracksContext, setTopTracks]=useState<any>();
 
   useEffect(() => {
     if (regex.test(pathname)) {
@@ -69,6 +70,14 @@ export const ArtistProvider: FC<ArtistProviderProps> = ({ children }) => {
   }, [id]);
 
   useEffect(() => {
+    const fetchData=async () => {
+      const data=await getArtistTopTrack(id);
+      setTopTracks(data);
+    }
+    if(id!=="") fetchData();
+  }, [id])
+
+  useEffect(() => {
     setArtistData((prev: any) => {
       return {
         ...prev,
@@ -88,8 +97,8 @@ export const ArtistProvider: FC<ArtistProviderProps> = ({ children }) => {
           followerNumbers: responseData?.stats?.followers,
           monthlyListeners: responseData?.stats?.monthlyListeners,
         },
-        topTracks: responseData?.discography?.topTracks?.items?.map(
-          (item: RapidArtistTrack) => normalizeTrack(item),
+        topTracks: topTracksContext?.tracks?.map(
+          (item: SpotifyTrack) => item,
         ),
         discography: {
           popularReleases: responseData?.discography?.popularReleases.items,
@@ -112,6 +121,10 @@ export const ArtistProvider: FC<ArtistProviderProps> = ({ children }) => {
   useEffect(() => {
     setLoading(Boolean(!responseData));
   }, [responseData]);
+
+  console.log("Check responseData: ", responseData);
+  console.log("Check topTracksContext: ", topTracksContext);
+  
 
   return (
     <ArtistContext.Provider

@@ -10,17 +10,20 @@ import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "../Sidebar.module.scss";
 
+
+export interface yourLibraryState {
+  isCollapsed?: boolean;
+  setCollapsed?: any;
+}
+
+
 const cx = classNames.bind(styles);
 
-const Nav = () => {
-  const { pathname } = useLocation();
-
+const Nav: React.FC<yourLibraryState> = ({ isCollapsed }) => {
+  const { pathname } = useLocation();  
+  
   const routes = useMemo(
     () => [
-      {
-        path: "/",
-        icons: [logoIcon, logoIcon]
-      },
       {
         name: "Home",
         path: "/",
@@ -48,12 +51,17 @@ const Nav = () => {
             <li className={cx("nav-item")} key={index}>
               <Link
                 to={item.path}
-                className={cx({ "nav-item-body": true, active: item.active })}
+                className={cx({"nav-item-body": true, active: item.active})}
+                style={{
+                  gap: isCollapsed? 0 : 20,
+                  justifyContent: isCollapsed ? "center" : ""
+
+                 }}
               >
                 <div className={cx("nav-icon")}>
                   {item.active ? <ActiveIcon /> : <InactiveIcon />}
                 </div>
-                <span className={cx("nav-name")}>{item.name}</span>
+                <span className={cx("nav-name")}>{!isCollapsed && item.name}</span>
               </Link>
             </li>
           );

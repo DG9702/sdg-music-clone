@@ -16,6 +16,8 @@ import TopTracks from "~/components/TopTracks";
 import Section from "~/components/Section";
 import Discography from "~/components/Discography";
 import AboutArtist from "~/components/AboutArtist";
+import {checkCurrentUserFollowArtists, followArtistForCurrentUser, unFollowArtistForCurrentUser} from "~/services/artistApi";
+import {toast} from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -49,9 +51,15 @@ const Artist: React.FC = () => {
     setQueue,
     calNextTrackIndex,
     setPlayingType,
+    setPlaying,
     isPlaying,
     prevDocumentTitle,
-  } = useContext(PlayerContext);
+    queue,
+    isBtnClickable,
+    currentTrack
+  }=useContext(PlayerContext);
+  
+  const [isFollow, setIsFollow]=useState<boolean>(false);
 
   useEffect(() => {
     if (isPlaying) {
@@ -93,11 +101,54 @@ const Artist: React.FC = () => {
   };
 
   const handleClickPlayBtn = () => {
-    setQueue([...(topTracks as SpotifyTrack[])] || []);
+    setQueue([...(topTracks as SpotifyTrack[])])
     setCurrentTrack({ ...topTracks?.[0] });
     setCurrentTrackIndex(0);
     calNextTrackIndex();
     setPlayingType("track");
+  };
+
+  console.log("Check data in artist: ", topTracks);
+  console.log("Check queue in artist: ", queue);
+  
+  useEffect(() => {
+    if (profile?.id) {
+      const fetchData = async () => {
+        const result = await checkCurrentUserFollowArtists({ids: `${profile?.id}`});
+        console.log("Check result: ", result);
+        
+        if (result.data[0] === true) {
+          setIsFollow(true);
+        } else {
+          setIsFollow(false)
+        }
+      }
+      fetchData();
+    } else {
+      //
+    }
+  }, [isFollow, setIsFollow, profile?.id])
+
+  const addTrackRequest = async () => {
+    const result = await followArtistForCurrentUser({ ids: `${profile?.id}`});
+    return result;
+  }
+
+  const removeTrackRequest = async () => {
+    const result = await unFollowArtistForCurrentUser({ ids: `${profile?.id}`});
+    return result;
+  }
+
+  const handleFollowArtist = async () => {
+    if (isFollow) {
+      await removeTrackRequest();
+      setIsFollow(false)
+      toast('🦄 Remove from liked Song');
+    } else {
+      await addTrackRequest();
+      setIsFollow(true);
+      toast('🦄 Added to liked Song');
+    }
   };
 
   return (
@@ -176,9 +227,15 @@ const Artist: React.FC = () => {
                 size={56}
                 transitionDuration={33}
                 scaleHovering={1.05}
+                isPlay={isPlaying}
+                setPlaying={setPlaying}
               />
             </div>
-            <button className={cx("follow-btn")}>Follow</button>
+            <button className={cx("follow-btn")}
+              onClick={() => isBtnClickable && handleFollowArtist()}
+            >
+              {isFollow ? "Following" : "follow"}
+            </button>
           </div>
           <TopTracks isLoading={isLoading} songList={topTracks} />
           <Discography data={discography} />

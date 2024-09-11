@@ -20,41 +20,47 @@ import { checkUserSaveTrack, removeTrackForCurrentUser, saveTrackForCurrentUser}
 import { toast, ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {SubTitleArtists} from "../SubTitle";
+import {TrackContext} from "~/context/TrackContext";
 
 const cx = classNames.bind(styles);
 
 const AudioLeft: React.FC = () => {
-  const { playBarData, playingType, isBtnClickable } =
+  const { playBarData, playingType, isBtnClickable, isSaving, setSaving } =
     useContext(PlayerContext);
   const {
     isPlayingViewShowed,
     setPlayingViewShowed,
     setQueueShowed,
-  } = useContext(AppContext);
+  }=useContext(AppContext);
+  
+   const {
+    savingTracks, isTrackSaved 
+  }=useContext(TrackContext);
+
+  const [isSavingLocally, setIsSavingLocally]=useState(isTrackSaved(playBarData?.trackId));
+
   const isLoading = useMemo(
     () => Boolean(!playBarData?.trackId),
     [playBarData?.trackId],
     
   );
 
-  const [isSaving, setSaving] = useState<boolean>(false)
+  //const [isSaving, setSaving] = useState<boolean>(false)
 
     useEffect(() => {
-    if (playBarData?.trackId) {
-      const fetchData = async () => {
-        const result = await checkUserSaveTrack({ids: `${playBarData?.trackId}`});
-        
-        if (result.data[0] === true) {
-          setSaving(true);
-        } else {
-          setSaving(false)
-        }
-      }
-      fetchData();
+      setIsSavingLocally(isTrackSaved(playBarData?.trackId));
+    }, [savingTracks, playBarData?.trackId, isTrackSaved]);
+  
+  const handleSaveTrack = async () => {
+    if (isSavingLocally) {
+      await removeTrackForCurrentUser(`${playBarData?.trackId}`);
+      toast('🦄 Remove to liked Song');
     } else {
-      //
+      await saveTrackForCurrentUser(`${playBarData?.trackId}`);
+      toast('🦄 Add from liked Song');
     }
-  }, [isSaving, setSaving, playBarData?.trackId])
+    setIsSavingLocally(!isSavingLocally);
+  };
 
   const trackNameRef = useRef<any>();
   const isEllipsisActive = useEllipsisHorizontal(
@@ -62,36 +68,13 @@ const AudioLeft: React.FC = () => {
     playBarData?.trackName,
   );
 
-  const addTrackRequest = async () => {
-    const result = await saveTrackForCurrentUser(`${playBarData?.trackId}`);
-    return result;
-  }
-
-  const removeTrackRequest = async () => {
-    const result = await removeTrackForCurrentUser(`${playBarData?.trackId}`);
-    return result;
-  }
-
-  const handleSaveTrack = async () => {
-    if (isSaving) {
-      await removeTrackRequest();
-      setSaving(false)
-      toast('🦄 Remove from liked Song');
-    } else {
-      await addTrackRequest();
-      setSaving(true);
-      toast('🦄 Added to liked Song');
-    }
-  };
-
-
   const handleClickPlayingView = () => {
     if (playingType === "show") return;
     if (isBtnClickable) {
       setPlayingViewShowed((prev) => !prev);
       setQueueShowed(false);
     }
-  };
+  };    
 
   return (
     <div className={cx("wrapper")}>
@@ -171,9 +154,9 @@ const AudioLeft: React.FC = () => {
       <div>
         <button
           onClick={() => isBtnClickable && handleSaveTrack()}
-          className={cx("btn-audio-icon", { active: isSaving })}
+          className={cx("btn-audio-icon", { active: isSavingLocally })}
         >
-          <span>{isSaving ? <UserSavedTrack  /> : <SaveTrack />}</span>
+          <span>{isSavingLocally ? <UserSavedTrack  /> : <SaveTrack />}</span>
         </button>
         <ToastContainer
           position="bottom-center"

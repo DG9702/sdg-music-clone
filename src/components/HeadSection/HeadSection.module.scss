@@ -28,6 +28,17 @@
     box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 
+    .episodes-icon {
+        background: #056952;
+        border-radius: 6px;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #1ed760;
+    }
+
     span {
       display: block;
       width: 100%;
@@ -197,3 +208,8 @@
   height: 156px;
   width: 156px;
 }
+
+.pointer {
+  cursor: pointer;
+}
+

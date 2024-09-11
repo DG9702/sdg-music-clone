@@ -11,11 +11,15 @@ import {SubTitleArtists} from "../SubTitle";
 import { PlayerContext } from "~/context/PlayerContext";
 import durationConvertor from "~/utils/durationConvertor";
 import equaliser from "~/assets/images/animation/equaliser-animated-green.f5eb96f2.gif";
-import {checkUserSaveTrack} from "~/services/trackApi";
+import {removeTrackForCurrentUser, saveTrackForCurrentUser} from "~/services/trackApi";
+import {toast} from "react-toastify";
+import {TrackContext} from "~/context/TrackContext";
+import {AuthContext} from "~/context/AuthContext";
+import {SongAction} from "../Song/SongAction";
 
 const cx = classNames.bind(styles);
 
-const SongItem: React.FC<SongItemProps> = ({
+const SongItem: React.FC<SongItemProps>=({
   songName,
   artists,
   thumb,
@@ -23,10 +27,15 @@ const SongItem: React.FC<SongItemProps> = ({
   order,
   isLoading = false,
   dateAdd,
+  view,
+  AddBy,
   albumData,
   isExplicit = false,
   type = "default",
   originalData,
+  myPlaylist,
+  playlist,
+  setPlaylist
 }) => {
   const { width } = useContext(MainLayoutContext);
   const {
@@ -35,20 +44,29 @@ const SongItem: React.FC<SongItemProps> = ({
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
-    //setSaving,
     queue,
-    //isSaving,
     isPlaying,
     currentTrack,
-  } = useContext(PlayerContext);
+    isBtnClickable,
+  }=useContext(PlayerContext);
 
-  const [isSaving, setSaving] = useState<Boolean>(false);
+  const {
+    userData
+  }=useContext(AuthContext);
+
+  const { isTrackSaved }=useContext(TrackContext);  
+
+  const [isSavingLocally, setIsSavingLocally]=useState(isTrackSaved(originalData?.id));  
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     if (currentTrack?.id === originalData?.id) return;
     const indexOfTrackInQueue = queue.findIndex(
       (item) => item?.id === originalData?.id,
     );
+
+    console.log('Check view: ', view);
+    
+    
     if (indexOfTrackInQueue === -1) {
       setQueue(originalData ? [{ ...originalData }] : []);
       setCurrentTrack({ ...originalData });
@@ -64,28 +82,34 @@ const SongItem: React.FC<SongItemProps> = ({
     } else {
       setPlayingType("show");
     }
-  };
+  }; 
 
   useEffect(() => {
-    if (originalData?.id) {
-      const fetchData = async () => {
-        const result = await checkUserSaveTrack({ids: `${originalData?.id}`});
-        
-        if (result.data[0] === true) {
-          setSaving(true);
-        } else {
-          setSaving(false)
-        }
-      }
-      fetchData();
-    } else {
-      //
+    if(originalData?.id) {
+      setIsSavingLocally(isTrackSaved(originalData?.id));
     }
-  }, [isSaving, setSaving, originalData?.id])  
+  }, [originalData?.id]);
 
+  useEffect(() => {
+    if(AddBy===userData?.id) {
+      setIsSavingLocally(true);      
+    }
+  }, [AddBy, userData?.id, isSavingLocally])
+
+  const handleSaveTrack = async () => {
+    if (isSavingLocally) {
+      await removeTrackForCurrentUser(`${originalData?.id}`);
+      toast('🦄 Remove to liked Song');
+    } else {
+      await saveTrackForCurrentUser(`${originalData?.id}`);
+      toast('🦄 Add from liked Song');
+    }
+    setIsSavingLocally(!isSavingLocally);
+  };   
+  
   return (
     <div
-      onClick={(e) => handleClick(e)}
+      //onClick={(e) => handleClick(e)}
       //onMouseOver={() => setHover(!isHover)}
       className={cx({
         wrapper: true,
@@ -93,7 +117,11 @@ const SongItem: React.FC<SongItemProps> = ({
         "is-album-track": type === "album",
         "is-search-result": type === "search",
         "is-queue-result": type === "queue",
-        "is-playing": currentTrack?.id === originalData?.id,
+        "is-playing": currentTrack?.id===originalData?.id,
+        "is-list": view===false && type==='album',
+        "is-list-no-album": view === false && type !== 'album',
+        "is-compact": view===true && type=== 'album',
+        "is-compact-no-album": view === true && type !== 'album'
       })}
     >
       {type !== "queue" && type !== "search" && (
@@ -106,40 +134,44 @@ const SongItem: React.FC<SongItemProps> = ({
             ) : (
               <>
                 <span className={cx("order-number")}>{order}</span>
-                <button className={cx("order-icon")}>
+                <div className={cx("order-icon")} onClick={(e) => handleClick(e)}>
                   <PlayIcon />
-                </button>
+                </div>
               </>
             ))}
         </div>
       )}
       <div className={cx("main")}>
-        {type !== "album" && (
-          <div className={cx("thumb")}>
-            {!isLoading ? (
-              thumb ? (
-                <>
-                  <ImageLazy src={thumb} alt={songName} />
-                  {type === "queue" && (
-                    <button className={cx("order-icon")}>
-                      <PlayIcon />
-                    </button>
-                  )}
-                  {type === "search" && (
-                    <button className={cx("order-icon")}>
-                      <PlayIcon />
-                    </button>
-                  )}
-                </>
-              ) : (
-                <div className={cx("default-thumb")}>
-                  <SingleMusicNote />
-                </div>
-              )
-            ) : (
-              <Skeleton height={"100%"} />
+        {type!=="album"&&(
+          <>
+            {view ===false && (
+              <div className={cx("thumb")}>
+                {!isLoading ? (
+                  thumb ? (
+                    <>
+                      <ImageLazy src={thumb} alt={songName} />
+                      {type === "queue" && (
+                        <button className={cx("order-icon")}>
+                          <PlayIcon />
+                        </button>
+                      )}
+                      {type === "search" && (
+                        <button className={cx("order-icon")}>
+                          <PlayIcon />
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    <div className={cx("default-thumb")}>
+                      <SingleMusicNote />
+                    </div>
+                  )
+                ) : (
+                  <Skeleton height={"100%"} />
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
         <div className={cx("title")}>
           {!isLoading ? (
@@ -147,7 +179,7 @@ const SongItem: React.FC<SongItemProps> = ({
               <p className={cx("name", { namequeue: type === "queue" })}>
                 {songName}
               </p>
-              {type !== "artist" && (
+              {type !== "artist" && view === false && (
                 <div className={cx("sub-title")}>
                   {isExplicit && <span className={cx("explicit")}>E</span>}
                   <SubTitleArtists data={artists} />
@@ -162,6 +194,13 @@ const SongItem: React.FC<SongItemProps> = ({
           )}
         </div>
       </div>
+      {view===true && (
+        <div className={cx("album",{ "is-none": view === true})}>
+            {!isLoading && (
+              <SubTitleArtists data={artists} />
+            )}
+          </div>
+      )}
       {type !== "album" && type !== "search" && type !== "queue" && (
         <>
           <div className={cx("album")}>
@@ -179,17 +218,22 @@ const SongItem: React.FC<SongItemProps> = ({
         </>
       )}
       <div className={cx("right-action")}>
-        <div onClick={() => SaveTrack} className={cx("action", { active: isSaving })}>
-          {isSaving ? <UserSavedTrack /> : <SaveTrack />}
+        <div
+          onClick={() => isBtnClickable&&handleSaveTrack()}
+          className={cx("action", {active: isSavingLocally})}
+        >
+          {isSavingLocally ? <UserSavedTrack /> : <SaveTrack />}
         </div>
         {type !== "queue" && (
           <div className={cx("duration")}>
             {!isLoading && durationConvertor({ milliseconds: duration })}
           </div>
         )}
-        <div className={cx("action")}>
-          <MoreIcon />
-        </div>
+        <SongAction myPlaylist={myPlaylist} playlist={playlist} setPlaylist={setPlaylist} track={originalData} trigger={['click']}>
+          <div className={cx("action")}>
+            <MoreIcon />
+          </div>
+        </SongAction>
       </div>
     </div>
   );

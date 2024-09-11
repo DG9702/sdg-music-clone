@@ -13,7 +13,8 @@ interface TopTrackProps {
 
 const TopTrack: FC<TopTrackProps> = ({ songList, isLoading }) => {
   const [isLess, setLess] = useState<boolean>(true)
-
+  console.log("Check songlist in Toptrack: ", songList);
+  
 
   return (
     <div className={cx('wrapper')}>

@@ -8,12 +8,12 @@ import {usePalette} from "color-thief-react"
 import {MainLayoutContext} from "~/context/MainLayoutContext"
 import {useInView} from "react-intersection-observer"
 import {documentTitle} from "~/utils"
-import showApi from "~/services/showApi"
 import Header from "~/components/Header"
 import HeadSection from "~/components/HeadSection"
 import Footer from "~/components/Footer"
 import AboutShow from "~/components/AboutShow"
 import ShowsList from "~/components/ShowsList"
+import {showApi} from "~/services/showApi"
 
 const cx = classNames.bind(styles)
 
@@ -73,6 +73,9 @@ const Show: FC = () => {
       setNavOpacity(1)
     } else setNavOpacity(yAxis / 64)
   }
+
+  console.log("Check data in show: ", data);
+  
 
   return (
     <main className={cx({ 'show-wrapper': true, 'col-layout': width <= 1100 })}>

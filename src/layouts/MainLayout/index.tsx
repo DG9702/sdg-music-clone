@@ -15,74 +15,82 @@ import { PlayerProvider } from "~/context/PlayerContext";
 import { AppContext } from "~/App";
 import Queue from "~/components/Queue";
 import PlayingView from "~/components/PlayingView";
+import {TrackProvider} from "~/context/TrackContext";
+import EditPlaylistModal from "~/components/Modal/EditPlaylistModal";
 
 const cx = classNames.bind(styles);
 
 const MainLayout = () => {
-  const { isPlayingViewShowed, isQueueShowed } = useContext(AppContext);
+  const { isPlayingViewShowed, isQueueShowed, isModalEditPlaylist } = useContext(AppContext);
+  console.log("Check isModalEditPlaylist: ", isModalEditPlaylist);
+  
 
   return (
     <div className={cx("main-layout")}>
       <AuthProvider>
-        <PlayerProvider>
-          <HomePageProvider>
-            <SearchProvider>
-              <ArtistProvider>
-                <SkeletonTheme
-                  baseColor="#333"
-                  highlightColor="hsla(0,0%,100%,.1)"
-                >
-                  <div className={cx("main-layout-top")}>
-                    <Split
-                      cursor="col-resize"
-                      minSize={
-                        isPlayingViewShowed
-                          ? [280, 400, 0]
-                          : [280, 600]
-                      }
-                      maxSize={
-                        isPlayingViewShowed
-                          ? [500, 99999, 400]
-                          : [500, 99999]
-                      }
-                      // sizes={[20, 70, 10]}
-                      sizes={
-                        isPlayingViewShowed
-                          ? [20, 55, 25]
-                          : [20, 80]
-                      }
-                      className={cx("split")}
-                      gutterSize={8}
-                      snapOffset={20}
-                    >
-                      <Sidebar />
-                      <MainLayoutProvider>
-                        <div className={cx("main-container")}>
-                          <Outlet />
-                        </div>
-                      </MainLayoutProvider>
-                      {isPlayingViewShowed && !isQueueShowed && (
-                        <>
-                          <div></div>
-                          <PlayingView />
-                        </>
-                      )}
-                      {isQueueShowed && !isPlayingViewShowed && (
-                        <>
-                          <div></div>
-                          <Queue />
-                        </>
-                      )}
-                    </Split>
-                  </div>
-                  <div className={cx("main-layout-bottom")}>
-                    <AudioPlayer />
-                  </div>
-                </SkeletonTheme>
-              </ArtistProvider>
-            </SearchProvider>
-          </HomePageProvider>
-        </PlayerProvider>
+        <TrackProvider>
+          <PlayerProvider>
+            <HomePageProvider>
+              <SearchProvider>
+                <ArtistProvider>
+                  <SkeletonTheme
+                    baseColor="#333"
+                    highlightColor="hsla(0,0%,100%,.1)"
+                  >
+                    <EditPlaylistModal  />
+
+                    <div className={cx("main-layout-top")}>
+                      <Split
+                        cursor="col-resize"
+                        minSize={
+                          isPlayingViewShowed
+                            ? [280, 400, 0]
+                            : [280, 600]
+                        }
+                        maxSize={
+                          isPlayingViewShowed
+                            ? [500, 99999, 400]
+                            : [500, 99999]
+                        }
+                        // sizes={[20, 70, 10]}
+                        sizes={
+                          isPlayingViewShowed
+                            ? [20, 55, 25]
+                            : [20, 80]
+                        }
+                        className={cx("split")}
+                        gutterSize={8}
+                        snapOffset={20}
+                      >
+                        <Sidebar />
+                        <MainLayoutProvider>
+                          <div className={cx("main-container")}>
+                            <Outlet />
+                          </div>
+                        </MainLayoutProvider>
+                        {isPlayingViewShowed && !isQueueShowed && (
+                          <>
+                            <div></div>
+                            <PlayingView />
+                          </>
+                        )}
+                        {isQueueShowed && !isPlayingViewShowed && (
+                          <>
+                            <div></div>
+                            <Queue />
+                          </>
+                        )}
+                      </Split>
+                    </div>
+                    <div className={cx("main-layout-bottom")}>
+                      <AudioPlayer />
+                    </div>
+                  </SkeletonTheme>
+                </ArtistProvider>
+              </SearchProvider>
+            </HomePageProvider>
+          </PlayerProvider>
+        </TrackProvider>
       </AuthProvider>
     </div>
   );

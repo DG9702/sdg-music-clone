@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./Playlist.module.scss";
 import Header from "~/components/Header";
 import PlayButton from "~/components/PlayButton";
-import { SaveTrack } from "~/assets/icons";
+import { OrderCompactIcon, OrderListIcon, SaveTrack, UserSavedTrack } from "~/assets/icons";
 import SongList from "~/components/SongList";
 import Footer from "~/components/Footer";
 import HeadSection from "~/components/HeadSection";
@@ -15,6 +15,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import categoryApi from "~/services/categoryApi";
 import { PlayerContext } from "~/context/PlayerContext";
 import documentTitle from "~/utils/documentTitle";
+import {toast} from "react-toastify";
+import {checkCurrentUserFollowPlaylist, followPlaylistForCurrentUser, unFollowPlaylistForCurrentUser} from "~/services/playlistApi";
+import {AuthContext} from "~/context/AuthContext";
+import {Dropdown, MenuProps, Space, Tooltip} from "antd";
 
 const cx = classNames.bind(styles);
 
@@ -25,15 +29,41 @@ const Playlist: React.FC = () => {
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
+    setPlaying,
     isPlaying,
     prevDocumentTitle,
-  } = useContext(PlayerContext);
+    isBtnClickable
+  }=useContext(PlayerContext);
+  
+  const {
+    userData
+  }=useContext(AuthContext);
+
   const [navOpacity, setNavOpacity] = useState<number>(0);
   const [data, setData] = useState<PlaylistData>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [navPlayBtnVisible, setNavPlayBtnVisible] = useState<boolean>(false);
-
+  const [isSavingPlaylist, setSavingPlaylist]=useState<boolean>(false);
   // const bgColor = useRaiseColorTone(useDominantColor(data?.images?.[0]?.url) || '#121212')
+
+  const [view, setView]=useState<boolean>(false);
+
+  const items: MenuProps['items'] = [
+      {
+        label: 'LIST',
+        key: 'LIST',
+        onClick: () => {
+          setView(false)
+        }
+      },
+      {
+        label: 'COMPACT',
+        key: 'COMPACT',
+        onClick: () => {
+          setView(true)
+        }
+      }
+    ];
 
   const { data: dataColor } = usePalette(
     data?.images?.[0]?.url as string,
@@ -83,18 +113,6 @@ const Playlist: React.FC = () => {
       }
     };
 
-    //const fetchLikeSong = async () => {
-    //  const data = await getUserSaveTrack({
-    //    market: "VN",
-    //    limit: 20,
-    //    offset: 0
-    //  });
-    //  if (data?.error) {
-    //    navigate("/not-found");
-    //  } else {
-    //    setData({ ...data });
-    //  }
-    //}
     if (id !== "undefined") {
       fetchData();
     }
@@ -116,12 +134,57 @@ const Playlist: React.FC = () => {
   };
 
   const handleClickPlayBtn = () => {
+    
     setQueue(data?.tracks?.items?.map((item) => item.track) || []);
     setCurrentTrack(data?.tracks?.items?.[0]?.track);
     setCurrentTrackIndex(0);
     calNextTrackIndex();
     setPlayingType("track");
   };  
+
+  console.log("Check userData: ", userData);
+
+   useEffect(() => {
+    if (data?.id) {
+      const fetchData = async () => {
+        const result = await checkCurrentUserFollowPlaylist(data?.id, { ids: userData?.id });
+        console.log("Check result: ", result);
+        
+        if (result.data[0] === true) {
+          setSavingPlaylist(true);
+        } else {
+          setSavingPlaylist(false)
+        }
+      }
+      fetchData();
+    } else {
+      //
+    }
+  }, [isSavingPlaylist, setSavingPlaylist, data?.id])
+
+  const addTrackRequest = async () => {
+    const result = await followPlaylistForCurrentUser(`${data?.id}`);
+    return result;
+  }
+
+  const removeTrackRequest = async () => {
+    const result = await unFollowPlaylistForCurrentUser(`${data?.id}`);
+    return result;
+  }
+
+  const handleSaveEpisode = async () => {
+    if (isSavingPlaylist) {
+      await removeTrackRequest();
+      setSavingPlaylist(false)
+      toast('🦄 Remove from liked Song');
+    } else {
+      await addTrackRequest();
+      setSavingPlaylist(true);
+      toast('🦄 Added to liked Song');
+    }
+  };
+
+  console.log("Check data in playlist: ", data);  
 
   return (
     <main className={cx("wrapper")}>
@@ -160,20 +223,44 @@ const Playlist: React.FC = () => {
           ></div>
           <div className={cx("main")}>
             <div className={cx("action-bar")}>
-              <div onClick={handleClickPlayBtn}>
-                <PlayButton
-                  size={56}
-                  fontSize={24}
-                  scaleHovering={1.05}
-                  transitionDuration={33}
-                />
+              <div className={cx("action-left")}>
+                <div onClick={handleClickPlayBtn}>
+                  <PlayButton
+                    size={56}
+                    fontSize={24}
+                    scaleHovering={1.05}
+                    transitionDuration={33}
+                    isPlay={isPlaying}
+                    //setPlaying={handleSetPlay}
+                  />
+                </div>
+                <button
+                  className={cx("heart", {active: isSavingPlaylist})}
+                  onClick={() => isBtnClickable && handleSaveEpisode()}
+                >
+                  {isSavingPlaylist ? <UserSavedTrack /> : <SaveTrack />}
+                </button>
               </div>
-              <button className={cx("heart")}>
-                <SaveTrack />
-              </button>
+              <div className={cx("action-right")}>
+                <Space className='mobile-hidden'>
+                  <Tooltip title={'VIEW'}>
+                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view === false ? "LIST" : "COMPACT"] }}>
+                      <button className={cx('order-button')}>
+                        <Space align='center'>
+                          <span>{view === false ? "LIST" : "COMPACT"}</span>
+                          {view === false ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
+                        </Space>
+                      </button>
+                    </Dropdown>
+                  </Tooltip>
+                </Space>
+              </div>
             </div>
             <SongList
+              playlist={data}
+              setData={setData}
               isLoading={isLoading}
+              view={view}
               top={0}
               pivotTop={64}
               songList={data?.tracks?.items}

@@ -12,6 +12,7 @@ interface ButtonProps {
   rightIcon?: ReactNode;
   leftIcon?: ReactNode;
   onClick?: any;
+  onMouseOver?: any;
   small?: boolean;
   large?: boolean;
   children: ReactNode;
@@ -26,6 +27,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     rightIcon,
     leftIcon,
     onClick,
+    onMouseOver,
     small = false,
     large = false,
     className,
@@ -51,7 +53,7 @@ const Button: React.FC<ButtonProps> = (props) => {
   );
 
   return (
-    <button className={classes} onClick={onClick}>
+    <button className={classes} onClick={onClick} onMouseOver={onMouseOver}>
       <span
         style={{
           backgroundColor: bgColor,

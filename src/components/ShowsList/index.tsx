@@ -13,7 +13,9 @@ interface ShowsListProps {
   isLoading?: boolean
 }
 
-const ShowsList: FC<ShowsListProps> = ({ data, isLoading, originalData }) => {
+const ShowsList: FC<ShowsListProps>=({data, isLoading, originalData}) => {
+  console.log("Check data in showlist: ", data);
+  
   const [renderNumb, setRenderNumb] = useState<number>(() => {
     if ((data?.length ?? 0 < 9) && data?.length) {
       return data?.length

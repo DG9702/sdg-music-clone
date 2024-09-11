@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./PlaylistSaveTrack.module.scss";
 import Header from "~/components/Header";
@@ -13,25 +13,30 @@ import useComponentSize from "~/hook/useComponentSize";
 import { getUserSaveTrack } from "~/services/trackApi";
 import {getUserData} from "~/services/userApi";
 import {PlaylistOwner} from "~/types/artist";
+import {PlayerContext} from "~/context/PlayerContext";
+import { OrderCompactIcon, OrderListIcon} from "~/assets/icons";
+import {Dropdown, MenuProps, Space, Tooltip} from "antd";
 
 const cx = classNames.bind(styles);
 
 const PlaylistSaveSong: React.FC = () => {
-  //const {
-  //  setQueue,
-  //  setCurrentTrack,
-  //  setCurrentTrackIndex,
-  //  calNextTrackIndex,
-  //  setPlayingType,
-  //  isPlaying,
-  //  prevDocumentTitle,
-  //} = useContext(PlayerContext);
+  const {
+    setQueue,
+    setCurrentTrack,
+    setCurrentTrackIndex,
+    calNextTrackIndex,
+    setPlayingType,
+  }=useContext(PlayerContext);
 
   const [navOpacity, setNavOpacity] = useState<number>(0);
   const [data, setData] = useState<PlaylistSaveData>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [navPlayBtnVisible, setNavPlayBtnVisible] = useState<boolean>(false);
-  const [owner, setOwner] = useState<PlaylistOwner>();
+  const [owner, setOwner]=useState<PlaylistOwner>();
+  
+  const [view, setView]=useState<boolean>(false);
+
+
   const { data: dataColor } = usePalette(
     "https://misc.scdn.co/liked-songs/liked-songs-64.png",
     10,
@@ -41,6 +46,23 @@ const PlaylistSaveSong: React.FC = () => {
       quality: 100,
     },
   );
+
+  const items: MenuProps['items'] = [
+      {
+        label: 'LIST',
+        key: 'LIST',
+        onClick: () => {
+          setView(false)
+        }
+      },
+      {
+        label: 'COMPACT',
+        key: 'COMPACT',
+        onClick: () => {
+          setView(true)
+        }
+      }
+    ];
 
   const bgColor = dataColor?.[0] ?? "#181818";
 
@@ -72,7 +94,7 @@ const PlaylistSaveSong: React.FC = () => {
       setData(result);
     };
     fetchLikeSong();
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     setLoading(Boolean(!data));
@@ -89,13 +111,12 @@ const PlaylistSaveSong: React.FC = () => {
   };
 
   const handleClickPlayBtn = () => {
-  //  setQueue(data?.items?.map((item) => item?.track) || []);
-  //  setCurrentTrack(data?.items?.[0]?.track);
-  //  setCurrentTrackIndex(0);
-  //  calNextTrackIndex();
-  //  setPlayingType("track");
-  };
-  
+    setQueue(data?.items?.map((item: any) => item?.track) || []);
+    setCurrentTrack(data?.items?.[0]?.track);
+    setCurrentTrackIndex(0);
+    calNextTrackIndex();
+    setPlayingType("track");
+  };  
 
   return (
     <main className={cx("wrapper")}>
@@ -118,11 +139,11 @@ const PlaylistSaveSong: React.FC = () => {
         <div>
           <HeadSection
             type="Playlist"
+            thumbnail={"https://misc.scdn.co/liked-songs/liked-songs-64.png"}
             isLoading={isLoading}
             title="Liked Song"
             owner={owner}
             bgColor={bgColor}
-            thumbnail="https://misc.scdn.co/liked-songs/liked-songs-64.png"
             quantity={data?.total}
           />
         </div>
@@ -133,7 +154,7 @@ const PlaylistSaveSong: React.FC = () => {
           ></div>
           <div className={cx("main")}>
             <div className={cx("action-bar")}>
-              <div onClick={handleClickPlayBtn}>
+              <div className={cx("action-left")} onClick={handleClickPlayBtn}>
                 <PlayButton
                   size={56}
                   fontSize={24}
@@ -141,9 +162,26 @@ const PlaylistSaveSong: React.FC = () => {
                   transitionDuration={33}
                 />
               </div>
+              <div className={cx("action-right")}>
+                <Space className='mobile-hidden'>
+                  <Tooltip title={'VIEW'}>
+                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view === false ? "LIST" : "COMPACT"] }}>
+                      <button className={cx('order-button')}>
+                        <Space align='center'>
+                          <span>{view === false ? "LIST" : "COMPACT"}</span>
+                          {view === false ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
+                        </Space>
+                      </button>
+                    </Dropdown>
+                  </Tooltip>
+                </Space>
+              </div>
             </div>
             <SongList
+              playlist={data}
+              setData={setData}
               isLoading={isLoading}
+              view={view}
               top={0}
               pivotTop={64}
               songList={data?.items}

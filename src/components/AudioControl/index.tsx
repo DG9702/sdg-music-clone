@@ -94,7 +94,6 @@ const PlayerControl: React.FC = () => {
   if (audioRef?.current) {
     audioRef.current.onended = () => {
       if (isRepeat) {
-        // console.log('repeated')
         setCurrentTime(0);
         setTrackProgress(0);
         startTimer();
@@ -108,7 +107,6 @@ const PlayerControl: React.FC = () => {
   }
 
   const handlePlayBtn = () => {
-    // console.log(duration, isPlaying)
     if (!duration && !isReady) return;
     if (!userClicked) setUserClicked(true);
     if (isPlaying) {
@@ -142,17 +140,6 @@ const PlayerControl: React.FC = () => {
   navigator.mediaSession.setActionHandler("nexttrack", () => {
     handleForward();
   });
-
-  console.log("Check audioData: ", audioData);
-  
-
-  console.log("Check durationAudio: ", durationAudio);  
-
-  console.log("Check CurrentTrack: ", currentTrack);
-  console.log("Check audioRef: ", audioRef?.current?.src);
-  console.log("Check isPlaying: ", isPlaying);
-  console.log("Check isReady: ", isReady);
-  
 
   return (
     <div className={cx("wrapper")}>

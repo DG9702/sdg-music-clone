@@ -87,6 +87,10 @@
     color: var(--text-subdued);
     transform-origin: center;
 
+    &.active {
+      color: var(--secondary) !important;
+    }
+
     svg {
       width: 24px;
       height: 24px;

@@ -25,7 +25,7 @@ const PlayButton: FC<PlayButtonProps> = (props) => {
     isPlay,
     setPlaying,
   } = props;
-  const [isHovering, setHovering] = useState<boolean>(false);
+  const [isHovering, setHovering] = useState<boolean>(false);  
 
   return (
     <div

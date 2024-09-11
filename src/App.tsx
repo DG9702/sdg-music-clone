@@ -14,6 +14,7 @@ import SectionPage from "./pages/SectionPage";
 import Show from "./pages/Show";
 import Episode from "./pages/Episode";
 import PlaylistSaveTrack from "./pages/PlaylistSaveTrack";
+import EpisodeSave from "./pages/Episode/EpisodeSave/EpisodeSave";
 //import PlaylistLikeSong from "./pages/PlaylistLikeSong";
 
 interface AppContext {
@@ -21,13 +22,17 @@ interface AppContext {
   setPlayingViewShowed: React.Dispatch<React.SetStateAction<boolean>>;
   isQueueShowed: boolean;
   setQueueShowed: React.Dispatch<React.SetStateAction<boolean>>;
+  isModalEditPlaylist: boolean;
+  setModalEditPlaylist: React.Dispatch<React.SetStateAction<boolean>>;
+
 }
 
 export const AppContext = createContext({} as AppContext);
 
 const App = () => {
   const [isPlayingViewShowed, setPlayingViewShowed] = useState<boolean>(false);
-  const [isQueueShowed, setQueueShowed] = useState<boolean>(false);
+  const [isQueueShowed, setQueueShowed]=useState<boolean>(false);
+  const [isModalEditPlaylist, setModalEditPlaylist]=useState<boolean>(false);
   useEffect(() => {
     deleteAllCookies();
   }, []);
@@ -39,6 +44,8 @@ const App = () => {
         setPlayingViewShowed,
         isQueueShowed,
         setQueueShowed,
+        isModalEditPlaylist,
+        setModalEditPlaylist
       }}
     >
       <Suspense fallback={<LoadingLayout />}>
@@ -50,6 +57,7 @@ const App = () => {
             <Route path="/genre/:id" element={<GenreContainer />} />
             <Route path="/playlist/:id" element={<Playlist />} />
             <Route path="/collection/track" element={<PlaylistSaveTrack />} />
+            <Route path="/collection/your-episodes" element={<EpisodeSave />} />
             <Route path="/album/:id" element={<Album />} />
             <Route path="/show/:id" element={<Show />} />
             <Route path="/episode/:id" element={<Episode />} />
