@@ -1,9 +1,10 @@
+@import '../../scss/variable.scss';
 @import '../../scss/mixin';
 
 .wrapper {
   position: relative;
   height: clamp(340px, 30vh, 400px);
-  color: var(--white);
+  color: $white;
   margin-top: -64px;
   padding: 0 24px 24px;
   display: flex;
@@ -11,7 +12,7 @@
   transition: all 1s ease;
   filter: brightness(110%);
   // background-image: linear-gradient(rgba(60, 60, 60, 0.6) 0, $bg-base 100%), $bg-noise !important;
-  background: linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%), var(--bg-noise);
+  background: linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%), $bg-noise;
   // background-color: #fff;
 }
 
@@ -28,15 +29,17 @@
     box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 
+    &.border-radius {
+      border-radius: 50%;
+    }
+
     .episodes-icon {
         background: #056952;
         border-radius: 6px;
         height: 100%;
         width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #1ed760;
+        @include item-center;
+        color: $primary;
     }
 
     span {
@@ -63,7 +66,7 @@
     .skeleton {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: $nav-gap;
       margin-bottom: 60px;
     }
 
@@ -89,7 +92,7 @@
 
 
       .artist {
-        color: var(--white);
+        color: $white;
         font-size: 14px;
       }
 
@@ -109,11 +112,11 @@
       display: flex;
       align-items: center;
       min-height: 24px;
-      color: var(--text-subdued);
+      color: $text-subdued;
 
       .artist {
         font-size: 14px;
-        color: var(--white);
+        color: $white;
         font-weight: 700;
         max-width: 40%;
       }
@@ -136,7 +139,7 @@
       .dot {
         height: 4px;
         aspect-ratio: 1 / 1;
-        background-color: var(--text-subdued);
+        background-color: $text-subdued;
         border-radius: 50%;
         margin-inline: 5px;
       }
@@ -148,6 +151,8 @@
   }
 }
 
+
+
 .show {
   .img {
     border-radius: 12px;
@@ -158,7 +163,7 @@
   }
 
   .publisher {
-    color: var(--white);
+    color: $white;
 
     span {
       font-size: 24px;
@@ -174,9 +179,6 @@
   }
 }
 
-
-//-------------------------------
-
 .category-header {
   width: 100%;
   overflow: hidden;
@@ -186,7 +188,7 @@
 .category-title {
   font-size: 96px;
   margin: 0;
-  color: var(--white);
+  color: $white;
   margin-bottom: 6px;
   letter-spacing: -3px;
 

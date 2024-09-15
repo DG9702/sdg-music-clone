@@ -20,10 +20,7 @@ const Queue = () => {
     //prevDocumentTitle,
   } = useContext(PlayerContext);
   const [navOpacity, setNavOpacity] = useState<number>(0);
-  const queueNormalized=queue.filter((item) => item);  
-
-  console.log("Check navOpacity: ", navOpacity);
-  
+  const queueNormalized=queue.filter((item) => item);    
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>): void => {
     const yAxis = e.currentTarget.scrollTop;

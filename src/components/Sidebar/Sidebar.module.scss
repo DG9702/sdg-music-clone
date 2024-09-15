@@ -1,12 +1,15 @@
+@import "../../scss/variable.scss";
+@import '../../scss/_mixin';
+
 .sidebar {
     display: flex;
     flex-direction: column;
-    gap: var(--panel-gap);
+    gap: $panel-gap;
 }
 
 //Navbar top
 .navbar-container {
-    background-color: var(--bg-primary);
+    background-color: $bg-primary;
     font-size: 1.6rem;
     border-radius: 8px;
 
@@ -17,17 +20,17 @@
             padding: 4px 12px;
 
             .active {
-                color: var(--white) !important;
+                color: $white !important;
             }
 
             .nav-item-body {
                 display: flex;
                 align-items: center;
-                color: var(--text-neutral);
+                color: $text-neutral;
                 height: 40px;
 
                 &:hover {
-                    color: var(--white);
+                    color: $white;
                 }
 
                 .nav-icon {
@@ -44,8 +47,9 @@
     }
 }
 
+//Library
 .library {
-    background-color: var(--bg-primary);
+    background-color: $bg-primary;
     display: flex;
     flex-direction: column;
     border-radius: 8px;
@@ -67,7 +71,7 @@
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                gap: var(--panel-gap);
+                gap: $panel-gap;
 
                 .playlist-header-title {
                     display: flex;
@@ -85,7 +89,7 @@
                     font-size: 1.5rem;
 
                     &:hover {
-                        color: var(--white);
+                        color: $white;
                     }
 
                     .playlist-header-icon {
@@ -112,7 +116,7 @@
                         &:hover {
                             cursor: pointer;
                             background-color: #1a1a1a;
-                            color: var(--white);
+                            color: $white;
                             border-radius: 999px;
                         }
                     }
@@ -154,7 +158,7 @@
                         font-size: 1.275rem;
                         font-weight: 600;
                         position: relative;
-                        color: var(--white);
+                        color: $white;
                         display: flex;
                         align-items: center;
                         border-radius: 999px;
@@ -164,7 +168,7 @@
                         padding-block-end: 8px;
                         padding-inline-start: 12px;
                         padding-inline-end: 12px;
-                        background-color: var(--background-tinted-base);
+                        background-color: $background-tinted-base;
                     }
 
                     &:not(:last-child) {
@@ -217,11 +221,10 @@
                         padding: 0 8px 8px 8px;
 
                         .section-playlist-grid {
-                            --min-column-width: 120px;
                             display: grid;
                             grid-auto-rows: 3;
                             grid-auto-rows: 1fr;
-                            grid-template-columns: repeat(auto-fill, minmax(var(--min-column-width), 1fr));
+                            grid-template-columns: repeat(auto-fill, minmax($min-column-width, 1fr));
                         }
 
                         .section-head {
@@ -256,13 +259,13 @@
         gap: 8px;
 
         .section-text-medium {
-            color: var(--white);
+            color: $white;
             font-weight: 700;
             font-size: 1.4rem;
         }
         .section-text-small {
             font-size: 1.2rem;
-            color: var(--white);
+            color: $white;
             font-weight: 600;
         }
     }
@@ -293,7 +296,7 @@
                     line-height: inherit;
                     border: none;
                     padding: 0px;
-                    color: var(--text-subdued, #6a6a6a);
+                    color: var($text-subdued, #6a6a6a);
                     display: inline-flex;
                     align-items: center;
 
@@ -326,10 +329,10 @@
         padding: 0 24px;
 
         button {
-            border: 1px solid var(--essential-subdued, #878787);
+            border: 1px solid var($essential-subdued, #878787);
 
             &:hover {
-                border: 1px solid var(--white, #000000);
+                border: 1px solid var($white, #000000);
             }
 
             span {

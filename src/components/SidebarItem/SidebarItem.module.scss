@@ -1,8 +1,11 @@
+@import "../../scss/variable.scss";
+@import "../../scss/mixin";
+
 .sidebar-item {
   height: 64px;
   padding: 8px;
   align-items: inherit;
-  gap: var(--panel-gap);
+  gap: $panel-gap;
   border-radius: 6px;
   transition: all .1s ease;
   cursor: pointer;
@@ -38,7 +41,7 @@
 
 
   &:hover {
-    background-color: var(--bg-card-highlight);
+    background-color: $bg-card-highlight;
   }
 
   .thumbnail {
@@ -59,17 +62,15 @@
     .heading {
       font-size: 1.6rem;
       margin: 0;
-      color: var(--white);
+      color: $white;
       font-weight: 400;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include text-in-one-line
     }
 
     .type {
       font-size: 1.3rem;
       font-weight: 500;
-      color: var(--text-subdued);
+      color: $text-subdued;
     }
   }
 }

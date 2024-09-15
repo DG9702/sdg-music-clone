@@ -1,3 +1,4 @@
+@import "../../scss/variable.scss";
 
 .wrapper {
   height: 100%;
@@ -10,7 +11,7 @@
   overflow: hidden;
   overflow-y: scroll;
   padding-bottom: 32px;
-  padding-top: var(--navbar-height);
+  padding-top: $navbar-height;
 
   &::-webkit-scrollbar {
     display: none;

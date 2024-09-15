@@ -1,10 +1,11 @@
+@import '../../../scss/variable.scss';
 @import '../../../scss/mixin';
 
 .show-wrapper {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background-color: var(--bg-primary);
+  background-color: $bg-primary;
 }
 
 .body {
@@ -12,7 +13,7 @@
   overflow: hidden;
   overflow-y: scroll;
   padding-bottom: 32px;
-  padding-top: var(--navbar-height);
+  padding-top: $navbar-height;
   position: relative;
 
   &::-webkit-scrollbar {
@@ -35,7 +36,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, var(--bg-primary) 100%), var(--bg-noise);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, $bg-primary 100%), $bg-noise;
   z-index: 0;
 }
 

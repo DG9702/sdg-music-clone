@@ -43,7 +43,6 @@ const HeadSection: React.FC<HeaderProps> = ({
     setModalEditPlaylist(true);
   }
 
-
   return (
     <main style={{ backgroundColor: `${bgColor}` }} className={cx("wrapper")}>
       {headerType !== "genre" ? (
@@ -65,7 +64,14 @@ const HeadSection: React.FC<HeaderProps> = ({
               )}
             </div>
           ) : (
-            <div className={cx("img", {"pointer": isMine===true})} onClick={() => isMine && handleOpenModal()}>
+            <div
+              className={cx("img",
+                {
+                  "pointer": isMine===true,
+                  "border-radius": type === "user"
+                }
+              )}
+                onClick={() => isMine&&handleOpenModal()}>
               {!isLoading ? (
                 thumbnail ?
                   (
@@ -156,7 +162,7 @@ const HeadSection: React.FC<HeaderProps> = ({
                       </>
                     )}
                     <div className={cx("dot")}></div>
-                    <div className={"text"}>{`${quantity || 0} songs`}</div>
+                    <div className={"text"}>{`${quantity || 0} ${type === 'user' ? 'following' : 'song'}`}</div>
                   </div>
                 )}
               </>

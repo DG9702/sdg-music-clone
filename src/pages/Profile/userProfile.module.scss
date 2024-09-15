@@ -41,16 +41,17 @@
 
     .action-bar {
       display: flex;
-      justify-content: space-between;
       position: relative;
+      justify-content: space-between;
       padding: 24px;
       align-items: center;
+      gap: 32px;
 
       .action-left {
         display: flex;
         position: relative;
         gap: 32px;
-
+        align-items: center;
 
         .heart {
           cursor: pointer;
@@ -91,30 +92,6 @@
 
 .grid-md {
   grid-template-columns: 16px minmax(300px, 4fr) 2fr 50px !important;
-}
-
-.copy-rights {
-  display: flex;
-  flex-direction: column;
-  padding-inline: 24px;
-  margin-top: 32px;
-  line-height: 1.7;
-  gap: 4px;
-
-  p {
-    color: $text-neutral;
-    font-size: 11px;
-    margin: 0;
-  }
-
-  .date {
-    font-size: 14px;
-    margin-bottom: 2px;
-  }
-}
-
-.artist-albums {
-  margin-top: 32px;
 }
 
 .pivot-tracking {

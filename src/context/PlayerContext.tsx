@@ -183,10 +183,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
       }
     }
   }
-  
-  console.log("Check playing type: ", playingType);
-  
-  console.log("Check queue: ", queue); 
+
 
   useMemo(() => {
     if (audioData) {
@@ -195,37 +192,6 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
       setBtnClickable(false)
     }
   }, [audioData])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const query =
-        playingType === 'track'
-          ? `${currentTrack?.name} - ${currentTrack?.artists
-              ?.map((artist) => artist?.name)
-              .join(' ')} ${
-              currentTrack?.album?.album_type?.toLocaleLowerCase() === 'album'
-                ? `album: ${currentTrack?.album?.name}`
-                : ''
-            }`
-          : `${currentTrack?.show?.publisher} ${currentTrack?.name} ${currentTrack?.type} original`
-    
-          console.log("Check query: ", query);
-          const data = await getAudioLink({
-            query,
-            duration_ms: currentTrack?.duration_ms as number,
-            name: currentTrack?.name as string,
-          })
-          console.log("Check audio Link: ", data);
-          
-    }
-      
-
-    handlePause()
-    setReady(false)
-    if (queue?.filter((item: CurrentTrack) => item).length !== 0) {
-      fetchData()
-    }
-  }, [currentTrack])
 
   useEffect(() => {
     if (audioRef.current) {
@@ -338,6 +304,9 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
       
     }
   }, [currentTrack, audioData])  
+
+  console.log("Check audioRef: ", audioRef, audioData);
+
   
   return (
     <PlayerContext.Provider

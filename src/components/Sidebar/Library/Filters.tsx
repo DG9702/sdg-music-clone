@@ -22,10 +22,7 @@ export interface AreaProps {
 const VIEW = ["Compact", "List", "Grid"] as const;
 
 const SearchSelector: FC<AreaProps> = memo(({ searchValue, setSearchValue }) => {
-    const [showInput, setShowInput] = useState<boolean>(false);
-
-    console.log("Check searchValue: ", searchValue);
-    
+    const [showInput, setShowInput] = useState<boolean>(false);    
   
     const handleClickSearchPlaylist = (): void => {
         document.getElementById("inputSearch")?.classList.add(cx("hien"));

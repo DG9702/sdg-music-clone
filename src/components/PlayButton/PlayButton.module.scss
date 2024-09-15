@@ -1,18 +1,16 @@
-.wrapper {
-}
+@import '../../scss/variable.scss';
+@import '../../scss/mixin.scss';
 
 .play-btn {
   position: relative;
   font-size: 24px;
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
-  color: var(--black);
+  color: $black;
   border: none;
   cursor: pointer;
   transition: all ease-in-out 0.2s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--primary);
+  @include item-center;
+  background-color: $primary;
   transform-origin: center;
   outline: none;
   opacity: 0.95;

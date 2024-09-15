@@ -1,12 +1,13 @@
 @import "../../scss/mixin";
+@import "../../scss/variable";
 
 .header {
   padding: 16px 20px;
   display: flex;
-  gap: var(--panel-gap);
+  gap: $panel-gap;
   justify-content: space-between;
   align-items: center;
-  height: var(--navbar-height);
+  height: $navbar-height;
   z-index: 8;
   position: absolute;
   width: 100%;
@@ -27,7 +28,7 @@
     pointer-events: none;
     // background-image: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .6));
     transition: background-color 1s ease;
-    background-color: var(--bg-primary);
+    background-color: $bg-primary;
     transition: background-color 0.25s, opacity 0.4s ease-out;
   }
 
@@ -39,7 +40,7 @@
     button {
       @include button-icon(32px, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
       font-size: 20px;
-      color: var(--white);
+      color: $white;
 
       svg {
         width: 16px;
@@ -127,7 +128,7 @@
   .header-right {
     display: flex;
     align-items: center;
-    gap: var(--panel-gap);
+    gap: $panel-gap;
 
     .btn-title {
       background-color: transparent;
@@ -138,7 +139,7 @@
       cursor: pointer;
       vertical-align: middle;
       transform: translate3d(0px, 0px, 0px);
-      color: var(--text-subdued, #6a6a6a);
+      color: $text-subdued, #6a6a6a;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -152,15 +153,15 @@
 
       &:hover {
         transform: scale(1.04);
-        color: var(--white);
+        color: $white;
       }
     }
 
     .user {
       position: relative;
       button[name="user account"] {
-        @include button-icon(32px, var(--bg-primary), var(--bg-primary));
-        color: var(--white);
+        @include button-icon(32px, $bg-primary, $bg-primary);
+        color: $white;
         font-size: 16px;
       }
 
@@ -184,7 +185,7 @@
     }
 
     .hr {
-      background: var(--text-subdued);
+      background: $text-subdued;
       height: 25px;
       margin: 16px;
       width: 1px;

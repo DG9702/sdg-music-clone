@@ -1,6 +1,9 @@
+@import "../../scss/variable.scss";
+@import "../../scss/mixin";
+
 .artists {
   font-size: 14px;
-  color: var(--text-neutral);
+  color: $text-neutral;
   display: flex;
   gap: 3px;
   
@@ -8,36 +11,32 @@
   flex: 1;
 
   .subIsQueue {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    @include text-in-one-line
   }
 
   .artist-item {
     font-size: 14px;
-    color: var(--text-neutral);
+    color: $text-neutral;
 
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    @include text-in-one-line;
 
     &:hover {
       text-decoration: underline;
-      color: var(--white);
+      color: $white;
     }
   }
 }
 
 .artist-item {
   font-size: 14px;
-  color: var(--text-neutral);
+  color: $text-neutral;
 
   &:hover {
     text-decoration: underline;
-    color: var(--white);
+    color: $white;
   }
 }
 
 .white-color {
-  color: var(--white) !important;
+  color: $white !important;
 }

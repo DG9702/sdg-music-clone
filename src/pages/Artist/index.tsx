@@ -18,6 +18,8 @@ import Discography from "~/components/Discography";
 import AboutArtist from "~/components/AboutArtist";
 import {checkCurrentUserFollowArtists, followArtistForCurrentUser, unFollowArtistForCurrentUser} from "~/services/artistApi";
 import {toast} from "react-toastify";
+import {Dropdown, MenuProps, Space, Tooltip} from "antd";
+import {OrderCompactIcon, OrderListIcon} from "~/assets/icons";
 
 const cx = classNames.bind(styles);
 
@@ -54,11 +56,30 @@ const Artist: React.FC = () => {
     setPlaying,
     isPlaying,
     prevDocumentTitle,
-    queue,
     isBtnClickable,
   }=useContext(PlayerContext);
   
   const [isFollow, setIsFollow]=useState<boolean>(false);
+  const [view, setView]=useState<boolean>(false);
+
+
+  const items: MenuProps['items'] = [
+      {
+        label: 'LIST',
+        key: 'LIST',
+        onClick: () => {
+          setView(false)
+        }
+      },
+      {
+        label: 'COMPACT',
+        key: 'COMPACT',
+        onClick: () => {
+          setView(true)
+        }
+      }
+    ];
+
 
   useEffect(() => {
     if (isPlaying) {
@@ -106,9 +127,6 @@ const Artist: React.FC = () => {
     calNextTrackIndex();
     setPlayingType("track");
   };
-
-  console.log("Check data in artist: ", topTracks);
-  console.log("Check queue in artist: ", queue);
   
   useEffect(() => {
     if (profile?.id) {
@@ -128,25 +146,25 @@ const Artist: React.FC = () => {
     }
   }, [isFollow, setIsFollow, profile?.id])
 
-  const addTrackRequest = async () => {
+  const followingArtistRequest = async () => {
     const result = await followArtistForCurrentUser({ ids: `${profile?.id}`});
     return result;
   }
 
-  const removeTrackRequest = async () => {
+  const unFollowingRequest = async () => {
     const result = await unFollowArtistForCurrentUser({ ids: `${profile?.id}`});
     return result;
   }
 
   const handleFollowArtist = async () => {
     if (isFollow) {
-      await removeTrackRequest();
+      await unFollowingRequest();
       setIsFollow(false)
-      toast('🦄 Remove from liked Song');
+      toast('🦄 UnFollow artist');
     } else {
-      await addTrackRequest();
+      await followingArtistRequest();
       setIsFollow(true);
-      toast('🦄 Added to liked Song');
+      toast('🦄 Following artist');
     }
   };
 
@@ -221,22 +239,38 @@ const Artist: React.FC = () => {
             />
           </div>
           <div className={cx("action-bar")}>
-            <div onClick={handleClickPlayBtn}>
-              <PlayButton
-                size={56}
-                transitionDuration={33}
-                scaleHovering={1.05}
-                isPlay={isPlaying}
-                setPlaying={setPlaying}
-              />
+            <div className={cx("action-left")}>
+              <div onClick={handleClickPlayBtn}>
+                <PlayButton
+                  size={56}
+                  transitionDuration={33}
+                  scaleHovering={1.05}
+                  isPlay={isPlaying}
+                  setPlaying={setPlaying}
+                />
+              </div>
+              <button className={cx("follow-btn")}
+                onClick={() => isBtnClickable && handleFollowArtist()}
+              >
+                {isFollow ? "Following" : "follow"}
+              </button>
             </div>
-            <button className={cx("follow-btn")}
-              onClick={() => isBtnClickable && handleFollowArtist()}
-            >
-              {isFollow ? "Following" : "follow"}
-            </button>
+            <div className={cx("action-right")}>
+                <Space className='mobile-hidden'>
+                  <Tooltip title={'VIEW'}>
+                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view === false ? "LIST" : "COMPACT"] }}>
+                      <button className={cx('order-button')}>
+                        <Space align='center'>
+                          <span>{view === false ? "LIST" : "COMPACT"}</span>
+                          {view === false ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
+                        </Space>
+                      </button>
+                    </Dropdown>
+                  </Tooltip>
+                </Space>
+              </div>
           </div>
-          <TopTracks isLoading={isLoading} songList={topTracks} />
+          <TopTracks title="Popular" view={view} isLoading={isLoading} songList={topTracks} />
           <Discography data={discography} />
 
           {featuring?.length !== 0 && (

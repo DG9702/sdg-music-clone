@@ -1,3 +1,4 @@
+@import '../../scss/variable.scss';
 @import '../../scss/mixin';
 
 .queue-view-wrapper {
@@ -5,8 +6,8 @@
   min-width: 300px;
   overflow: hidden;
   overflow-y: scroll;
-  background-color: var(--bg-primary);
-  border-radius: var(--panel-border-radius);
+  background-color: $bg-primary;
+  border-radius: $panel-border-radius;
   padding: 16px;
   gap: 16px;
   flex-direction: column;
@@ -16,11 +17,6 @@
     display: none;
   }
 
-//  & > div {
-//    display: flex;
-//    flex-direction: column;
-//    gap: 16px;
-//  }
 }
 
 .header {
@@ -73,7 +69,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--col-gap);
+  gap: $col-gap;
 
   &::-webkit-scrollbar {
     display: none;
@@ -90,14 +86,11 @@
   color: var(--white);
   margin: 0;
   margin-bottom: 4px;
-
     -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   display: -webkit-box;
   white-space: unset;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include text-in-one-line;
 }
 
 .queue-list {

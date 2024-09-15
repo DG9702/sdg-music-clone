@@ -1,8 +1,10 @@
+@import "../../scss/variable.scss";
+
 .wrapper {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--black);
+  background-color: $black;
 }
 
 .spinner {
@@ -11,9 +13,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--bg-primary);
+  background-color: $bg-primary;
   margin: 8px 8px 0;
-  border-radius: var(--panel-border-radius);
+  border-radius: $panel-border-radius;
 }
 
 .audio-player-bar {

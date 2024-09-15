@@ -1,12 +1,14 @@
+@import "../../scss/variable";
+
 .greet {
-  margin-top: -64px;
-  padding-top: var(--navbar-height);
+  margin-top: -$navbar-height;
+  padding-top: $navbar-height;
   padding-inline: 24px;
   position: relative;
   font-family: CircularSp;
   font-weight: 700;
   transition: all 1s ease;
-  background-image: linear-gradient(rgba(0, 0, 0, .6) 0, var(--bg-primary) 100%), var(--bg-noise) !important;
+  background-image: linear-gradient(rgba(0, 0, 0, .6) 0, $bg-primary 100%), $bg-noise !important;
 
   .greet-heading {
     font-size: 3.2rem;
@@ -21,7 +23,7 @@
 
   .songs-section {
     display: grid;
-    grid-gap: 12px;
+    grid-gap: $row-gap $col-gap;
     grid-template: auto / repeat(3, 1fr);
     padding: 15px 0;
     font-weight: 700;

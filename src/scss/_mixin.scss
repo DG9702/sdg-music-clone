@@ -1,3 +1,4 @@
+@import "./variable.scss";
 
 @mixin backgroundImg($url) {
   background-image: url($url);

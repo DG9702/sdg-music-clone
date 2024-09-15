@@ -1,7 +1,9 @@
+@import "../../scss/variable.scss";
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--panel-gap);
+  gap: $panel-gap;
   position: relative;
 
   .search-kind {
@@ -9,7 +11,7 @@
     gap: 4px;
     padding: 7px 24px;
     transform: translateZ(1px);
-    background-color: var(--bg-primary);
+    background-color: $bg-primary;
     z-index: 8;
     min-height: 48px;
     position: sticky;
@@ -41,26 +43,25 @@
         border-radius: 9999px;
         min-block-size: 32px;
         display: flex;
-        align-items: center;
         color: var(--white);
         align-items: center;
         transition: background-color 0.2s ease 0s, color 0.2s ease 0s;
         padding: 4px 12px;
-        background-color: var(--background-tinted-base, rgba(0,0,0,0.08));
+        background-color: var($background-tinted-base, rgba(0,0,0,0.08));
         font-size: 1.25rem;
         font-weight: 600;
       }
 
       &:hover {
         span {
-          background-color: var(--background-tinted-highlight,rgba(0,0,0,0.05));
+          background-color: var($background-tinted-highlight,rgba(0,0,0,0.05));
         }
       }
 
       &.active {
         span {
-          background-color: var(--white);
-          color: var(--black);
+          background-color: $white;
+          color: $black;
         }
       }
     }
@@ -133,9 +134,9 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    background-color:var(--bg-section);
+    background-color: $bg-section;
     transition: background-color 0.3s ease;
-    border-radius: var(--panel-border-radius);
+    border-radius: $panel-border-radius;
     gap: 14px;
     max-width: 500px;
     overflow: hidden;
@@ -191,7 +192,7 @@
     }
 
     &:hover {
-      background-color: var(--bg-card-highlight);
+      background-color: $bg-card-highlight;
 
       .play-btn {
         opacity: 1;

@@ -5,7 +5,6 @@ import {
   NotificationIcon,
   OutlineCLear,
   SearchIcon,
-  ToIcon,
   UserImgDefault,
 } from "~/assets/icons";
 import classNames from "classnames/bind";
@@ -14,7 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 import { AuthContext } from "../../context/AuthContext";
 import Button from "../Button";
-import Menu from "../Menu";
+import {Dropdown, MenuProps} from "antd";
 
 const cx = classNames.bind(styles);
 
@@ -40,57 +39,37 @@ const Header: FC<HeaderProps> = (props) => {
     type = "default",
   } = props;
 
-  const { isLogged, userData, handleLogin } = useContext(AuthContext);
+  const { isLogged, userData, handleLogin, handleLogout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState<any>(false);
 
   const { key } = useLocation();
   const navigate = useNavigate();
   const queryRef = useRef<any>(null);
 
-  const userMenu = [
-    {
-      icon: <ToIcon />,
-      title: "Account",
-      type: "Account",
-    },
-    {
-      icon: "",
-      title: "Profile",
-      to: "/coins",
-      type: "Profile",
-    },
-    {
-      icon: <ToIcon />,
-      title: "Upgrade to Premium",
-      to: "/settings",
-      type: "Premium",
-    },
-    {
-      icon: <ToIcon />,
-      title: "Support",
-      to: "/@hoaa",
-      type: "Support",
-    },
-    {
-      icon: <ToIcon />,
-      title: "Download",
-      to: "/coins",
-      type: "Download",
-    },
-    {
-      icon: "",
-      title: "Settings",
-      to: "/settings",
-      type: "Settings",
-    },
-    {
-      icon: "",
-      title: "Log out",
-      to: "/logout",
-      separate: true,
-      type: "Logout",
-    },
-  ];
+  const items: MenuProps['items'] = [
+      {
+        label: 'Profile',
+        key: 'Profile',
+        onClick: () => {
+          navigate(`/user/${userData?.id}`)
+        }
+      },
+      {
+        label: 'Settings',
+        key: 'Settings',
+        onClick: () => {
+          console.log("Check settings");
+        }
+      },
+      { type: "divider" },
+      {
+        label: 'Logout',
+        key: 'Logout',
+        onClick: () => {
+          handleLogout();
+        }
+      }
+    ];
 
   useEffect(() => {
     if (type === "search") {
@@ -196,7 +175,7 @@ const Header: FC<HeaderProps> = (props) => {
           <></>
         )}
         {isLogged ? (
-          <Menu items={userMenu} isOpen={isMenuOpen}>
+          <Dropdown placement='bottomRight' menu={{ items }} trigger={["click"]}>
             <Button
               className={cx("user")}
               type="circle"
@@ -213,7 +192,7 @@ const Header: FC<HeaderProps> = (props) => {
                 />
               )}
             </Button>
-          </Menu>
+          </Dropdown>
         ) : (
           <>
             <div className={cx("hr")}></div>

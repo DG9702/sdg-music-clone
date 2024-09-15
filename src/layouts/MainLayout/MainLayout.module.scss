@@ -1,10 +1,12 @@
+@import "../../scss/variable";
+
 .main-layout {
-  background-color: var(--black);
+  background-color: $black;
   height: 100vh;
   width: max(100vw, 900px);
   overflow: hidden;
   display: flex;
-  gap: var(--panel-gap);
+  gap: $panel-gap;
   padding: 0.8rem;
   max-width: 3000px;
   display: flex;
@@ -30,9 +32,9 @@
 .main-container {
   flex: 1;
   height: 100%;
-  background-color: var(--bg-primary);
-  border-radius: var(--panel-gap);
-  -webkit-border-radius: var(--panel-gap);
+  background-color: $bg-primary;
+  border-radius: $panel-gap;
+  -webkit-border-radius: $panel-gap;
   overflow: hidden;
   overflow-y: auto;
   position: relative;

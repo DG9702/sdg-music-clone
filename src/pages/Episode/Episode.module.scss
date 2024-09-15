@@ -1,10 +1,11 @@
 @import '../../scss/mixin';
+@import '../../scss/variable.scss';
 
 .episode-wrapper {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background-color: var(--bg-primary);
+  background-color: $bg-primary;
 }
 
 .body {
@@ -12,7 +13,7 @@
   overflow: hidden;
   overflow-y: scroll;
   padding-bottom: 32px;
-  padding-top: var(--navbar-height);
+  padding-top: $navbar-height;
   position: relative;
 
   &::-webkit-scrollbar {
@@ -35,7 +36,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, var(--bg-primary) 100%), var(--bg-noise);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, $bg-primary 100%), $bg-noise;
   z-index: 0;
 }
 
@@ -73,15 +74,15 @@
     }
 
     .plus-btn {
-      color: var(--text-subdued);
+      color: $text-subdued;
       cursor: pointer;
       transform-origin: center;
 
       &.active {
-        color: var(--secondary) !important;
+        color: $secondary !important;
       }
       &:hover {
-        color: var(--white);
+        color: $white;
         transform: scale(1.04);
       }
     }
@@ -96,15 +97,15 @@
   .title {
     font-size: 24px;
     font-weight: 700;
-    color: var(--white);
+    color: $white;
   }
 
   .desc {
     font-size: 16px;
-    color: var(--text-neutral);
+    color: $text-neutral;
 
     a {
-      color: var(--white);
+      color: $white;
       font-weight: 700;
 
       &:hover {
@@ -122,7 +123,7 @@
     @include reset-button;
     background-color: transparent;
     font-size: 16px;
-    color: var(--white);
+    color: $white;
     font-weight: 700;
     cursor: pointer;
   }
@@ -143,13 +144,13 @@
     background-color: transparent;
     padding: 7px 15px;
     border-radius: 500px;
-    border: 1px solid var(--essential-subdued);
+    border: 1px solid $essential-subdued;
     cursor: pointer;
     transform-origin: center;
 
     &:hover {
       transform: scale(1.04);
-      border-color: var(--white);
+      border-color: $white;
     }
   }
 }

@@ -1,9 +1,10 @@
 @import '../../scss/mixin';
+@import '../../scss/mixin';
 
 .user-dropdown-wrapper {
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-card-highlight);
+  background-color: $bg-card-highlight;
   box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   overflow: hidden;
@@ -15,6 +16,6 @@
   font-size: 14px;
   font-weight: 700;
   background-color: transparent;
-  color: var(--white);
+  color: $white;
   cursor: pointer;
 }

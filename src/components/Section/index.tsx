@@ -45,7 +45,7 @@ const Section: React.FC<SectionProps> = ({
     } else {
       setRenderNumb((prev) => prev + 9)
     }
-  }, [lazyRenderInView])
+  }, [lazyRenderInView])  
 
   const sectionProps = useMemo(() => {
     if (data) {
@@ -82,7 +82,7 @@ const Section: React.FC<SectionProps> = ({
         };
       });
     }
-  }, [data]);
+  }, [data]);  
 
   useEffect(() => {
     if (data && data?.length !== 0) {

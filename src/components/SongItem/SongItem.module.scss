@@ -1,3 +1,6 @@
+@import "../../scss/variable.scss";
+@import "../../scss/mixin";
+
 .wrapper {
   display: grid;
   grid-gap: 16px;
@@ -53,13 +56,11 @@
     }
 
     .default-thumb {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include item-center;
       width: 100%;
       height: 100%;
-      background-color: var(--bg-card-highlight);
-      color: var(--text-neutral);
+      background-color: $bg-card-highlight;
+      color: $text-neutral;
     }
 
     span {
@@ -84,16 +85,15 @@
     overflow: hidden;
 
     .name {
-      color: var(--white);
+      color: $white;
       font-size: 16px;
       padding: 0;
       margin: 0;
       -webkit-line-clamp: 1;
+      display: -webkit-box;
       -webkit-box-orient: vertical;
       white-space: unset;
-      word-break: break-all;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include text-in-one-line;
       
       &:hover {
         cursor: pointer;
@@ -105,9 +105,7 @@
       align-items: center;
       gap: 3px;
       width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include text-in-one-line;
     }
 
     .explicit {
@@ -115,7 +113,7 @@
       padding: 3px 6px;
       text-transform: uppercase;
       background-color: hsla(0, 0%, 100%, 0.6);
-      color: var(--bg-primary);
+      color: $bg-primary;
       border-radius: 2px;
       margin-right: 8px;
     }
@@ -123,18 +121,14 @@
 }
 
 .album {
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
+  @include text-line-clamp(1);
   white-space: unset;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  @include text-in-one-line;
 }
 
 .order {
   font-size: 16px;
-  color: var(--text-neutral);
+  color: $text-neutral;
   position: relative;
 
   &-number {
@@ -147,9 +141,7 @@
     opacity: 0;
     position: absolute;
     background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include item-center;
     width: 28px;
     height: 28px;
     padding: 2px 8px;
@@ -178,7 +170,7 @@
   .action {
     opacity: 0;
     &.active {
-      color: var(--secondary) !important;
+      color: $secondary !important;
     }
 
     &:first-child {
@@ -193,7 +185,7 @@
   .duration {
     display: flex;
     justify-content: flex-end;
-    color: var(--text-neutral);
+    color: $text-neutral;
     width: 5ch;
     margin: 0;
     font-size: 14px;
@@ -204,7 +196,7 @@
 .album,
 .date-add {
   font-size: 14px;
-  color: var(--text-neutral);
+  color: $text-neutral;
 }
 
 //.duration,
@@ -267,6 +259,6 @@
 .is-playing {
   .order-number,
   .name {
-    color: var(--tertiary) !important;
+    color: $tertiary !important;
   }
 }

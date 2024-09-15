@@ -40,13 +40,6 @@ const SongList: FC<SongListProps> = ({
 
     const [myPlaylists, setMyPlaylists]=useState<any>();
     
-    const playlistId=useParams();
-
-    console.log("Check playlistId by params: ", playlistId);
-    
-
-    //console.log("Check view: ", view);
-
     useMemo(() => {
         const fetchData = async () => {
             const data = await fetchSidebarData({

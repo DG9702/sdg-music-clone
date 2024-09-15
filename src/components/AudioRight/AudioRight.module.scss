@@ -1,3 +1,4 @@
+@import '../../scss/variable.scss';
 @import '../../scss/mixin';
 
 .wrapper {
@@ -13,13 +14,13 @@
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    color: var(--text-subdued);
+    color: $text-subdued;
     @include reset-button;
     padding: 8px;
     cursor: pointer;
 
     &:hover {
-      color:var(--white);
+      color: $white;
     }
   }
 }

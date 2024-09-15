@@ -37,10 +37,7 @@ export const SongAction: FC<TrackActionsWrapperProps> = memo(
         );
 
         
-        const navigate = useNavigate();
-
-        console.log("Check track: ", track);
-        
+        const navigate = useNavigate();        
 
         const isMine = userData?.id === playlist?.owner?.id;
         const canEdit = isMine || playlist?.collaborative;
@@ -102,11 +99,9 @@ export const SongAction: FC<TrackActionsWrapperProps> = memo(
                     key: '2',
                     icon: <DeleteIcon />,
                     onClick: () => {
-                        console.log("Check delete from this playlist");
                         removePlaylistItems(playlist!.id, [track.uri], playlist?.snapshot_id!)
                             .then(async (response) => {
                                 toast.success("Remove from this playlist");
-                                console.log("Check response in delete", response);
                                 const data = await categoryApi({
                                     type: "playlists",
                                     id: playlist?.id,
@@ -123,14 +118,12 @@ export const SongAction: FC<TrackActionsWrapperProps> = memo(
                     key: "3",
                     icon: <AddToQueueIcon />,
                     onClick: () => {
-                        console.log("Check queue");
                         if(indexOfTrackInQueue === -1) {
                             setQueue(track? [{
                                 queue,
                                 ...track,
                              }] : []);
                         }
-                        console.log("Check queue: ", queue);
                         
                     },
                 },

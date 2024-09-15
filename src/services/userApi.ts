@@ -24,9 +24,13 @@ export const getUserAlbum = async () => {
     return data;
 };
 
-export const getUserTopArtists = async () => {
-    const { data } = await spotifyApiClient.get("me/top/artists", {
+export const getUserTopByType = async (
+    type: "tracks" | "artists",
+    time_range: string,
+) => {
+    const { data } = await spotifyApiClient.get(`me/top/${type}`, {
         params: {
+            time_range: time_range,
             limit: 50,
         },
     });

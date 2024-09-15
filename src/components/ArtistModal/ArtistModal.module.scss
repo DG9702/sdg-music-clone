@@ -1,3 +1,4 @@
+@import '../../scss/variable.scss';
 @import '../../scss/mixin';
 
 .wrapper {
@@ -20,8 +21,8 @@
   opacity: 0.7;
 
   button {
-    @include button-icon(32px, var(--bg-primary), var(--bg-primary));
-    color: var(--white);
+    @include button-icon(32px, $bg-primary, $bg-primary);
+    color: $white;
   }
 
   &:hover {
@@ -32,7 +33,7 @@
 .modal {
   width: clamp(500px, 40vw, 768px);
   height: min(750px, 70vh);
-  border-radius: var(--panel-border-radius);
+  border-radius: $panel-border-radius;
   overflow: hidden;
   position: relative;
   transform-origin: bottom center;
@@ -62,19 +63,19 @@
 }
 
 .body {
-  background-color: var(--bg-primary);
+  background-color: $bg-primary;
   display: flex;
   padding: 40px;
 }
 
 .right {
   .bio {
-    color: var(--text-neutral);
+    color: $text-neutral;
     font-size: 16px;
     margin: 0;
 
     a {
-      color: var(--text-neutral);
+      color: $text-neutral;
       font-weight: 700;
 
       &:hover {
@@ -96,14 +97,14 @@
 
     .quantity {
       font-size: 32px;
-      color: var(--white);
+      color: $white;
       font-weight: 700;
       margin: 14px 0;
     }
 
     .type {
       font-size: 14px;
-      color: var(--text-neutral);
+      color: $text-neutral;
     }
   }
 }

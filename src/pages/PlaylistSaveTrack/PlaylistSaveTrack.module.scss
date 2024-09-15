@@ -1,8 +1,11 @@
+@import '../../scss/variable.scss';
+@import '../../scss/mixin';
+
 .wrapper {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background-color: var(--bg-primary);
+  background-color: $bg-primary;
 }
 
 
@@ -11,7 +14,7 @@
   overflow: hidden;
   overflow-y: scroll;
   padding-bottom: 32px;
-  padding-top: var(--navbar-height);
+  padding-top: $navbar-height;
   position: relative;
   z-index: 1;
 
@@ -29,7 +32,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background-image: linear-gradient(rgba(0, 0, 0, .6) 0, var(--bg-primary) 100%), var(--bg-noise);
+    background-image: linear-gradient(rgba(0, 0, 0, .6) 0, $bg-primary 100%), $bg-noise;
     z-index: 0;
   }
 
@@ -53,19 +56,17 @@
 
         .heart {
           cursor: pointer;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          @include item-center;
           background-color: transparent;
-          color: var(--text-subdued);
+          color: $text-subdued;
           transition: none;
   
           &.active {
-            color: var(--secondary) !important;
+            color: $secondary !important;
           }
   
           &:hover {
-            color: var(--white);
+            color: $white;
           }
         }
       }
@@ -73,9 +74,7 @@
       .action-right {
         .order-button {
           cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            @include item-center;
             background-color: transparent;
             color: #bababa;
             transition: none;
@@ -83,7 +82,7 @@
             font-weight: bold;
     
             &:hover {
-              color: var(--white);
+              color: $white;
             }
         }
       }

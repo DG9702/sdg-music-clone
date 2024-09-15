@@ -1,3 +1,4 @@
+@import '../../scss/variable.scss';
 @import '../../scss/mixin';
 
 .playing-view-wrapper {
@@ -5,8 +6,8 @@
   min-width: 300px;
   overflow: hidden;
   overflow-y: scroll;
-  background-color: var(--bg-primary);
-  border-radius: var(--panel-border-radius);
+  background-color: $bg-primary;
+  border-radius: $panel-border-radius;
   padding: 16px;
 
   &::-webkit-scrollbar {
@@ -66,8 +67,8 @@
     @include item-center;
     height: 100%;
     width: 100%;
-    background-color: var(--bg-card-highlight);
-    color: var(--white);
+    background-color: $bg-card-highlight;
+    color: $white;
   }
 }
 
@@ -89,7 +90,7 @@
     .name-track {
       font-size: 24px;
       font-weight: 700;
-      color: var(--white);
+      color: $white;
       margin: 0;
       padding-bottom: 8px;
 
@@ -102,11 +103,11 @@
 
   .heart-btn {
     width: 30px;
-    color: var(--text-subdued);
+    color: $text-subdued;
     cursor: pointer;
 
     &:hover {
-      color: var(--white);
+      color: $white;
     }
   }
 }

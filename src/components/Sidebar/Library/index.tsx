@@ -19,6 +19,7 @@ import {Dropdown} from "antd";
 import {createPlaylist} from "~/services/playlistApi";
 import {toast} from "react-toastify";
 import {SearchArea} from "./Filters";
+import NoLogged from "./NoLogged";
 
 const cx = classNames.bind(styles);
 
@@ -193,7 +194,7 @@ const Library: React.FC<yourLibraryState>=({ isCollapsed, setCollapsed }) => {
                         view={view}
                         searchValue={searchValue}
                         isEpisodes={true}
-                        icon={<EpisodesIcon  />}
+                        icon={<EpisodesIcon size={24} />}
                         name="Your Episodes"
                         type="collection"
                       />
@@ -257,50 +258,7 @@ const Library: React.FC<yourLibraryState>=({ isCollapsed, setCollapsed }) => {
         </div>
       </div>
       {!isLogged && (
-        <div className={cx("left-sidebar-bottom")}>
-          <div className={cx("left-sidebar-link")}>
-            <div className={cx("BottomLinksList")}>
-              <div className={cx("BottomLink-item")}>
-                <Link className={cx("item-title")} to={"/"}>
-                  <span>Legal</span>
-                </Link>
-              </div>
-              <div className={cx("BottomLink-item")}>
-                <Link className={cx("item-title")} to={"/"}>
-                  <span>Privacy Center</span>
-                </Link>
-              </div>
-              <div className={cx("BottomLink-item")}>
-                <Link className={cx("item-title")} to={"/"}>
-                  <span>Privacy Policy</span>
-                </Link>
-              </div>
-              <div className={cx("BottomLink-item")}>
-                <Link className={cx("item-title")} to={"/"}>
-                  <span>Cookies</span>
-                </Link>
-              </div>
-              <div className={cx("BottomLink-item")}>
-                <Link className={cx("item-title")} to={"/"}>
-                  <span>About Ads</span>
-                </Link>
-              </div>
-              <div className={cx("BottomLink-item")}>
-                <Link className={cx("item-title")} to={"/"}>
-                  <span>Accessibility</span>
-                </Link>
-              </div>
-            </div>
-            <Link className={cx("Cookie-link")} to={"/"}>
-              <span>Cookies</span>
-            </Link>
-          </div>
-          <div className={cx("language")}>
-            <Button type="default" leftIcon={<EarthIcon />} small>
-              English
-            </Button>
-          </div>
-        </div>
+        <NoLogged  />
       )}
     </div>
   );

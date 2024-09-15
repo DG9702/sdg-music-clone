@@ -43,7 +43,6 @@ const Album: React.FC = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [navPlayBtnVisible, setNavPlayBtnVisible] = useState<boolean>(false);
   const [artistAlbums, setArtistAlbums] = useState<SpotifyAlbum[]>();
-  const [isPlay, setIsPlay]=useState<boolean>();
   const [isSaving, setSaving]=useState<boolean>(false);
   const [view, setView]=useState<boolean>(false);
 
@@ -80,10 +79,7 @@ const Album: React.FC = () => {
 
   const { ref: pivotTrackingRef, inView: isTracking } = useInView({
     threshold: 0,
-  });
-
-  console.log("Check isPlay in album: ", isPlay);
-  
+  });  
 
   useEffect(() => {
     if (isPlaying) {
@@ -174,18 +170,9 @@ const Album: React.FC = () => {
   }
 
   useEffect(() => {
-    if(data?.id===currentTrack?.album?.id && isPlaying===true) {
-      setIsPlay(true);
-    } else if(data?.id===currentTrack?.album?.id || isPlaying===true) {
-      setIsPlay(false)
-    };
-  }, [data, currentTrack])
-
-  useEffect(() => {
     if (data?.id) {
       const fetchData = async () => {
         const result = await checkCurrentUserSaveAlbum({ids: `${data?.id}`});
-        console.log("Check result: ", result);
         
         if (result.data[0] === true) {
           setSaving(true);
@@ -199,25 +186,25 @@ const Album: React.FC = () => {
     }
   }, [isSaving, setSaving, data?.id])
 
-  const addTrackRequest = async () => {
+  const followingAlbumRequest = async () => {
     const result = await saveAlbumForCurrentUser(`${data?.id}`);
     return result;
   }
 
-  const removeTrackRequest = async () => {
+  const unFollowingAlbumRequest = async () => {
     const result = await removeAlbumForCurrentUser(`${data?.id}`);
     return result;
   }
 
   const handleSaveEpisode = async () => {
     if (isSaving) {
-      await removeTrackRequest();
+      await unFollowingAlbumRequest();
       setSaving(false)
-      toast('🦄 Remove from liked Song');
+      toast('🦄 UnFollowing Album');
     } else {
-      await addTrackRequest();
+      await followingAlbumRequest();
       setSaving(true);
-      toast('🦄 Added to liked Song');
+      toast('🦄 Following Album');
     }
   };    
 

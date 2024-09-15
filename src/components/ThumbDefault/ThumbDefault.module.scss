@@ -1,12 +1,14 @@
+@import "../../scss/variable.scss";
+
 .wrapper {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--bg-card-highlight);
+  background-color: $bg-card-highlight;
 
   .icon {
-    color: var(--text-neutral);
+    color: $text-neutral;
   }
 }

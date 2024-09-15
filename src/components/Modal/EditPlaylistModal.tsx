@@ -62,13 +62,6 @@ useEffect(() => {
     }
   }, [data]);
 
-  console.log("Check data in edit: ", data);
-  
-  console.log("Check formRef: ", formRef);
-  
-
-  console.log("Check isModalEditPlaylist in EditPlaylistModal: ", isModalEditPlaylist);
-
   const onClose=() => {
     setModalEditPlaylist(false)
   }

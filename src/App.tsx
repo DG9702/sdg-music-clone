@@ -15,6 +15,7 @@ import Show from "./pages/Show";
 import Episode from "./pages/Episode";
 import PlaylistSaveTrack from "./pages/PlaylistSaveTrack";
 import EpisodeSave from "./pages/Episode/EpisodeSave/EpisodeSave";
+import UserProfile from "./pages/Profile";
 //import PlaylistLikeSong from "./pages/PlaylistLikeSong";
 
 interface AppContext {
@@ -61,6 +62,7 @@ const App = () => {
             <Route path="/album/:id" element={<Album />} />
             <Route path="/show/:id" element={<Show />} />
             <Route path="/episode/:id" element={<Episode />} />
+            <Route path="/user/:id" element={<UserProfile  />}></Route>
             <Route path="/artist/:id">
               <Route index element={<Artist />} />
               <Route path="/artist/:id/featuring" element={<SectionPage />} />

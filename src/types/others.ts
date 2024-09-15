@@ -43,7 +43,8 @@ export interface HeaderProps {
         | "single"
         | "compilation"
         | "podcast"
-        | "episode";
+        | "episode"
+        | "user";
     bgColor?: string;
     desc?: string;
     isLoading?: boolean;
@@ -55,7 +56,7 @@ export interface HeaderProps {
     };
     releaseDate?: string;
     isWhiteColor?: boolean;
-    headerType?: "playlist" | "album" | "show" | "genre";
+    headerType?: "user" | "playlist" | "album" | "show" | "genre";
     publisher?: string;
     showName?: string;
     showId?: string;

@@ -1,3 +1,4 @@
+@import '../../scss/variable.scss';
 @import '../../scss/mixin';
 
 .wrapper {
@@ -5,7 +6,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: var(--panel-gap);
+  gap: $panel-gap;
 
   .btn-audio-icon {
     background-color: transparent;
@@ -110,7 +111,7 @@
       position: relative;
 
       a {
-        color: var(--white);
+        color: $white;
 
         &:hover {
           text-decoration: underline;
@@ -129,7 +130,7 @@
 .active {
   @include button-active;
 
-  color: var(--secondary) !important;
+  color: $secondary !important;
   position: relative;
 
   &::after {

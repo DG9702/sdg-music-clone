@@ -1,122 +1,145 @@
-import { FC, useContext } from "react";
-import Tippy from "@tippyjs/react/headless";
-import classNames from "classnames/bind";
+import { FC, memo, useContext, useMemo } from "react";
 
-import styles from "./Menu.module.scss";
-import Button from "../Button";
+import { Dropdown, MenuProps } from "antd";
+import {
+    AddToQueueIcon,
+    AlbumIcon,
+    ArtistIcon,
+    DeleteIcon,
+    SaveTrack,
+} from "~/assets/icons";
 import { AuthContext } from "~/context/AuthContext";
-
-const cx = classNames.bind(styles);
-
-interface MenuItemData {
-  type: string;
-  title: string;
-  icon?: React.ReactNode;
-  to?: string;
-  separate?: boolean;
-  children?: MenuItemData[];
+import { toast } from "react-toastify";
+import { addItemToPlaylist, createPlaylist, removePlaylistItems } from "~/services/playlistApi";
+import categoryApi from "~/services/categoryApi";
+import {useNavigate} from "react-router-dom";
+import {PlayerContext} from "~/context/PlayerContext";
+interface TrackActionsWrapperProps {
+    trigger?: ("contextMenu" | "click")[];
+    children: React.ReactNode | React.ReactNode[];
+    playlist?: any;
+    setPlaylist?: any;
+    myPlaylist?: any;
+    track?: any;
 }
 
-interface MenuProps {
-  children: React.ReactNode;
-  items?: MenuItemData[];
-  sort?: MenuItemData[];
-  viewas?: MenuItemData[];
-  isLib?: boolean;
-  onChange?: (item: MenuItemData) => void;
-  isOpen?: boolean;
-}
+export const menuUser: FC<TrackActionsWrapperProps> = memo(
+    ({ children, trigger, track, myPlaylist, playlist,setPlaylist }) => {
+        const {userData}=useContext(AuthContext);
 
-//const defaultFn = () => {};
+        const {
+            queue,
+            setQueue
+        }=useContext(PlayerContext);
 
-const Menu: FC<MenuProps> = ({
-  children,
-  items = [],
-  //onChange = defaultFn,
-  isOpen = false,
-  sort = [],
-  viewas = [],
-  isLib = false,
-}) => {
-  const { handleLogout } = useContext(AuthContext);
+        const indexOfTrackInQueue = queue.findIndex(
+            (item) => item?.id === track?.id,
+        );
 
-  const renderItems = () => {
-    return items.map((item, index) => (
-      <li key={index}>
-        <Button
-          type="menu"
-          rightIcon={item.icon}
-          onClick={() => {
-            if (item.type === "Logout") {
-              console.log("Click logout");
-              handleLogout();
+        
+        const navigate = useNavigate();
+        
+
+        const isMine = userData?.id === playlist?.owner?.id;
+        const canEdit = isMine || playlist?.collaborative;
+
+        const options: any = useMemo(() => {
+            if (!myPlaylist) return [];
+
+            return myPlaylist
+                ?.filter((p: any) => p?.owner?.id === userData?.id)
+                ?.map((p: any) => {
+                    return {
+                        key: p.id,
+                        label: p.name,
+                        onClick: () => {
+                            addItemToPlaylist(
+                                p?.id,
+                                [track.uri],
+                                p?.snapshot_id,
+                            );
+                            toast(`Add item to ${p.name}`);
+                        },
+                    };
+                });
+        }, [myPlaylist]);
+
+        const getItems = () => {
+            const items: MenuProps["items"] = [
+                {
+                    label: "Add to playlist",
+                    icon: <SaveTrack />,
+                    key: "1",
+                    
+                },
+            ];
+
+            if(canEdit&&playlist) {
+                items.push({
+                    label: 'Remove from this playlist',
+                    key: '2',
+                    icon: <DeleteIcon />,
+                    onClick: () => {
+                        removePlaylistItems(playlist!.id, [track.uri], playlist?.snapshot_id!)
+                            .then(async (response) => {
+                                toast.success("Remove from this playlist");
+                                const data = await categoryApi({
+                                    type: "playlists",
+                                    id: playlist?.id,
+                                })
+                                setPlaylist(data);
+                            });
+                    },
+                });
             }
-          }}
-        >
-          {item.title}
-        </Button>
-      </li>
-    ));
-  };
 
-  const renderLibMenuItem = () => {
-    return (
-      <>
-        <ul className={cx("menu-body", "menu-lib")}>
-          <li className={cx("menu-head")}>
-            <span>Sort by</span>
-          </li>
-          {sort.map((item, index) => (
-            <li key={index}>
-              <Button type="menu" leftIcon={item.icon}>
-                {item.title}
-              </Button>
-            </li>
-          ))}
-        </ul>
-        <ul className={cx("menu-body", "menu-lib")}>
-          <li className={cx("menu-head")}>
-            <span>View as</span>
-          </li>
-          {viewas.map((item, index) => (
-            <li key={index}>
-              <Button className={cx("lib")} type="menu" leftIcon={item.icon}>
-                {item.title}
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </>
-    );
-  };
+            items.push(
+                {
+                    label: "Add to queue",
+                    key: "3",
+                    icon: <AddToQueueIcon />,
+                    onClick: () => {
+                        if(indexOfTrackInQueue === -1) {
+                            setQueue(track? [{
+                                queue,
+                                ...track,
+                             }] : []);
+                        }                        
+                    },
+                },
+                { type: "divider" },
+                {
+                    label: "Go to artist",
+                    key: "5",
+                    icon: <ArtistIcon />,
+                    onClick: () => {
+                        navigate(
+                            // @ts-ignore
+                            `/artist/${track.artists[0]?.id || track.artists[0].uri.split(':').reverse()[0]}`
+                        );
+                    },
+                },
+                {
+                    label: "Go to album",
+                    key: "6",
+                    icon: <AlbumIcon />,
+                    onClick: () => {
+                        // @ts-ignore
+                        navigate(`/album/${track.album?.id || track.album.uri.split(':').reverse()[0]}`);
+                    },
+                },
+            );
+            return items;
+        };
 
-  const renderResult = (attrs: any) => (
-    <div className={cx("menu-list")} tabIndex="-1" {...attrs}>
-      <div className={cx("menu-popper")} style={{
-        minWidth: isLib ? '150px' : ''
-      }}>
-        {isLib ? (
-          renderLibMenuItem()
-        ) : (
-          <ul className={cx("menu-body")}>{renderItems()}</ul>
-        )}
-      </div>
-    </div>
-  );
+        const items = getItems();
 
-  return (
-    <Tippy
-      interactive={true}
-      placement={"bottom-end"}
-      delay={[1000, 100]}
-      zIndex={99999}
-      offset={[0, 10]}
-      visible={isOpen}
-      render={renderResult}
-    >
-      <div>{children}</div>
-    </Tippy>
-  );
-};
-
-export default Menu;
+        return (
+            <>
+                <Dropdown menu={{ items }} trigger={trigger}>
+                    {children}
+                </Dropdown>
+            </>
+        );
+    },
+);

@@ -18,7 +18,6 @@ const Home = () => {
   const { isLogged } = useContext(AuthContext);
 
   const {
-    //recently,
     trending,
     focus,
     jazz,
@@ -28,12 +27,7 @@ const Home = () => {
     newReleases,
     topMixes,
   } = useContext(HomePageContext);
-
-  //console.log("recently: ", recently?.data);
-  //console.log("Artist: ", suggestArtists);
-  //console.log("New Releases: ", newReleases);
   
-
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>): void => {
     const yAxis = e.currentTarget.scrollTop;
 
@@ -47,13 +41,6 @@ const Home = () => {
       <Header type="home" navOpacity={navOpacity} />
       <div onScroll={(e) => handleScroll(e)} className={cx("home-container")}>
         {isLogged && <Greeting bgColor={bgColor} setBgColor={setBgColor} />}
-        {/*<Section
-          apiType="spotify"
-          title={recently?.title}
-          href={recently?.href}
-          data={recently?.data}
-          dataType={recently?.dataType}
-        />*/}
         <Section
           apiType="spotify"
           title={trending?.title}

@@ -121,10 +121,6 @@ export const ArtistProvider: FC<ArtistProviderProps> = ({ children }) => {
     setLoading(Boolean(!responseData));
   }, [responseData]);
 
-  console.log("Check responseData: ", responseData);
-  console.log("Check topTracksContext: ", topTracksContext);
-  
-
   return (
     <ArtistContext.Provider
       value={{ ...artistData, setId, isLoading, setModalOpen }}

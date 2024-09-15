@@ -41,20 +41,15 @@ export const followArtistForCurrentUser = async (params: any) => {
     const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
-    const result = await spotifyApiClient.put(`me/following`, {
-        params: {
-            type,
-            ids,
+    const result = await spotifyApiClient.put(
+        `me/following?type=${type}&ids=${ids}`,
+        {
+            headers: {
+                Authorization: "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
+                "Content-type": "application/json",
+            },
         },
-        body: {
-            ids: ["string"],
-        },
-        headers: {
-            Authorization: "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
-            "Content-type": "application/json",
-        },
-    });
-    console.log(result);
+    );
 
     return result;
 };
@@ -64,18 +59,15 @@ export const unFollowArtistForCurrentUser = async (params: any) => {
     const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
     const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
-    const result = await spotifyApiClient.delete(`me/following`, {
-        params: {
-            type,
-            ids,
+    const result = await spotifyApiClient.delete(
+        `me/following?type=${type}&ids=${ids}`,
+        {
+            headers: {
+                Authorization: "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
+                "Content-type": "application/json",
+            },
         },
-        headers: {
-            Authorization: "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`),
-            "Content-type": "application/json",
-        },
-    });
-    console.log(result);
-
+    );
     return result;
 };
 

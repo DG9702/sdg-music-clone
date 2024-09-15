@@ -8,18 +8,18 @@ const cx = classNames.bind(styles)
 
 interface TopTrackProps {
   songList?: SpotifyTrack[]
-  isLoading?: boolean
+  isLoading?: boolean,
+  title?: string,
+  view?: any
 }
 
-const TopTrack: FC<TopTrackProps> = ({ songList, isLoading }) => {
-  const [isLess, setLess] = useState<boolean>(true)
-  console.log("Check songlist in Toptrack: ", songList);
-  
+const TopTrack: FC<TopTrackProps> = ({ songList, isLoading, title, view }) => {
+  const [isLess, setLess] = useState<boolean>(true)  
 
   return (
     <div className={cx('wrapper')}>
       <div className={cx('title')}>
-        <h2>Popular</h2>
+        <h2>{title}</h2>
       </div>
       <div className={cx('song-list')}>
         {!isLoading
@@ -29,6 +29,7 @@ const TopTrack: FC<TopTrackProps> = ({ songList, isLoading }) => {
                 <SongItem
                   id={item?.id}
                   type="artist"
+                  view={view}
                   key={item?.id ?? index}
                   songName={item?.name}
                   artists={item?.artists}

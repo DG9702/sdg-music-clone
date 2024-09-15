@@ -1,3 +1,6 @@
+@import "../../scss/variable.scss";
+@import "../../scss/mixin";
+
 .btn {
   box-sizing: border-box;
   background-color: transparent;
@@ -5,7 +8,7 @@
   border-radius: 9999px;
   cursor: pointer;
   transform: translate3d(0px, 0px, 0px);
-  color: var(--text-subdued, #6a6a6a);
+  color: var($text-subdued, #6a6a6a);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -47,11 +50,9 @@
 .btn-text {
   .btn-body {
     position: relative;
-    display: flex;
     border-radius: 9999px;
     font-size: inherit;
-    align-items: center;
-    justify-content: center;
+    @include item-center;
     padding-block-start: 4px;
     padding-block-end: 4px;
     padding-inline-start: 16px;
@@ -63,8 +64,8 @@
   font-size: 1.3rem;
 
   .btn-body {
-    background-color: var(--bg-highlight);
-    color: var(--white);
+    background-color: $bg-highlight;
+    color: $white;
     padding-inline-start: 32px;
   }
 
@@ -77,8 +78,8 @@
   font-size: 1.3rem;
 
   .btn-body {
-    background-color: var(--white);
-    color: var(--black, #000000);
+    background-color: $white;
+    color: var($black, #000000);
   }
 
   &:hover {
@@ -88,10 +89,10 @@
 
 .btn-circle {
   align-items: center;
-  background-color: var(--bg-highlight);
+  background-color: $bg-highlight;
   border: none;
   border-radius: 50%;
-  color: var(--text-subdued);
+  color: $text-subdued;
   cursor: pointer;
   display: inline-flex;
   flex-shrink: 0;
@@ -107,7 +108,7 @@
 
   &:hover {
     transform: scale(1.1);
-    color: var(--white);
+    color: $white;
   }
 }
 
@@ -121,7 +122,7 @@
 
   &:hover {
     transform: scale(1.04);
-    color: var(--white);
+    color: $white;
   }
 }
 
