@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Artist.module.scss";
 import { ArtistContext } from "~/context/ArtistContext";
@@ -18,10 +18,15 @@ import Discography from "~/components/Discography";
 import AboutArtist from "~/components/AboutArtist";
 import {checkCurrentUserFollowArtists, followArtistForCurrentUser, unFollowArtistForCurrentUser} from "~/services/artistApi";
 import {toast} from "react-toastify";
-import {Dropdown, MenuProps, Space, Tooltip} from "antd";
+import {Dropdown, Space, Tooltip} from "antd";
 import {OrderCompactIcon, OrderListIcon} from "~/assets/icons";
+import BlurBackground from "~/components/BlurBackground";
 
 const cx = classNames.bind(styles);
+
+type viewAs = "LIST" | "COMPACT";
+const VIEW = ["LIST", "COMPACT"] as const;
+
 
 const Artist: React.FC = () => {
   const [navOpacity, setNavOpacity] = useState<number>(0);
@@ -53,33 +58,24 @@ const Artist: React.FC = () => {
     setQueue,
     calNextTrackIndex,
     setPlayingType,
-    setPlaying,
+    handlePause,
     isPlaying,
+    currentTrack,
     prevDocumentTitle,
     isBtnClickable,
   }=useContext(PlayerContext);
   
   const [isFollow, setIsFollow]=useState<boolean>(false);
-  const [view, setView]=useState<boolean>(false);
+  
+  const [view, setView]=useState<viewAs>("LIST");
 
-
-  const items: MenuProps['items'] = [
-      {
-        label: 'LIST',
-        key: 'LIST',
-        onClick: () => {
-          setView(false)
-        }
-      },
-      {
-        label: 'COMPACT',
-        key: 'COMPACT',
-        onClick: () => {
-          setView(true)
-        }
-      }
-    ];
-
+  const items=VIEW.map((view) => ({
+    key: view,
+    label: view,
+    onClick: () => {
+      setView(view);
+    },
+  }));
 
   useEffect(() => {
     if (isPlaying) {
@@ -120,12 +116,17 @@ const Artist: React.FC = () => {
     } else setNavPlayBtnVisible(false);
   };
 
-  const handleClickPlayBtn = () => {
-    setQueue([...(topTracks as SpotifyTrack[])])
-    setCurrentTrack({ ...topTracks?.[0] });
-    setCurrentTrackIndex(0);
-    calNextTrackIndex();
-    setPlayingType("track");
+  const handleClickPlayBtn=() => {
+    if(isPlayBtn&&isCurrent) {
+      handlePause();
+    } else if(!isCurrent) {
+      setQueue([...(topTracks as SpotifyTrack[])])
+      setCurrentTrack({ ...topTracks?.[0] });
+      setCurrentTrackIndex(0);
+      calNextTrackIndex();
+      setPlayingType("track");
+
+    }
   };
   
   useEffect(() => {
@@ -167,6 +168,12 @@ const Artist: React.FC = () => {
       toast('🦄 Following artist');
     }
   };
+
+  const isCurrent = useMemo(() => {
+    return !!topTracks?.some((item) => item?.id === currentTrack?.id);
+  }, [topTracks, currentTrack])  
+
+  const isPlayBtn = isCurrent && isPlaying === true;
 
   return (
     <main className={cx("wrapper")}>
@@ -218,13 +225,7 @@ const Artist: React.FC = () => {
               zIndex: -1,
             }}
           ></div>
-          <div
-            style={{
-              backgroundColor: colorRaw,
-              top: `${bannerHeight}px`,
-            }}
-            className={cx("bg-blur")}
-          ></div>
+          <BlurBackground bgColor={colorRaw} top={bannerHeight} />
           <div ref={bannerRef}>
             <ArtistBanner
               name={profile?.name}
@@ -243,10 +244,10 @@ const Artist: React.FC = () => {
               <div onClick={handleClickPlayBtn}>
                 <PlayButton
                   size={56}
+                  fontSize={24}
                   transitionDuration={33}
                   scaleHovering={1.05}
-                  isPlay={isPlaying}
-                  setPlaying={setPlaying}
+                  isPlay={isPlayBtn}
                 />
               </div>
               <button className={cx("follow-btn")}
@@ -258,11 +259,11 @@ const Artist: React.FC = () => {
             <div className={cx("action-right")}>
                 <Space className='mobile-hidden'>
                   <Tooltip title={'VIEW'}>
-                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view === false ? "LIST" : "COMPACT"] }}>
+                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view] }}>
                       <button className={cx('order-button')}>
                         <Space align='center'>
-                          <span>{view === false ? "LIST" : "COMPACT"}</span>
-                          {view === false ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
+                          <span>{view}</span>
+                          {view === "LIST" ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
                         </Space>
                       </button>
                     </Dropdown>

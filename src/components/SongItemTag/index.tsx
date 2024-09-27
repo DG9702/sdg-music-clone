@@ -1,18 +1,34 @@
 import { usePalette } from "color-thief-react";
-import React, { useRef } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
 import useComponentSize from "~/hook/useComponentSize";
-import { SongItemTagProps } from "~/types/track";
+import { SongItemTagProps, SpotifyTrack } from "~/types/track";
 import PlayButton from "../PlayButton";
 import classNames from "classnames/bind";
 import styles from "./SongItemTag.module.scss"
 import ImageLazy from "../Image";
+import {SpotifyAlbum} from "~/types/album";
+import categoryApi from "~/services/categoryApi";
+import {PlayerContext} from "~/context/PlayerContext";
 
 const cx = classNames.bind(styles);
 
 const SongItemTag: React.FC<SongItemTagProps> = (props) => {
-  const { thumbnailUrl, name, setBgColor, isLoading, id } = props;
+  const {thumbnailUrl, name, setBgColor, isLoading, id}=props;
+  const [data, setData] = useState<SpotifyAlbum>();
+  
+  const {
+    setCurrentTrack,
+    setCurrentTrackIndex,
+    setQueue,
+    calNextTrackIndex,
+    setPlayingType,
+    handlePause,
+    currentTrack,
+    isPlaying
+  } = useContext(PlayerContext)
+
   const { data: dataColor } = usePalette(thumbnailUrl as string, 10, "hex", {
     crossOrigin: "Anonymous",
     quality: 100,
@@ -29,7 +45,54 @@ const SongItemTag: React.FC<SongItemTagProps> = (props) => {
 
   const songTagRef = useRef<HTMLDivElement>(null);
 
-  const { width } = useComponentSize(songTagRef);
+  const {width}=useComponentSize(songTagRef);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await categoryApi({
+        type: "albums",
+        id: id,
+      });
+      if (data?.error) {
+        navigate("/not-found");
+      } else {
+        setData({ ...data });
+      }
+    };
+    if (id !== "undefined") {
+      fetchData();
+    }
+  }, [id]);
+  
+  const handleClickPlayBtn=() => {
+    if(isPlayBtn && isCurrent) {
+      handlePause()
+    } else if (!isCurrent) {
+      const queueList =
+        data?.tracks?.items?.map((item: SpotifyTrack) => {
+          return {
+            ...item,
+            album: {
+              images: data?.images,
+              id: data?.id,
+              album_type: data?.album_type,
+              name: data?.name,
+            },
+          }
+        }) || []
+      setQueue([...queueList])
+      setCurrentTrack({ ...queueList[0] })
+      setCurrentTrackIndex(0)
+      calNextTrackIndex()
+      setPlayingType('track')
+    }
+  }
+
+  const isCurrent = useMemo(() => {
+    return !!data?.tracks?.items?.some((item) => item?.id === currentTrack?.id);
+  }, [data, currentTrack])
+
+  const isPlayBtn = isCurrent && isPlaying;
 
   return (
     <div
@@ -41,7 +104,6 @@ const SongItemTag: React.FC<SongItemTagProps> = (props) => {
     >
       <div className={cx("thumbnail")} ref={imgRef}>
         {!isLoading ? (
-          // <img src={thumbnailUrl} alt={name} />
           <ImageLazy src={thumbnailUrl} alt={name} />
         ) : (
           <Skeleton height={"100%"} />
@@ -58,12 +120,14 @@ const SongItemTag: React.FC<SongItemTagProps> = (props) => {
               })}
               onClick={(e) => {
                 e.stopPropagation();
+                handleClickPlayBtn();
               }}
             >
               <PlayButton
                 size={44}
                 scaleHovering={1.1}
                 transitionDuration={33}
+                isPlay={isPlayBtn}
               />
             </div>
           </>

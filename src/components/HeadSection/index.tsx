@@ -111,7 +111,6 @@ const HeadSection: React.FC<HeaderProps> = ({
                   className={cx("desc", {"pointer": isMine===true})}
                   onClick={() => isMine && handleOpenModal()}
                 >
-                  {/*<ArtistList data={htmlCleaner(stringCleaner(desc))} />*/}
                 </div>
                 {headerType === "show" ? (
                   <Link to={type === "episode" ? `/show/${showId}` : ""}>

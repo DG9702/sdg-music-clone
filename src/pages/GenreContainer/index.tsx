@@ -14,6 +14,7 @@ import Footer from "~/components/Footer";
 import Header from "~/components/Header";
 import HeadSection from "~/components/HeadSection";
 import { SearchContext } from "~/context/SearchContext";
+import BlurBackground from "~/components/BlurBackground";
 
 const cx = classNames.bind(styles);
 
@@ -147,10 +148,7 @@ const GenreContainer: FC = () => {
           />
         </div>
         <div className={cx("main")}>
-          <div
-            style={{ backgroundColor: `${bgColorTest}` }}
-            className={cx("bg-blur")}
-          ></div>
+          <BlurBackground bgColor={bgColorTest} />
           <div className={cx("section")}>
             <Section
               apiType="spotify"

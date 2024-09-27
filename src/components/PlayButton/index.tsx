@@ -1,7 +1,8 @@
-import { FC, useState, memo } from "react";
+import { FC, useState, memo, useContext } from "react";
 import styles from "./PlayButton.module.scss";
 import classNames from "classnames/bind";
 import { PauseIcon, PlayIcon } from "~/assets/icons";
+import {PlayerContext} from "~/context/PlayerContext";
 
 const cx = classNames.bind(styles);
 
@@ -12,7 +13,6 @@ interface PlayButtonProps {
   scaleHovering?: number;
   bgColor?: string;
   isPlay?: boolean;
-  setPlaying?: any;
 }
 
 const PlayButton: FC<PlayButtonProps> = (props) => {
@@ -23,9 +23,13 @@ const PlayButton: FC<PlayButtonProps> = (props) => {
     scaleHovering,
     bgColor,
     isPlay,
-    setPlaying,
   } = props;
-  const [isHovering, setHovering] = useState<boolean>(false);  
+  const [isHovering, setHovering]=useState<boolean>(false);  
+  
+  const {
+    isPlaying,
+    setPlaying
+  }=useContext(PlayerContext);
 
   return (
     <div
@@ -50,7 +54,7 @@ const PlayButton: FC<PlayButtonProps> = (props) => {
           backgroundColor: bgColor ? bgColor : undefined,
           opacity: isHovering ? 1 : undefined,
         }}
-        onClick={() => setPlaying(!isPlay)}
+        onClick={() => setPlaying(!isPlaying)}
       >
         {!isPlay ? <PlayIcon size={fontSize} /> : <PauseIcon size={fontSize} />}
       </button>

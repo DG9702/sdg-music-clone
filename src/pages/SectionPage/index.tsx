@@ -9,6 +9,8 @@ import {useLocation, useParams} from "react-router-dom";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Section from "~/components/Section";
+import {AuthContext} from "~/context/AuthContext";
+import {getUserPlaylist} from "~/services/userApi";
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +21,7 @@ const SectionPage: React.FC = () => {
   const playlistsRegex = /^\/artist\/.*\/playlists$/;
   const discoveredOnRegex = /^\/artist\/.*\/discovered-on$/;
   const appearsOnRegex = /^\/artist\/.*\/appears-on$/;
+  const userPlaylistsRegex = /^\/user\/.*\/playlist$/;
 
   const {
     profile,
@@ -28,11 +31,15 @@ const SectionPage: React.FC = () => {
     playlists,
     appearsOn,
   } = useContext(ArtistContext);
+  const {
+    userData,
+  }=useContext(AuthContext);
   const { featurePlaylist, newReleases, suggestArtists, topMixes } =
     useContext(HomePageContext);
 
   const { id } = useParams();
   const { pathname } = useLocation();
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +75,20 @@ const SectionPage: React.FC = () => {
           data: suggestArtists?.data,
           apiType: suggestArtists?.apiType,
         });
+      } else if(userPlaylistsRegex.test(pathname)) {
+        console.log("Check id userPlaylistsRegex");
+        const response = await getUserPlaylist(id);
+        const result = response?.items?.filter((p: any) => p?.owner?.id===userData?.id).map((p: any) => {
+          return p
+        })        
+
+        setData({
+          title: `Public Playlists`,
+          dataType: "playlist",
+          data: result,
+          apiType: 'spotify',
+        })
+
       } else if (featuringRegex.test(pathname)) {
         setData({
           title: `Featuring ${profile?.name}`,
@@ -106,7 +127,7 @@ const SectionPage: React.FC = () => {
       }
     };
     fetchData();
-  }, [pathname]);  
+  }, [pathname]);    
 
   return (
     <div className={cx("wrapper")}>

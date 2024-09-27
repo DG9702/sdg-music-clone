@@ -216,15 +216,11 @@
   grid-template-columns: [index] var(--tracklist-index-column-width, 16px) [first] minmax(120px, var(--col1, 6fr)) [var1] minmax(120px, var(--col2, 4fr)) [var2] minmax(120px, var(--col3, 3fr)) [last] minmax(120px, var(--col4, 1fr)) !important;
 }
 
-.is-album-track {
-  grid-template-columns: 16px minmax(300px, 4fr) 50px !important;
-}
-
 .is-search-result {
-  grid-template-columns: minmax(300px, 4fr) 50px !important;
+  grid-template-columns: minmax(120px, 4fr) minmax(120px, 1fr) !important;
 }
 .is-queue-result {
-  grid-template-columns: minmax(300px, 4fr) 50px !important;
+  grid-template-columns: 16px minmax(120px, 4fr) minmax(40px, 1fr) !important;
 
   &:hover {
     .action {
@@ -234,12 +230,12 @@
   }
 }
 
-.is-list {
-  grid-template-columns: 16px minmax(120px, 4fr) minmax(120px, 1fr) !important;
+.is-list-default {
+  grid-template-columns: 16px minmax(120px, 6fr) minmax(120px, 4fr) minmax(120px, 3fr) minmax(120px, 1fr) !important;
 }
 
-.is-list-no-album {
-  grid-template-columns: 16px minmax(120px, 6fr) minmax(120px, 4fr) minmax(120px, 3fr) minmax(120px, 1fr) !important;
+.is-list-album {
+  grid-template-columns: 16px minmax(120px, 4fr) minmax(60px, 1fr) !important;
 }
 
 .is-compact,

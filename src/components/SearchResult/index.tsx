@@ -96,9 +96,9 @@ const SearchResult: React.FC = () => {
           searchSelections
             .filter((item: any) => item.active)
             .map((item: any, index: number) => {
-              if (item.key !== "tracks") {
+              if(item.key!=="tracks") {
                 return (
-                  <div style={{ marginTop: "-64px" }} key={index}>
+                  <div style={{marginTop: "-64px"}} key={index}>
                     <Section
                       apiType="spotify"
                       key={item.key}
@@ -107,7 +107,7 @@ const SearchResult: React.FC = () => {
                       data={data?.[item?.key]?.items
                         ?.filter((item: any) => item)
                         ?.sort(
-                          (a: any, b: any) => -a.popularity + b.popularity,
+                          (a: any, b: any) => -a.popularity+b.popularity,
                         )}
                     />
                   </div>
@@ -115,6 +115,8 @@ const SearchResult: React.FC = () => {
               } else {
                 return (
                   <SongList
+                    view={'LIST'}
+                    type={'search'}
                     top={52}
                     pivotTop={126}
                     key={item?.key}

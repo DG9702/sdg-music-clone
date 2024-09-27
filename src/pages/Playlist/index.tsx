@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useRef, useState } from "react";
+import React, { memo, useContext, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Playlist.module.scss";
 import Header from "~/components/Header";
@@ -18,9 +18,14 @@ import documentTitle from "~/utils/documentTitle";
 import {toast} from "react-toastify";
 import {checkCurrentUserFollowPlaylist, followPlaylistForCurrentUser, unFollowPlaylistForCurrentUser} from "~/services/playlistApi";
 import {AuthContext} from "~/context/AuthContext";
-import {Dropdown, MenuProps, Space, Tooltip} from "antd";
+import {Dropdown, Space, Tooltip} from "antd";
+import BlurBackground from "~/components/BlurBackground";
 
-const cx = classNames.bind(styles);
+const cx=classNames.bind(styles);
+
+type viewAs = "LIST" | "COMPACT";
+const VIEW = ["LIST", "COMPACT"] as const;
+
 
 const Playlist: React.FC = () => {
   const {
@@ -29,6 +34,8 @@ const Playlist: React.FC = () => {
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
+    handlePause,
+    currentTrack,
     isPlaying,
     prevDocumentTitle,
     isBtnClickable
@@ -43,26 +50,16 @@ const Playlist: React.FC = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [navPlayBtnVisible, setNavPlayBtnVisible] = useState<boolean>(false);
   const [isSavingPlaylist, setSavingPlaylist]=useState<boolean>(false);
-  // const bgColor = useRaiseColorTone(useDominantColor(data?.images?.[0]?.url) || '#121212')
 
-  const [view, setView]=useState<boolean>(false);
+  const [view, setView]=useState<viewAs>("LIST");
 
-  const items: MenuProps['items'] = [
-      {
-        label: 'LIST',
-        key: 'LIST',
-        onClick: () => {
-          setView(false)
-        }
-      },
-      {
-        label: 'COMPACT',
-        key: 'COMPACT',
-        onClick: () => {
-          setView(true)
-        }
-      }
-    ];
+  const items=VIEW.map((view) => ({
+    key: view,
+    label: view,
+    onClick: () => {
+      setView(view);
+    },
+  }));
 
   const { data: dataColor } = usePalette(
     data?.images?.[0]?.url as string,
@@ -133,21 +130,21 @@ const Playlist: React.FC = () => {
   };
 
   const handleClickPlayBtn = () => {
-    
-    setQueue(data?.tracks?.items?.map((item) => item.track) || []);
-    setCurrentTrack(data?.tracks?.items?.[0]?.track);
-    setCurrentTrackIndex(0);
-    calNextTrackIndex();
-    setPlayingType("track");
+    if(isPlayBtn && isCurrent) {
+      handlePause();
+    } else if (!isCurrent) {
+        setQueue(data?.tracks?.items?.map((item) => item.track) || []);
+        setCurrentTrack(data?.tracks?.items?.[0]?.track);
+        setCurrentTrackIndex(0);
+        calNextTrackIndex();
+        setPlayingType("track");    
+    }
   };  
-
-  console.log("Check userData: ", userData);
 
    useEffect(() => {
     if (data?.id) {
       const fetchData = async () => {
         const result = await checkCurrentUserFollowPlaylist(data?.id, { ids: userData?.id });
-        console.log("Check result: ", result);
         
         if (result.data[0] === true) {
           setSavingPlaylist(true);
@@ -161,29 +158,33 @@ const Playlist: React.FC = () => {
     }
   }, [isSavingPlaylist, setSavingPlaylist, data?.id])
 
-  const addTrackRequest = async () => {
+  const followPlaylistRequest = async () => {
     const result = await followPlaylistForCurrentUser(`${data?.id}`);
     return result;
   }
 
-  const removeTrackRequest = async () => {
+  const unFollowPlaylistRequest = async () => {
     const result = await unFollowPlaylistForCurrentUser(`${data?.id}`);
     return result;
   }
 
-  const handleSaveEpisode = async () => {
+  const handleFollowPlaylist = async () => {
     if (isSavingPlaylist) {
-      await removeTrackRequest();
+      await unFollowPlaylistRequest();
       setSavingPlaylist(false)
       toast('🦄 Remove from liked Song');
     } else {
-      await addTrackRequest();
+      await followPlaylistRequest();
       setSavingPlaylist(true);
       toast('🦄 Added to liked Song');
     }
   };
 
-  console.log("Check data in playlist: ", data);  
+  const isCurrent = useMemo(() => {
+    return !!data?.tracks?.items?.some((item) => item?.track?.id === currentTrack?.id);
+  }, [data, currentTrack])
+
+  const isPlayBtn = isCurrent && isPlaying;
 
   return (
     <main className={cx("wrapper")}>
@@ -216,10 +217,7 @@ const Playlist: React.FC = () => {
           />
         </div>
         <div className={cx("song-list")}>
-          <div
-            style={{ backgroundColor: `${bgColor}` }}
-            className={cx("bg-blur")}
-          ></div>
+          <BlurBackground bgColor={bgColor} />
           <div className={cx("main")}>
             <div className={cx("action-bar")}>
               <div className={cx("action-left")}>
@@ -229,13 +227,12 @@ const Playlist: React.FC = () => {
                     fontSize={24}
                     scaleHovering={1.05}
                     transitionDuration={33}
-                    isPlay={isPlaying}
-                    //setPlaying={handleSetPlay}
+                    isPlay={isPlayBtn}
                   />
                 </div>
                 <button
                   className={cx("heart", {active: isSavingPlaylist})}
-                  onClick={() => isBtnClickable && handleSaveEpisode()}
+                  onClick={() => isBtnClickable && handleFollowPlaylist()}
                 >
                   {isSavingPlaylist ? <UserSavedTrack /> : <SaveTrack />}
                 </button>
@@ -243,11 +240,11 @@ const Playlist: React.FC = () => {
               <div className={cx("action-right")}>
                 <Space className='mobile-hidden'>
                   <Tooltip title={'VIEW'}>
-                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view === false ? "LIST" : "COMPACT"] }}>
+                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view] }}>
                       <button className={cx('order-button')}>
                         <Space align='center'>
-                          <span>{view === false ? "LIST" : "COMPACT"}</span>
-                          {view === false ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
+                          <span>{view}</span>
+                          {view === 'LIST' ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
                         </Space>
                       </button>
                     </Dropdown>

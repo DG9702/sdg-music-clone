@@ -11,9 +11,6 @@
 .banner-img {
   width: 100%;
   position: absolute;
-  // background-position: center;
-  // background-size: cover;
-  // background-repeat: no-repeat;
   z-index: 0;
   transition: all 1ms ease;
   transform-origin: center;
@@ -50,15 +47,6 @@
   }
 }
 
-.bg-blur {
-  position: absolute;
-  height: 232px;
-  left: 0;
-  right: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, $bg-primary 100%), $bg-noise;
-  z-index: 0;
-}
-
 .action-bar {
   padding: 24px;
   display: flex;
@@ -74,7 +62,7 @@
     gap: 32px;
 
     .follow-btn {
-      color: var(--white);
+      color: $white;
       background-color: transparent;
       border: 1px solid hsla(0, 0%, 100%, 0.3);
       border-radius: 9999px;
@@ -87,7 +75,7 @@
       cursor: pointer;
   
       &:hover {
-        border-color: var(--white);
+        border-color: $white;
         transform: scale(1.04);
       }
     }

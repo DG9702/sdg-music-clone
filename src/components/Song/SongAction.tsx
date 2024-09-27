@@ -24,19 +24,13 @@ interface TrackActionsWrapperProps {
 }
 
 export const SongAction: FC<TrackActionsWrapperProps> = memo(
-    ({ children, trigger, track, myPlaylist, playlist,setPlaylist }) => {
+    ({ children, trigger, track, myPlaylist, playlist, setPlaylist }) => {
         const {userData}=useContext(AuthContext);
 
         const {
             queue,
-            setQueue
         }=useContext(PlayerContext);
 
-        const indexOfTrackInQueue = queue.findIndex(
-            (item) => item?.id === track?.id,
-        );
-
-        
         const navigate = useNavigate();        
 
         const isMine = userData?.id === playlist?.owner?.id;
@@ -100,7 +94,7 @@ export const SongAction: FC<TrackActionsWrapperProps> = memo(
                     icon: <DeleteIcon />,
                     onClick: () => {
                         removePlaylistItems(playlist!.id, [track.uri], playlist?.snapshot_id!)
-                            .then(async (response) => {
+                            .then(async () => {
                                 toast.success("Remove from this playlist");
                                 const data = await categoryApi({
                                     type: "playlists",
@@ -118,13 +112,7 @@ export const SongAction: FC<TrackActionsWrapperProps> = memo(
                     key: "3",
                     icon: <AddToQueueIcon />,
                     onClick: () => {
-                        if(indexOfTrackInQueue === -1) {
-                            setQueue(track? [{
-                                queue,
-                                ...track,
-                             }] : []);
-                        }
-                        
+                        queue.splice(1, 0, track);
                     },
                 },
                 { type: "divider" },

@@ -86,7 +86,7 @@
   color: var(--white);
   margin: 0;
   margin-bottom: 4px;
-    -webkit-line-clamp: 1;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   display: -webkit-box;
   white-space: unset;
@@ -100,10 +100,8 @@
 .queue-notify {
   height: 50vh;
   min-height: 300px;
-  display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include item-center;
 }
 
 .content {

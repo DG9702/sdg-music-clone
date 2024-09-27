@@ -19,7 +19,16 @@ import PlayButton from "~/components/PlayButton"
 const cx = classNames.bind(styles)
 
 const EpisodeSave: FC = () => {
-  const { isPlaying, prevDocumentTitle } = useContext(PlayerContext)
+  const {
+    isPlaying,
+    prevDocumentTitle,
+    setCurrentTrack,
+    setCurrentTrackIndex,
+    setQueue,
+    calNextTrackIndex,
+    setPlayingType,
+    handlePause,
+    currentTrack, } = useContext(PlayerContext)
   const [navOpacity, setNavOpacity] = useState<number>(0)
   const [data, setData] = useState<UserSaveEpisodesData>()
   const [isLoading, setLoading] = useState<boolean>(true)
@@ -97,10 +106,30 @@ const EpisodeSave: FC = () => {
     }
   }, [inView])
 
-  const handleClickPlayBtn = () => {
-    console.log("Check play episodes");
-    
-  };  
+  const handleClickPlayBtn = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+     e.stopPropagation();
+    if (isPlayBtn && isCurrent) {
+      handlePause();
+    } else if (!isCurrent) {
+      const queueList =
+        data?.items?.map((item: any) => 
+          item.episode
+        )||[];
+      
+      setQueue(queueList);      
+      setCurrentTrack({ ...queueList?.[0] });
+      setCurrentTrackIndex(0);
+      calNextTrackIndex();
+      setPlayingType("show");
+    }
+  }; 
+
+    const isCurrent = useMemo(() => {
+      return !!data?.items?.some((item: any) => item?.episode?.id === currentTrack?.id);
+  }, [data, currentTrack]);
+  
+  const isPlayBtn=isCurrent&&isPlaying;  
+  
 
   return (
     <main className={cx({ 'show-wrapper': true, 'col-layout': width <= 1100 })}>
@@ -135,6 +164,7 @@ const EpisodeSave: FC = () => {
                   fontSize={24}
                   scaleHovering={1.05}
                   transitionDuration={33}
+                  isPlay={isPlayBtn}
                 />
               </div>
           </div>

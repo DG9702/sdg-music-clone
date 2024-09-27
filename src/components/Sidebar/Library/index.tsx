@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import classNames from "classnames/bind";
 import {
   AddIcon,
-  EarthIcon,
   EpisodesIcon,
   LibraryCollapseIcon,
   LibraryIcon,
@@ -14,7 +13,7 @@ import { AuthContext } from "~/context/AuthContext";
 import SidebarItem from "~/components/SidebarItem";
 import fetchSidebarData from "~/utils/fetchSidebarData";
 import Button from "~/components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {Dropdown} from "antd";
 import {createPlaylist} from "~/services/playlistApi";
 import {toast} from "react-toastify";
@@ -101,7 +100,6 @@ const Library: React.FC<yourLibraryState>=({ isCollapsed, setCollapsed }) => {
     }
   };
 
-  console.log("Check data in category: ", category, data);
   
   
   return (

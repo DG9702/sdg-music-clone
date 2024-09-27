@@ -1,10 +1,9 @@
+@import '../../scss/variable.scss';
 @import '../../scss/mixin';
 
 .wrapper {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include item-center;
 
   .control-buttons {
     margin-bottom: 8px;
@@ -35,16 +34,16 @@
     border: none;
     color: hsla(0,0%,100%,.7);
     display: flex;
-    height: var(--button-size);
+    height: $button-size;
     justify-content: center;
-    min-width: var(--button-size);
+    min-width: $button-size;
     position: relative;
-    width: var(--button-size);
+    width: $button-size;
 
 
   &:hover {
     cursor: pointer;
-    color: var(--white);
+    color: $white;
   }
 }
 
@@ -59,13 +58,13 @@
   align-items: center;
   width: 100%;
   flex-direction: row;
-  gap: var(--panel-gap);
+  gap: $panel-gap;
 }
 
 .playback-position,
 .playback-duration {
   min-width: 40px;
-  color: var(--text-subdued);
+  color: $text-subdued;
   font-size: 11px;
 }
 
@@ -79,8 +78,6 @@
 
 .active {
   @include button-active;
-
-  color: var(--secondary) !important;
   position: relative;
 
   &::after {

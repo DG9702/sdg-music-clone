@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { getTrackRecommendation } from '~/services/trackApi'
+import { getTrackRecommendation, getUserSaveTrack } from '~/services/trackApi'
 import { ArtistData } from '~/types/artist'
 import { ImageSource } from '~/types/others'
 import { Episode } from '~/types/show'
 import { SpotifyTrack } from '~/types/track'
 import { FC, ReactNode, createContext, useEffect, useMemo, useRef, useState } from 'react'
-import {getAudioLink} from '~/services/getAudioLink'
 
 interface PlayBarData {
   trackId?: string
@@ -35,11 +34,6 @@ interface ReturnData {
   playBarData?: PlayBarData
 }
 
-interface isSavedTrack {
-  isSaving: boolean
-  ids: any
-}
-
 export interface CurrentTrack extends SpotifyTrack, Episode {}
 
 interface PlayerContext extends ReturnData {
@@ -54,14 +48,12 @@ interface PlayerContext extends ReturnData {
   setRepeat: React.Dispatch<React.SetStateAction<boolean>>
   setShuffle: React.Dispatch<React.SetStateAction<boolean>>
   setPlayingType: React.Dispatch<React.SetStateAction<'track'|'show'>>
-  setSaving: any
   //setDurationAudio: any
   handlePlay: () => void
   handlePause: () => void
   handleForward: () => void
   handleBack: () => void
   calNextTrackIndex: () => void
-  audioData: React.MutableRefObject<any>
   audioRef: React.MutableRefObject<any>
   durationAudio: number
   prevDocumentTitle: React.MutableRefObject<string>
@@ -77,18 +69,19 @@ interface PlayerContext extends ReturnData {
   isRepeat: boolean
   isShuffle: boolean
   isBtnClickable: boolean
-  isSaving: any
+  savingTracks: any
+  isTrackSaved: any
   playingType: 'track' | 'show'
 }
 
 export const PlayerContext = createContext({} as PlayerContext)
 
 export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
-  const [audioData, setAudioData] = useState<any>()
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
   const [nextTrackIndex, setNextTrackIndex] = useState<number>(1)
   const [playingType, setPlayingType]=useState<'track'|'show'>('track')
-  const [isSaving, setSaving] = useState<isSavedTrack[]>()
+  // --------------saving--------------
+  const [savingTracks, setSavingTracks]=useState([]);
 
   // ----------Control-----------------
   const [currentTime, setCurrentTime] = useState<number>(0) //s
@@ -98,11 +91,12 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
   const [isRepeat, setRepeat] = useState<boolean>(false)
   const [isShuffle, setShuffle] = useState<boolean>(false)
   const [isBtnClickable, setBtnClickable]=useState<boolean>(false)
-  //const [durationAudio, setDurationAudio] = useState<number>(30)
 
   // ---------------Queue list----------------
   const [queue, setQueue] = useState<CurrentTrack[]>([])
-  const [currentTrack, setCurrentTrack] = useState<CurrentTrack | undefined>()
+  const [currentTrack, setCurrentTrack]=useState<CurrentTrack|undefined>()
+  const [durationAudio, setDurationAudio] = useState(0);
+
 
   useEffect(() => {
     if (currentTrack) {
@@ -114,7 +108,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
           const data = await getTrackRecommendation({
             seed_artists: currentTrack?.artists?.[0]?.id as string,
             seed_tracks: currentTrack?.id,
-            limit: 19,
+            limit: 10,
           })
           setQueue((prev) => [...prev, ...data])
         }
@@ -127,27 +121,44 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
     }
   }, [currentTrack])
 
+  useEffect(() => {
+    const fetchLikeSong = async () => {
+      const result = await getUserSaveTrack({
+        market: "VN",
+        limit: 20,
+      });
+      const savedTracks = result.items.map((item: any) => ({
+        id: item.track.id, // Extract track ID
+      }));
+
+      setSavingTracks(savedTracks);
+    };
+    fetchLikeSong();
+  }, []);
+
+  const isTrackSaved = (trackId: string) => {
+      return savingTracks?.some((track: any) => track.id === trackId);
+  };
+
   // -----------------------------------------------
 
   const intervalIdRef = useRef<number>()
 
-  // const audioRef = useRef<HTMLAudioElement>(new Audio())
   const audioRef=useRef<any>()
 
-  let durationAudio=29.753469;
 
   useEffect(() => {
-    //if (playingType === 'show') setAudioData(queue[currentTrackIndex]?.audio_preview_url) 
-    setAudioData(queue[currentTrackIndex]?.preview_url);
-  })
-
-  useEffect(() => {
-    if(audioRef?.current) {
-      durationAudio = audioRef?.current?.duration
+    if (audioRef.current) {
+        audioRef.current.addEventListener('loadedmetadata', () => {
+            if (audioRef.current.duration) {
+                setDurationAudio(audioRef.current.duration);
+            } else {
+                console.error('Duration is undefined');
+            }
+        });
     }
-  }, [durationAudio])
-
-
+  }, [audioRef]);
+  
   const prevDocumentTitle = useRef<string>('')
 
   // set default state from localStorage
@@ -185,26 +196,39 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
   }
 
 
-  useMemo(() => {
-    if (audioData) {
-      audioRef.current.src = audioData
-      audioRef.current.load()
-      setBtnClickable(false)
-    }
-  }, [audioData])
+useMemo(() => {
+    if(playingType==='show' && currentTrack) {
+      audioRef.current.src=currentTrack?.audio_preview_url
+      audioRef.current.load()
+      setReady(false)
+
+      audioRef.current.addEventListener('loadeddata', () => {
+        if(isPlaying) {
+          handlePlay();
+        }
+      });
+    }
+    if (playingType !== 'show' && currentTrack) {
+      audioRef.current.src=currentTrack?.preview_url;
+      audioRef.current.load()
+      setReady(false)
+
+      audioRef.current.addEventListener('loadeddata', () => {
+        if(isPlaying) {
+          handlePlay();
+        }
+      });
+    }
+
+      // Chờ cho bài hát tải xong rồi mới phát
+      
+  }, [currentTrack, audioRef])  
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.currentTime = currentTime
     }
   }, [currentTime])
-
-  useEffect(() => {
-    //audioRef.current.pause();
-    audioRef.current.src = queue[currentTrackIndex]?.preview_url;
-      handlePlay();
-      setPlaying(true)
-  }, [audioRef, currentTrackIndex]);
 
   useEffect(() => {
     calNextTrackIndex()
@@ -265,13 +289,13 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
 
   const handleForward = () => {
     if (currentTrackIndex < queue.length - 1) {
-      //handlePause()
       setCurrentTrack({ ...queue[nextTrackIndex] })
       setCurrentTrackIndex(nextTrackIndex)
       calNextTrackIndex()
-      setCurrentTime(0)
+      setCurrentTime(0);
+
     }
-  }
+  }  
 
   const calNextTrackIndex = () => {
     if (isShuffle) {
@@ -303,10 +327,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
       },
       
     }
-  }, [currentTrack, audioData])  
-
-  console.log("Check audioRef: ", audioRef, audioData);
-
+  }, [currentTrack])  
   
   return (
     <PlayerContext.Provider
@@ -327,11 +348,10 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
         setShuffle,
         calNextTrackIndex,
         setPlayingType,
-        setSaving,
-        //setDurationAudio,
-        audioData,
+        savingTracks,
         audioRef,
         isPlaying,
+        isTrackSaved,
         intervalIdRef,
         currentTrack,
         queue,
@@ -341,7 +361,6 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
         nextTrackIndex,
         isRepeat,
         isShuffle,
-        isSaving,
         isBtnClickable,
         prevDocumentTitle,
         playingType,

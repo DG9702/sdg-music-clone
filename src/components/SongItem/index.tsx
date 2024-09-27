@@ -13,7 +13,6 @@ import durationConvertor from "~/utils/durationConvertor";
 import equaliser from "~/assets/images/animation/equaliser-animated-green.f5eb96f2.gif";
 import {removeTrackForCurrentUser, saveTrackForCurrentUser} from "~/services/trackApi";
 import {toast} from "react-toastify";
-import {TrackContext} from "~/context/TrackContext";
 import {AuthContext} from "~/context/AuthContext";
 import {SongAction} from "../Song/SongAction";
 
@@ -40,7 +39,7 @@ const SongItem: React.FC<SongItemProps>=({
   const { width } = useContext(MainLayoutContext);
   const {
     setCurrentTrack,
-    setQueue,
+    setCurrentTime,
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
@@ -48,34 +47,32 @@ const SongItem: React.FC<SongItemProps>=({
     isPlaying,
     currentTrack,
     isBtnClickable,
+    isTrackSaved
   }=useContext(PlayerContext);
 
   const {
     userData
   }=useContext(AuthContext);
 
-  const { isTrackSaved }=useContext(TrackContext);  
+  const [isSavingLocally, setIsSavingLocally]=useState(isTrackSaved(originalData?.id));
 
-  const [isSavingLocally, setIsSavingLocally]=useState(isTrackSaved(originalData?.id));  
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
+    e.stopPropagation();    
     if (currentTrack?.id === originalData?.id) return;
     const indexOfTrackInQueue = queue.findIndex(
       (item) => item?.id === originalData?.id,
-    );
-
-    console.log('Check view: ', view);
-    
+    );    
     
     if (indexOfTrackInQueue === -1) {
-      setQueue(originalData ? [{ ...originalData }] : []);
       setCurrentTrack({ ...originalData });
       setCurrentTrackIndex(0);
       calNextTrackIndex();
+      setCurrentTime(0);
     } else {
       setCurrentTrack({ ...originalData });
       setCurrentTrackIndex(indexOfTrackInQueue);
       calNextTrackIndex();
+      setCurrentTime(0);
     }
     if (originalData?.album) {
       setPlayingType("track");
@@ -109,22 +106,19 @@ const SongItem: React.FC<SongItemProps>=({
   
   return (
     <div
-      //onClick={(e) => handleClick(e)}
-      //onMouseOver={() => setHover(!isHover)}
       className={cx({
         wrapper: true,
         "grid-md": width <= 780 && type !== "album",
-        "is-album-track": type === "album",
-        "is-search-result": type === "search",
-        "is-queue-result": type === "queue",
+        "is-search-result": type === "search" && view === 'LIST',
+        "is-queue-result": type === "queue" && view === 'LIST',
         "is-playing": currentTrack?.id===originalData?.id,
-        "is-list": view===false && type==='album',
-        "is-list-no-album": view === false && type !== 'album',
-        "is-compact": view===true && type=== 'album',
-        "is-compact-no-album": view === true && type !== 'album'
+        "is-list-album": view === 'LIST' && type === 'album',
+        "is-list-default": view === 'LIST' && type !== 'queue' && type !== 'search',
+        "is-compact": view === 'COMPACT' && type=== 'album',
+        "is-compact-no-album": view === 'COMPACT' && type !== 'album'
       })}
     >
-      {type !== "queue" && type !== "search" && (
+      {type !== "search" && (
         <div className={cx("order")}>
           {!isLoading &&
             (isPlaying && currentTrack?.id === originalData?.id ? (
@@ -142,20 +136,15 @@ const SongItem: React.FC<SongItemProps>=({
         </div>
       )}
       <div className={cx("main")}>
-        {type!=="album"&&(
+        {type !== "album" && (
           <>
-            {view ===false && (
+            {view === 'LIST' && (
               <div className={cx("thumb")}>
                 {!isLoading ? (
                   thumb ? (
                     <>
                       <ImageLazy src={thumb} alt={songName} />
-                      {type === "queue" && (
-                        <button className={cx("order-icon")}>
-                          <PlayIcon />
-                        </button>
-                      )}
-                      {type === "search" && (
+                      {type === "queue" || type === "search"  && (
                         <button className={cx("order-icon")}>
                           <PlayIcon />
                         </button>
@@ -179,7 +168,7 @@ const SongItem: React.FC<SongItemProps>=({
               <p className={cx("name", { namequeue: type === "queue" })}>
                 {songName}
               </p>
-              {type !== "artist" && view === false && (
+              {type !== "artist" && view === 'LIST' && (
                 <div className={cx("sub-title")}>
                   {isExplicit && <span className={cx("explicit")}>E</span>}
                   <SubTitleArtists data={artists} />
@@ -194,8 +183,8 @@ const SongItem: React.FC<SongItemProps>=({
           )}
         </div>
       </div>
-      {view===true && (
-        <div className={cx("album",{ "is-none": view === true})}>
+      {view === 'COMPACT' && (
+        <div className={cx("album", "is-none")}>
             {!isLoading && (
               <SubTitleArtists data={artists} />
             )}

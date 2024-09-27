@@ -29,7 +29,10 @@ const Queue = () => {
     if (yAxis > 64) {
       setNavOpacity(1);
     } else setNavOpacity(yAxis / 64);
-  };  
+  };    
+
+  console.log("Check navOpacity: ", navOpacity);
+  
 
   return (
     <div className={cx("queue-view-wrapper")}>
@@ -49,6 +52,7 @@ const Queue = () => {
               <div className={cx("now-playing")}>
                 <h2 className={cx("sub-title")}>Now playing</h2>
                 <SongItem
+                  view={'LIST'}
                   type="queue"
                   id={currentTrack?.id}
                   albumData={currentTrack?.album}
@@ -72,7 +76,8 @@ const Queue = () => {
                   <h2 className={cx("sub-title")}>
                     Next from: {currentTrack?.name}
                   </h2>
-                  <SongList
+                <SongList
+                    view={'LIST'}
                     type="queue"
                     inclHeader={false}
                     songList={

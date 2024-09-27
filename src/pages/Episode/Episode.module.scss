@@ -30,16 +30,6 @@
   position: relative;
 }
 
-.bg-blur {
-  position: absolute;
-  height: 232px;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, $bg-primary 100%), $bg-noise;
-  z-index: 0;
-}
-
 .action-bar {
   position: relative;
   display: flex;
@@ -140,7 +130,7 @@
     @include reset-button;
     font-size: 14px;
     font-weight: 700;
-    color: var(--white);
+    color: $white;
     background-color: transparent;
     padding: 7px 15px;
     border-radius: 500px;

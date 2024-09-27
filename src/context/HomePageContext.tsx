@@ -43,7 +43,7 @@ export const HomePageProvider: FC<HomePageProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await recentlyApi({
-        limit: 20,
+        limit: 10,
       });
 
       setRecently({
@@ -102,7 +102,7 @@ export const HomePageProvider: FC<HomePageProviderProps> = ({ children }) => {
       const data = await searchApi({
         query: "album",
         types: ["album"],
-        limit: 50,
+        limit: 10,
       });
 
       setGreetingAlbum(data?.albums.items);

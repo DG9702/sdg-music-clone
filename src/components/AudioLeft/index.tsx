@@ -20,12 +20,11 @@ import { removeTrackForCurrentUser, saveTrackForCurrentUser} from "~/services/tr
 import { toast, ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {SubTitleArtists} from "../SubTitle";
-import {TrackContext} from "~/context/TrackContext";
 
 const cx = classNames.bind(styles);
 
 const AudioLeft: React.FC = () => {
-  const { playBarData, playingType, isBtnClickable } =
+  const { playBarData, playingType, isBtnClickable, isTrackSaved, savingTracks } =
     useContext(PlayerContext);
   const {
     isPlayingViewShowed,
@@ -33,10 +32,6 @@ const AudioLeft: React.FC = () => {
     setQueueShowed,
   }=useContext(AppContext);
   
-   const {
-    savingTracks, isTrackSaved 
-  }=useContext(TrackContext);
-
   const [isSavingLocally, setIsSavingLocally]=useState(isTrackSaved(playBarData?.trackId));
 
   const isLoading = useMemo(

@@ -19,22 +19,19 @@ interface ButtonProps {
   className?: string;
 }
 
-const Button: React.FC<ButtonProps> = (props) => {
-  const {
-    type = "default",
+const Button: React.FC<ButtonProps>=({
+    type,
     bgColor,
-    navOpacity = 1,
+    navOpacity,
     rightIcon,
     leftIcon,
     onClick,
     onMouseOver,
-    small = false,
-    large = false,
+    small,
+    large,
     className,
     children,
-  } = props;
-
-  // Remove event listener when btn is disabled
+}) => {
 
   const classes = cx(
     "btn",

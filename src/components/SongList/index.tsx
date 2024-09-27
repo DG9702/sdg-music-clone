@@ -10,7 +10,6 @@ import { SongListProps } from "~/types/track";
 import { AppContext } from "~/App";
 import { fetchSidebarData } from "~/utils";
 import { AuthContext } from "~/context/AuthContext";
-import {useParams} from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -96,14 +95,14 @@ const SongList: FC<SongListProps> = ({
                                 "freeze-top-row": true,
                                 stuck: !inView,
                                 "grid-md": width <= 780,
-                                "is-compact": view === true,
+                                "is-compact": view === 'COMPACT',
                             })}
                         >
                             <>
                                 {" "}
                                 <div>#</div>
                                 <div>Title</div>
-                                {view === true && <div>Artists</div>}
+                                {view === 'COMPACT' && <div>Artists</div>}
                                 <div>Album</div>
                                 {width > 780 && <div>Date added</div>}
                                 <div className={cx("clock-icon")}>
@@ -119,7 +118,7 @@ const SongList: FC<SongListProps> = ({
                               stuck: !inView,
                               "grid-md": width <= 780,
                               "is-album-track": type === "album",
-                              "is-compact": view===true,
+                              "is-compact": view === 'COMPACT',
                             })}
                         >
                             <>
@@ -221,6 +220,7 @@ const SongList: FC<SongListProps> = ({
                             ?.fill(0)
                             ?.map((item, index) => (
                                 <SongItem
+                                    view={view}
                                     isLoading={isLoading}
                                     key={item + index}
                                 />

@@ -39,7 +39,7 @@ export const SearchProvider: FC<SearchProviderProps> = ({ children }) => {
       const data = await searchApi({
         query: query,
         market: 'VN',
-        limit: 19,
+        limit: 10,
       })
       setData({ ...data })
       setLoading(false)

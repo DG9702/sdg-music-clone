@@ -35,7 +35,6 @@ const ArtistBanner: FC<ArtistBannerProps> = (props) => {
         <div className={cx('main')}>
           {!inclHeaderImg && (
             <div className={cx('avatar')}>
-              {/* <img src={avatar} alt="avt" /> */}
               <ImageLazy src={avatar} alt="avt" />
             </div>
           )}

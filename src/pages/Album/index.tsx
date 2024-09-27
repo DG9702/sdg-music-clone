@@ -19,11 +19,16 @@ import { getArtistAlbums } from "~/services/artistApi";
 import dateFormatConvertor from "~/utils/dateFormatConvertor";
 import {ResponseSectionItem} from "~/types/section";
 import Section from "~/components/Section";
-import {checkCurrentUserSaveAlbum, removeAlbumForCurrentUser, saveAlbumForCurrentUser} from "~/services/albumApi";
+import {checkCurrentUserSaveAlbum, followAlbumForCurrentUser, unFollowAlbumForCurrentUser} from "~/services/albumApi";
 import {toast} from "react-toastify";
-import {Dropdown, MenuProps, Space, Tooltip} from "antd";
+import {Dropdown, Space, Tooltip} from "antd";
+import BlurBackground from "~/components/BlurBackground";
 
-const cx = classNames.bind(styles);
+const cx=classNames.bind(styles);
+
+type viewAs = "LIST" | "COMPACT";
+const VIEW = ["LIST", "COMPACT"] as const;
+
 
 const Album: React.FC = () => {
   const {
@@ -32,10 +37,10 @@ const Album: React.FC = () => {
     setCurrentTrackIndex,
     calNextTrackIndex,
     setPlayingType,
-    setPlaying,
+    handlePause,
     isPlaying,
-    prevDocumentTitle,
     currentTrack,
+    prevDocumentTitle,
     isBtnClickable
   } = useContext(PlayerContext);
   const [navOpacity, setNavOpacity] = useState<number>(0);
@@ -44,24 +49,16 @@ const Album: React.FC = () => {
   const [navPlayBtnVisible, setNavPlayBtnVisible] = useState<boolean>(false);
   const [artistAlbums, setArtistAlbums] = useState<SpotifyAlbum[]>();
   const [isSaving, setSaving]=useState<boolean>(false);
-  const [view, setView]=useState<boolean>(false);
 
-  const items: MenuProps['items'] = [
-      {
-        label: 'LIST',
-        key: 'LIST',
-        onClick: () => {
-          setView(false)
-        }
-      },
-      {
-        label: 'COMPACT',
-        key: 'COMPACT',
-        onClick: () => {
-          setView(true)
-        }
-      }
-    ];
+  const [view, setView]=useState<viewAs>("LIST");
+
+  const items=VIEW.map((view) => ({
+    key: view,
+    label: view,
+    onClick: () => {
+      setView(view);
+    },
+  }));
 
   // const bgColor = useRaiseColorTone(useDominantColor(data?.images?.[0]?.url) || '#121212')
 
@@ -145,29 +142,29 @@ const Album: React.FC = () => {
     } else setNavPlayBtnVisible(false);
   };
 
-  const handleClickPlayBtn = () => {
-    const queueList =
-      data?.tracks?.items?.map((item) => {
-        return {
-          ...item,
-          album: {
-            images: data?.images,
-            id: data?.id,
-            album_type: data?.album_type,
-            name: data?.name,
-          },
-        };
-      }) || [];
-    setQueue(queueList);
-    setCurrentTrack(queueList[0]);
-    setCurrentTrackIndex(0);
-    setPlayingType("track");
-    calNextTrackIndex();
+  const handleClickPlayBtn=() => {
+    if(isPlayBtn && isCurrent) {
+      handlePause();
+    } else if (!isCurrent) {        
+        const queueList =
+          data?.tracks?.items?.map((item) => {
+            return {
+              ...item,
+              album: {
+                images: data?.images,
+                id: data?.id,
+                album_type: data?.album_type,
+                name: data?.name,
+              },
+            };
+          }) || [];
+        setQueue(queueList);
+        setCurrentTrack(queueList[0]);
+        setCurrentTrackIndex(0);
+        setPlayingType("track");
+        calNextTrackIndex();
+    }
   };
-  
-  const handleSetPlay=() => {
-    setPlaying(!isPlaying)
-  }
 
   useEffect(() => {
     if (data?.id) {
@@ -187,16 +184,16 @@ const Album: React.FC = () => {
   }, [isSaving, setSaving, data?.id])
 
   const followingAlbumRequest = async () => {
-    const result = await saveAlbumForCurrentUser(`${data?.id}`);
+    const result = await followAlbumForCurrentUser(`${data?.id}`);
     return result;
   }
 
   const unFollowingAlbumRequest = async () => {
-    const result = await removeAlbumForCurrentUser(`${data?.id}`);
+    const result = await unFollowAlbumForCurrentUser(`${data?.id}`);
     return result;
   }
 
-  const handleSaveEpisode = async () => {
+  const handleFollowAlbum = async () => {
     if (isSaving) {
       await unFollowingAlbumRequest();
       setSaving(false)
@@ -206,7 +203,13 @@ const Album: React.FC = () => {
       setSaving(true);
       toast('🦄 Following Album');
     }
-  };    
+  }; 
+  
+  const isCurrent = useMemo(() => {
+    return !!data?.tracks?.items?.some((item) => item?.id === currentTrack?.id);
+  }, [data, currentTrack])
+
+  const isPlayBtn = isCurrent && isPlaying === true;
 
   return (
     <main className={cx("wrapper")}>
@@ -242,10 +245,7 @@ const Album: React.FC = () => {
           />
         </div>
         <div className={cx("song-list")}>
-          <div
-            style={{ backgroundColor: `${bgColor}` }}
-            className={cx("bg-blur")}
-          ></div>
+          <BlurBackground bgColor={bgColor} />
           <div className={cx("main")}>
             <div className={cx("action-bar")}>
               <div className={cx("action-left")}>
@@ -255,13 +255,12 @@ const Album: React.FC = () => {
                     fontSize={24}
                     scaleHovering={1.05}
                     transitionDuration={33}
-                    isPlay={isPlaying}
-                    setPlaying={handleSetPlay}
+                    isPlay={isPlayBtn}
                   />
                 </div>
                 <button
                   className={cx("heart", {active: isSaving})}
-                  onClick={() => isBtnClickable && handleSaveEpisode()}
+                  onClick={() => isBtnClickable && handleFollowAlbum()}
                 >
                   {isSaving ? <UserSavedTrack /> : <SaveTrack />}
                 </button>
@@ -269,11 +268,11 @@ const Album: React.FC = () => {
               <div className={cx("action-right")}>
                 <Space className='mobile-hidden'>
                   <Tooltip title={'VIEW'}>
-                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view === false ? "LIST" : "COMPACT"] }}>
+                    <Dropdown placement='bottomRight' menu={{ items, selectedKeys: [view] }}>
                       <button className={cx('order-button')}>
                         <Space align='center'>
-                          <span>{view === false ? "LIST" : "COMPACT"}</span>
-                          {view === false ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
+                          <span>{view}</span>
+                          {view === 'LIST' ? <OrderListIcon size={15} /> : <OrderCompactIcon size={15} />}
                         </Space>
                       </button>
                     </Dropdown>

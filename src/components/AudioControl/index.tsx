@@ -24,7 +24,6 @@ const PlayerControl: React.FC = () => {
     isPlaying,
     audioRef,
     isReady,
-    userClicked,
     isShuffle,
     isRepeat,
     isBtnClickable,
@@ -34,7 +33,6 @@ const PlayerControl: React.FC = () => {
     handleForward,
     setPlaying,
     handleBack,
-    setUserClicked,
     setShuffle,
     setReady,
     setRepeat,
@@ -47,9 +45,6 @@ const PlayerControl: React.FC = () => {
     clearInterval(intervalRef.current);
 
     intervalRef.current=setInterval(() => {
-      if (!audioRef?.current?.paused) {
-        setTrackProgress(audioRef.current.currentTime);
-      }
 
       if (audioRef?.current?.ended) {
         handleForward();
@@ -107,7 +102,7 @@ const PlayerControl: React.FC = () => {
 
   const handlePlayBtn = () => {
     if (!duration && !isReady) return;
-    if (!userClicked) setUserClicked(true);
+    //if (!userClicked) setUserClicked(true);
     if (isPlaying) {
       clearInterval(intervalIdRef?.current);
       handlePause();
@@ -178,7 +173,6 @@ const PlayerControl: React.FC = () => {
               bgColor="#fff"
               transitionDuration={0}
               isPlay={isPlaying}
-              setPlaying={setPlaying}
               scaleHovering={1}
             />
           </div>

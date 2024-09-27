@@ -1,4 +1,4 @@
-import { FC, memo, useContext, useEffect, useState } from "react";
+import { FC, memo, useContext, useEffect, useMemo, useState } from "react";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
@@ -32,7 +32,9 @@ const ShowItem: FC<ShowItemComponentProps> = ({ item, show, isLoading }) => {
     setCurrentTrackIndex,
     setPlayingType,
     calNextTrackIndex,
-    isBtnClickable
+    isBtnClickable,
+    currentTrack,
+    isPlaying
   } = useContext(PlayerContext);
   const [isSaving, setSaving]=useState<boolean>(false);
 
@@ -50,12 +52,20 @@ const ShowItem: FC<ShowItemComponentProps> = ({ item, show, isLoading }) => {
     calNextTrackIndex();
   };
 
+  const isCurrent=useMemo(() => {
+      return Boolean(item?.id === currentTrack?.id);
+  }, [show, currentTrack]);
+  
+  const isPlayBtn = isCurrent && isPlaying;
+
+  console.log("Check show: ", show);
+  console.log("Check currentTrack: ", currentTrack);
+  
+
   useEffect(() => {
     if (item?.id) {
       const fetchData = async () => {
-        const result = await checkUserSaveEpisode({ids: `${item?.id}`});
-        console.log("Check result: ", result);
-        
+        const result = await checkUserSaveEpisode({ids: `${item?.id}`});        
         if (result.data[0] === true) {
           setSaving(true);
         } else {
@@ -152,6 +162,8 @@ const ShowItem: FC<ShowItemComponentProps> = ({ item, show, isLoading }) => {
                     bgColor="#fff"
                     scaleHovering={1.04}
                     transitionDuration={33}
+                    fontSize={16}
+                    isPlay={isPlayBtn}
                   />
                 </div>
               </div>

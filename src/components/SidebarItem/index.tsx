@@ -35,12 +35,12 @@ const SidebarItem: FC<SidebarItemProps>=(props) => {
                   {isEpisodes === true && (
                     <div className="episodes-icon">{icon}</div>
                   )}
-                  {!thumbnail || !isEpisodes&&(
+                  {!thumbnail || !isEpisodes && (
                     <ThumbDefault />
                   )}
               </div>)}
               <div className={cx("body")}>
-                <h4 className={cx("heading")}>
+                <div className={cx("heading")}>
                   {view === "List" && (<h4>{name}</h4>)}
                   {view==="Compact" && (
                     <>
@@ -51,10 +51,10 @@ const SidebarItem: FC<SidebarItemProps>=(props) => {
                       <p>{type}</p>
                     </>
                   )}
-                    {view==="Grid"&&
-                      (<h4 style={{textWrap: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{name}</h4>)
-                    }
-                </h4>
+                  {view==="Grid"&&
+                    (<h4 style={{textWrap: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{name}</h4>)
+                  }
+                </div>
                 {view !== "Compact" && (<span className={cx("type")}>
                   {type === 'collection' ? `playlist • ${userData?.display_name}`:`${type} • ${userData?.display_name}`}
                 </span>)}
@@ -84,7 +84,7 @@ const SidebarItem: FC<SidebarItemProps>=(props) => {
               )}
             </div>)}
             <div className={cx("body")}>
-              <h4 className={cx("heading")}>
+              <div className={cx("heading")}>
                 {view === "List" && (<h4>{name}</h4>)}
                 {view==="Compact" && (
                   <>
@@ -96,7 +96,7 @@ const SidebarItem: FC<SidebarItemProps>=(props) => {
                   </>
                 )}
                 {view === "Grid" && (<h4 style={{ textWrap: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{name}</h4>)}
-              </h4>
+              </div>
               {view !== "Compact" && (<span className={cx("type")}>
                   {type === "collection" && `playlist • ${userData?.display_name}`}
                   {type === 'playlist' && `${type} • ${author}`}

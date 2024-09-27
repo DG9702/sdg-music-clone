@@ -1,5 +1,5 @@
-@import '../../scss/variable.scss';
-@import '../../scss/mixin';
+@import "../../scss/variable.scss";
+@import "../../scss/mixin";
 
 .show-wrapper {
   height: 100%;
@@ -36,35 +36,45 @@
   top: 0;
   left: 0;
   right: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, $bg-primary 100%), $bg-noise;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, $bg-primary 100%),
+    $bg-noise;
   z-index: 0;
 }
 
-.action-bar {
-  display: flex;
-  position: relative;
-  padding: 24px;
-  align-items: center;
-  gap: 32px;
+  .action-bar {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    padding: 24px;
+    align-items: center;
+    gap: 32px;
 
-  .follow-btn {
-    @include reset-button;
-    padding: 8px 15px;
-    font-size: 14px;
-    font-weight: 700;
-    background-color: transparent;
-    color: var(--white);
-    border: 1px solid #878787;
-    border-radius: 500px;
-    cursor: pointer;
-    transition: all 33ms ease;
+    .action-left {
+      display: flex;
+      position: relative;
+      gap: 32px;
+      align-items: center;
 
-    &:hover {
-      border-color: $white;
-      transform: scale(1.04);
+      .follow-btn {
+        color: $white;
+        background-color: transparent;
+        border: 1px solid hsla(0, 0%, 100%, 0.3);
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        min-block-size: 32px;
+        padding: 4px 16px;
+        //text-transform: uppercase;
+        cursor: pointer;
+
+        &:hover {
+          border-color: $white;
+          transform: scale(1.04);
+        }
+      }
     }
   }
-}
 
 .content {
   position: relative;

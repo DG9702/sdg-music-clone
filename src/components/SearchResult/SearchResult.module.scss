@@ -43,7 +43,7 @@
         border-radius: 9999px;
         min-block-size: 32px;
         display: flex;
-        color: var(--white);
+        color: $white;
         align-items: center;
         transition: background-color 0.2s ease 0s, color 0.2s ease 0s;
         padding: 4px 12px;

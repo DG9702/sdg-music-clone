@@ -25,7 +25,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [isLogged, setLogged] = useState<boolean>(Boolean(refreshToken))
   const [userData, setUserData] = useState<UserData>({})
 
-  const navigate = useNavigate()
+  const navigate=useNavigate()
   const location = useLocation()
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     window.location.assign(
       `${END_POINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
     )
-  }
+  }  
 
   const handleLogout = () => {
     localStorage.removeItem('spotify_refresh_token')

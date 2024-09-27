@@ -15,20 +15,16 @@ import { PlayerProvider } from "~/context/PlayerContext";
 import { AppContext } from "~/App";
 import Queue from "~/components/Queue";
 import PlayingView from "~/components/PlayingView";
-import {TrackProvider} from "~/context/TrackContext";
 import EditPlaylistModal from "~/components/Modal/EditPlaylistModal";
 
 const cx = classNames.bind(styles);
 
 const MainLayout = () => {
-  const { isPlayingViewShowed, isQueueShowed, isModalEditPlaylist } = useContext(AppContext);
-  console.log("Check isModalEditPlaylist: ", isModalEditPlaylist);
-  
+  const { isPlayingViewShowed, isQueueShowed } = useContext(AppContext);  
 
   return (
     <div className={cx("main-layout")}>
       <AuthProvider>
-        <TrackProvider>
           <PlayerProvider>
             <HomePageProvider>
               <SearchProvider>
@@ -90,7 +86,6 @@ const MainLayout = () => {
               </SearchProvider>
             </HomePageProvider>
           </PlayerProvider>
-        </TrackProvider>
       </AuthProvider>
     </div>
   );

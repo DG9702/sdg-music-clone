@@ -1,4 +1,4 @@
-import { FC, memo, useContext, useMemo } from "react";
+import { FC, memo, useContext } from "react";
 
 import { Dropdown, MenuProps } from "antd";
 import {
@@ -10,7 +10,7 @@ import {
 } from "~/assets/icons";
 import { AuthContext } from "~/context/AuthContext";
 import { toast } from "react-toastify";
-import { addItemToPlaylist, createPlaylist, removePlaylistItems } from "~/services/playlistApi";
+import { removePlaylistItems } from "~/services/playlistApi";
 import categoryApi from "~/services/categoryApi";
 import {useNavigate} from "react-router-dom";
 import {PlayerContext} from "~/context/PlayerContext";
@@ -24,7 +24,7 @@ interface TrackActionsWrapperProps {
 }
 
 export const menuUser: FC<TrackActionsWrapperProps> = memo(
-    ({ children, trigger, track, myPlaylist, playlist,setPlaylist }) => {
+    ({ children, trigger, track, playlist,setPlaylist }) => {
         const {userData}=useContext(AuthContext);
 
         const {
@@ -43,27 +43,6 @@ export const menuUser: FC<TrackActionsWrapperProps> = memo(
         const isMine = userData?.id === playlist?.owner?.id;
         const canEdit = isMine || playlist?.collaborative;
 
-        const options: any = useMemo(() => {
-            if (!myPlaylist) return [];
-
-            return myPlaylist
-                ?.filter((p: any) => p?.owner?.id === userData?.id)
-                ?.map((p: any) => {
-                    return {
-                        key: p.id,
-                        label: p.name,
-                        onClick: () => {
-                            addItemToPlaylist(
-                                p?.id,
-                                [track.uri],
-                                p?.snapshot_id,
-                            );
-                            toast(`Add item to ${p.name}`);
-                        },
-                    };
-                });
-        }, [myPlaylist]);
-
         const getItems = () => {
             const items: MenuProps["items"] = [
                 {
@@ -81,7 +60,7 @@ export const menuUser: FC<TrackActionsWrapperProps> = memo(
                     icon: <DeleteIcon />,
                     onClick: () => {
                         removePlaylistItems(playlist!.id, [track.uri], playlist?.snapshot_id!)
-                            .then(async (response) => {
+                            .then(async () => {
                                 toast.success("Remove from this playlist");
                                 const data = await categoryApi({
                                     type: "playlists",

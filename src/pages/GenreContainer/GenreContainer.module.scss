@@ -1,3 +1,5 @@
+@import "../../scss/variable.scss";
+
 .wrapper {
   height: 100%;
   position: relative;
@@ -9,7 +11,7 @@
   overflow: hidden;
   overflow-y: scroll;
   padding-bottom: 32px;
-  padding-top: var(--navbar-height);
+  padding-top: $navbar-height;
 
   &::-webkit-scrollbar {
     display: none;
@@ -18,16 +20,6 @@
 
 .main {
   position: relative;
-
-  .bg-blur {
-    position: absolute;
-    height: 232px;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-image: linear-gradient(rgba(0, 0, 0, .6) 0, var(--bg-primary) 100%), var(--bg-noise);
-    z-index: 0;
-  }
 
   .section {
     padding-top: 48px;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Episode.module.scss";
 import { CurrentTrack, PlayerContext } from "~/context/PlayerContext";
@@ -15,6 +15,7 @@ import { SaveTrack, UserSavedTrack } from "~/assets/icons";
 import Footer from "~/components/Footer";
 import {toast} from "react-toastify";
 import {checkUserSaveEpisode, episodeApi, removeEpisodeForCurrentUser, saveEpisodeForCurrentUser} from "~/services/episodeApi";
+import BlurBackground from "~/components/BlurBackground";
 
 const cx = classNames.bind(styles);
 
@@ -25,9 +26,7 @@ const Episode: React.FC = () => {
     setCurrentTrackIndex,
     setPlayingType,
     calNextTrackIndex,
-    setPlaying,
     currentTrack,
-    queue,
     isPlaying,
     prevDocumentTitle,
     isBtnClickable
@@ -108,7 +107,6 @@ const Episode: React.FC = () => {
     if (data?.id) {
       const fetchData = async () => {
         const result = await checkUserSaveEpisode({ids: `${data?.id}`});
-        console.log("Check result: ", result);
         
         if (result.data[0] === true) {
           setSaving(true);
@@ -140,15 +138,16 @@ const Episode: React.FC = () => {
     } else {
       await addTrackRequest();
       setSaving(true);
-      toast('🦄 Added to liked Song');
+      toast('🦄 Added to your Episodes');
     }
-  };
+  };  
 
-  console.log("Check data in episode: ", data);
-  
 
-  console.log("Check queue: ", queue);
-  
+  const isCurrent = useMemo(() => {
+    return Boolean(data?.id === currentTrack?.id);
+  }, [data, currentTrack])
+
+  const isPlayBtn = isCurrent && isPlaying;
 
   return (
     <main className={cx("episode-wrapper")}>
@@ -175,10 +174,7 @@ const Episode: React.FC = () => {
           />
         </div>
         <div className={cx("main")}>
-          <div
-            style={{ backgroundColor: bgColor }}
-            className={cx("bg-blur")}
-          ></div>
+          <BlurBackground bgColor={bgColor} />
           <div className={cx("action-bar")}>
             <div className={cx("top")}>
               <span>{dateFormatConvertor(data?.release_date)}</span>
@@ -194,10 +190,10 @@ const Episode: React.FC = () => {
               <div onClick={handleClickPlayBtn} className={cx("play-btn")}>
                 <PlayButton
                   size={56}
+                  fontSize={24}
                   scaleHovering={1.04}
                   transitionDuration={33}
-                  isPlay={isPlaying}
-                  setPlaying={setPlaying}
+                  isPlay={isPlayBtn}
                 />
               </div>
               <div className={cx("plus-btn", { active: isSaving })} onClick={() => isBtnClickable && handleSaveEpisode()}>

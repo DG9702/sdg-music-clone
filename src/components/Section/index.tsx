@@ -53,7 +53,7 @@ const Section: React.FC<SectionProps> = ({
         return {
           id:
             (apiType === "rapid" &&
-              (item.uri?.split(":")[item.uri.split.length] ||
+              (item?.uri?.split(":")[item.uri.split.length] ||
                 item?.releases?.items[0].id)) ||
             item?.id,
           title:
@@ -144,7 +144,7 @@ const Section: React.FC<SectionProps> = ({
                   dataType={dataType}
                   isLoading={isLoading}
                   key={index}
-                  id={item.id}
+                  id={item?.id}
                   title={item.title}
                   artists={item.artists}
                   desc={item.desc}

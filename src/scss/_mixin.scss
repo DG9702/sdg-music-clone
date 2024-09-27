@@ -14,7 +14,7 @@
 }
 
 @mixin button-base {
-  color: var(--black);
+  color: $black;
   border: none;
   cursor: pointer;
   transition: all ease-in-out 0.2s;
@@ -72,7 +72,7 @@
 }
 
 @mixin button-active {
-  color: var(--secondary) !important;
+  color: $secondary !important;
   position: relative;
 
   &::after {
@@ -80,7 +80,7 @@
     height: 4px;
     width: 4px;
     position: absolute;
-    background-color: var(--secondary);
+    background-color: $secondary;
     border-radius: 50%;
     bottom: 4px;
     left: 50%;
@@ -88,7 +88,7 @@
   }
 
   &:hover {
-    color: var(--primary);
+    color: $primary;
   }
 }
 

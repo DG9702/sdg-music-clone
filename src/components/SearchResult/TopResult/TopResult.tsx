@@ -95,6 +95,8 @@ const TopResult: FC<TopResultProps> = ({ topResult, songs }) => {
                 ?.slice(0, 4)
                 .map((item, index) => (
                   <SongItem
+                    view={'LIST'}
+                    type="search"
                     id={item?.id}
                     isLoading={isLoading}
                     key={item?.id || index}
@@ -105,7 +107,6 @@ const TopResult: FC<TopResultProps> = ({ topResult, songs }) => {
                     order={index + 1}
                     albumData={{ name: item?.album?.name }}
                     isExplicit={item?.explicit}
-                    type="search"
                     originalData={item}
                   />
                 ))
@@ -113,6 +114,7 @@ const TopResult: FC<TopResultProps> = ({ topResult, songs }) => {
                 .fill(0)
                 .map((item, index) => (
                   <SongItem
+                    view={'LIST'}
                     isLoading={isLoading}
                     type="search"
                     key={index}
